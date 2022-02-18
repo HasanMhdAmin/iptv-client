@@ -2,9 +2,9 @@ package de.itshasan.iptv_client.network
 
 import android.util.Log
 import de.itshasan.iptv_client.BuildConfig
-import de.itshasan.iptv_client.model.SeriesCategories
 import de.itshasan.iptv_client.network.callback.SeriesCategoriesCallback
 import de.itshasan.iptv_client.network.service.SeriesCategoriesService
+import de.itshasan.iptv_core.model.SeriesCategories
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

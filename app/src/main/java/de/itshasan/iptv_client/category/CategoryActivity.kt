@@ -6,9 +6,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import de.itshasan.iptv_client.R
 import de.itshasan.iptv_client.category.adapter.CategoryAdapter
-import de.itshasan.iptv_client.model.SeriesCategories
 import de.itshasan.iptv_client.network.IptvRepository
 import de.itshasan.iptv_client.network.callback.SeriesCategoriesCallback
+import de.itshasan.iptv_core.model.SeriesCategories
 
 
 private val TAG = CategoryActivity::class.java.simpleName

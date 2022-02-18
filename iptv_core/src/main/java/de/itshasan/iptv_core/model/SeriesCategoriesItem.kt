@@ -1,4 +1,4 @@
-package de.itshasan.iptv_client.model
+package de.itshasan.iptv_core.model
 
 
 import com.google.gson.annotations.SerializedName
