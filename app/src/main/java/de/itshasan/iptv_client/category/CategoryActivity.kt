@@ -5,12 +5,13 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
-import de.itshasan.iptv_client.EXTRA_MESSAGE
 import de.itshasan.iptv_client.R
 import de.itshasan.iptv_client.category.adapter.CategoryAdapter
 import de.itshasan.iptv_client.seriesList.GalleryActivity
+import de.itshasan.iptv_core.model.Constant.ALL_SERIES
 import de.itshasan.iptv_core.model.Constant.CATEGORY_ID
 import de.itshasan.iptv_core.model.series.category.SeriesCategories
+import de.itshasan.iptv_core.model.series.category.SeriesCategoriesItem
 import de.itshasan.iptv_repository.network.IptvRepository
 import de.itshasan.iptv_repository.network.callback.SeriesCategoriesCallback
 
@@ -35,6 +36,14 @@ class CategoryActivity : AppCompatActivity() {
                 Log.d(TAG,
                     "onSuccess: getSeriesCategories seriesCategoriesCount: ${backendResponse.size}")
                 val categoryAdapter = CategoryAdapter()
+
+                // ALL_SERIES is id to get all the series.
+                val allSeries =
+                    SeriesCategoriesItem(categoryId = ALL_SERIES,
+                        categoryName = "All",
+                        parentId = 0)
+                backendResponse.add(0, allSeries)
+
                 categoryAdapter.setDataList(backendResponse)
 
                 categoriesRecyclerView.apply {
