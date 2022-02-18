@@ -1,14 +1,17 @@
 package de.itshasan.iptv_client.category
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import de.itshasan.iptv_client.R
 import de.itshasan.iptv_client.category.adapter.CategoryAdapter
-import de.itshasan.iptv_client.model.CategoryCount
-import de.itshasan.iptv_client.utils.Repo
-import de.itshasan.iptv_client.utils.Source
+import de.itshasan.iptv_client.model.SeriesCategories
+import de.itshasan.iptv_client.network.IptvRepository
+import de.itshasan.iptv_client.network.callback.SeriesCategoriesCallback
+
+
+private val TAG = CategoryActivity::class.java.simpleName
 
 class CategoryActivity : AppCompatActivity() {
 
@@ -23,43 +26,26 @@ class CategoryActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_category)
 
-        val listString = mutableListOf<String>();
-        listString.add("test01");
-        listString.add("test02");
-        listString.add("test03");
-        listString.add("test04");
-        listString.add("test05");
-        listString.add("test06");
+        IptvRepository.getSeriesCategories(object : SeriesCategoriesCallback() {
+            override fun onSuccess(backendResponse: SeriesCategories) {
+                Log.d(TAG, "onSuccess: seriesCategoriesCount: ${backendResponse.size}")
+                val categoryAdapter = CategoryAdapter(backendResponse)
 
+                categoriesRecyclerView.apply {
+                    layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
+                    adapter = categoryAdapter.apply {
+                        onCategoryClicked = {
 
-        val seriesList = Repo.getList(this, Source.SERIES)
-
-        val map: MutableMap<String, Int> = HashMap()
-
-        val categoryCountList = mutableListOf<CategoryCount>()
-
-        for (item in seriesList) {
-            increment(map, item.groupTitle)
-        }
-
-        val sortedMap = map.toSortedMap()
-        sortedMap.map {
-            categoryCountList.add(CategoryCount(it.key, it.value))
-        }
-
-        var valuesList = ArrayList(map.keys).toMutableList()
-
-
-        val categoryAdapter = CategoryAdapter(categoryCountList)
-
-        categoriesRecyclerView.apply {
-//            layoutManager = GridLayoutManager(this@CategoryActivity, 2)
-            layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
-            adapter = categoryAdapter.apply {
-                onCategoryClicked = {
-
+                        }
+                    }
                 }
             }
-        }
+
+            override fun onError(status: Int, message: String) {
+                Log.d(TAG, "onError: ")
+            }
+
+        })
+
     }
 }

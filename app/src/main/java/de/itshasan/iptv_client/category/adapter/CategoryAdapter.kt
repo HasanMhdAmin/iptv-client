@@ -5,8 +5,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import de.itshasan.iptv_client.R
 import de.itshasan.iptv_client.model.CategoryCount
+import de.itshasan.iptv_client.model.SeriesCategories
+import de.itshasan.iptv_client.model.SeriesCategoriesItem
 
-class CategoryAdapter (private var categories: MutableList<CategoryCount>) :
+class CategoryAdapter (private var categories: MutableList<SeriesCategoriesItem>) :
     RecyclerView.Adapter<CategoryViewHolder>() {
 
     var onCategoryClicked: ((String) -> Unit)? = null

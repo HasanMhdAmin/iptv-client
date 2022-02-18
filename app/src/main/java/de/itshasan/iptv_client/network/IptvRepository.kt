@@ -6,6 +6,7 @@ import de.itshasan.iptv_client.model.SeriesCategories
 import de.itshasan.iptv_client.network.callback.SeriesCategoriesCallback
 import de.itshasan.iptv_client.network.service.SeriesCategoriesService
 import retrofit2.Call
+import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -30,16 +31,21 @@ object IptvRepository {
         val url = call.request().url().toString()
         Log.d(TAG, "getSeriesCategories: url: $url")
 
-
-        try {
-            val response: Response<SeriesCategories> = call.execute()
-            if (response.code() == 200) { // Success
+        call.enqueue(object : Callback<SeriesCategories> {
+            override fun onResponse(
+                call: Call<SeriesCategories>,
+                response: Response<SeriesCategories>,
+            ) {
                 callback.onSuccess(response.body()!!)
-            } else {
-                callback.onError(response.code(), response.message())
             }
-        } catch (e: Exception) {
-            callback.onError(-1, e.message!!)
-        }
+
+            override fun onFailure(call: Call<SeriesCategories>, t: Throwable) {
+                t.printStackTrace()
+                Log.e(TAG, "onFailure: ${t.printStackTrace()}")
+            }
+
+        })
+
     }
+
 }
