@@ -6,10 +6,15 @@ import androidx.recyclerview.widget.RecyclerView
 import de.itshasan.iptv_client.R
 import de.itshasan.iptv_core.model.series.category.SeriesCategoriesItem
 
-class CategoryAdapter (private var categories: MutableList<SeriesCategoriesItem>) :
-    RecyclerView.Adapter<CategoryViewHolder>() {
+class CategoryAdapter : RecyclerView.Adapter<CategoryViewHolder>() {
+
+    private var categories: MutableList<SeriesCategoriesItem> = mutableListOf()
 
     var onCategoryClicked: ((SeriesCategoriesItem) -> Unit)? = null
+
+    fun setDataList(data: ArrayList<SeriesCategoriesItem>) {
+        this.categories = data
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
         val view = LayoutInflater.from(parent.context)

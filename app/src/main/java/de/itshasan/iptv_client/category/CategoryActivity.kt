@@ -33,7 +33,8 @@ class CategoryActivity : AppCompatActivity() {
             override fun onSuccess(backendResponse: SeriesCategories) {
                 Log.d(TAG,
                     "onSuccess: getSeriesCategories seriesCategoriesCount: ${backendResponse.size}")
-                val categoryAdapter = CategoryAdapter(backendResponse)
+                val categoryAdapter = CategoryAdapter()
+                categoryAdapter.setDataList(backendResponse)
 
                 categoriesRecyclerView.apply {
                     layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
