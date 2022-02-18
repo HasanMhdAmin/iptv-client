@@ -1,4 +1,8 @@
 package de.itshasan.iptv_repository.network
 
-interface iptvContract {
+import de.itshasan.iptv_repository.network.callback.SeriesCategoriesCallback
+
+interface IptvRepositoryContract {
+
+    fun getSeriesCategories(callback: SeriesCategoriesCallback)
 }
