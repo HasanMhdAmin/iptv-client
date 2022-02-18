@@ -1,14 +1,17 @@
 package de.itshasan.iptv_client.category
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
+import de.itshasan.iptv_client.EXTRA_MESSAGE
 import de.itshasan.iptv_client.R
 import de.itshasan.iptv_client.category.adapter.CategoryAdapter
+import de.itshasan.iptv_client.seriesList.GalleryActivity
+import de.itshasan.iptv_core.model.series.category.SeriesCategories
 import de.itshasan.iptv_repository.network.IptvRepository
 import de.itshasan.iptv_repository.network.callback.SeriesCategoriesCallback
-import de.itshasan.iptv_core.model.series.category.SeriesCategories
 
 
 private val TAG = CategoryActivity::class.java.simpleName
@@ -28,13 +31,19 @@ class CategoryActivity : AppCompatActivity() {
 
         IptvRepository.getSeriesCategories(object : SeriesCategoriesCallback() {
             override fun onSuccess(backendResponse: SeriesCategories) {
-                Log.d(TAG, "onSuccess: seriesCategoriesCount: ${backendResponse.size}")
+                Log.d(TAG,
+                    "onSuccess: getSeriesCategories seriesCategoriesCount: ${backendResponse.size}")
                 val categoryAdapter = CategoryAdapter(backendResponse)
 
                 categoriesRecyclerView.apply {
                     layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
                     adapter = categoryAdapter.apply {
                         onCategoryClicked = {
+                            val intent =
+                                Intent(this@CategoryActivity, GalleryActivity::class.java).apply {
+                                    putExtra(EXTRA_MESSAGE, it.categoryId)
+                                }
+                            startActivity(intent)
 
                         }
                     }
@@ -42,10 +51,21 @@ class CategoryActivity : AppCompatActivity() {
             }
 
             override fun onError(status: Int, message: String) {
-                Log.d(TAG, "onError: ")
+                Log.d(TAG, "onError: getSeriesCategories: message: $message ")
             }
 
         })
+
+//        IptvRepository.getSeriesByCategoryId( "137", object : SeriesCallback() {
+//            override fun onSuccess(backendResponse: SeriesList) {
+//                Log.d(TAG, "onSuccess: getSeriesByCategoryId seriesCount: ${backendResponse.size}")
+//
+//            }
+//            override fun onError(status: Int, message: String) {
+//                Log.d(TAG, "onError: getSeriesByCategoryId: message: $message ")
+//
+//            }
+//        })
 
     }
 }

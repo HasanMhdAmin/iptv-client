@@ -9,7 +9,7 @@ import de.itshasan.iptv_core.model.series.category.SeriesCategoriesItem
 class CategoryAdapter (private var categories: MutableList<SeriesCategoriesItem>) :
     RecyclerView.Adapter<CategoryViewHolder>() {
 
-    var onCategoryClicked: ((String) -> Unit)? = null
+    var onCategoryClicked: ((SeriesCategoriesItem) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
         val view = LayoutInflater.from(parent.context)

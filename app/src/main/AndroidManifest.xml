@@ -11,8 +11,11 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
-        android:theme="@style/Theme.IPTVClient">
+        android:theme="@style/Theme.IPTVClient"
+        android:usesCleartextTraffic="true">
+        <activity
+            android:name=".seriesList.GalleryActivity"
+            android:exported="false" />
         <activity
             android:name=".category.CategoryActivity"
             android:exported="false" />
