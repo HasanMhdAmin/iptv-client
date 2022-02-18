@@ -1,10 +1,11 @@
-package de.itshasan.iptv_client.network
+package de.itshasan.iptv_repository.network
 
 import android.util.Log
-import de.itshasan.iptv_client.BuildConfig
-import de.itshasan.iptv_client.network.callback.SeriesCategoriesCallback
-import de.itshasan.iptv_client.network.service.SeriesCategoriesService
 import de.itshasan.iptv_core.model.SeriesCategories
+import de.itshasan.iptv_repository.BuildConfig
+import de.itshasan.iptv_repository.network.callback.SeriesCategoriesCallback
+import de.itshasan.iptv_repository.network.enums.Action
+import de.itshasan.iptv_repository.network.service.SeriesCategoriesService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

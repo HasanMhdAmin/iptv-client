@@ -1,4 +1,4 @@
-package de.itshasan.iptv_client.network.service
+package de.itshasan.iptv_repository.network.service
 
 import de.itshasan.iptv_core.model.SeriesCategories
 import retrofit2.Call

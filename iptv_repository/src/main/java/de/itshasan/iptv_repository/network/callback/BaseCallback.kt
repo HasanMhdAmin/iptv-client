@@ -1,4 +1,4 @@
-package de.itshasan.iptv_client.network.callback
+package de.itshasan.iptv_repository.network.callback
 
 abstract class BaseCallback<T> {
     abstract fun onSuccess(backendResponse: T)
