@@ -8,7 +8,7 @@ import de.itshasan.iptv_client.R
 import de.itshasan.iptv_client.category.adapter.CategoryAdapter
 import de.itshasan.iptv_repository.network.IptvRepository
 import de.itshasan.iptv_repository.network.callback.SeriesCategoriesCallback
-import de.itshasan.iptv_core.model.SeriesCategories
+import de.itshasan.iptv_core.model.series.category.SeriesCategories
 
 
 private val TAG = CategoryActivity::class.java.simpleName

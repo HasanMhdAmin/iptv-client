@@ -1,6 +1,6 @@
 package de.itshasan.iptv_repository.network.service
 
-import de.itshasan.iptv_core.model.SeriesCategories
+import de.itshasan.iptv_core.model.series.category.SeriesCategories
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query

@@ -3,7 +3,7 @@ package de.itshasan.iptv_client.category.adapter
 import android.view.View
 import android.widget.TextView
 import de.itshasan.iptv_client.R
-import de.itshasan.iptv_core.model.SeriesCategoriesItem
+import de.itshasan.iptv_core.model.series.category.SeriesCategoriesItem
 
 class CategoryViewHolder(
     view: View,

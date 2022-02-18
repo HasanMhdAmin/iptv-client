@@ -1,7 +1,7 @@
 package de.itshasan.iptv_repository.network
 
 import android.util.Log
-import de.itshasan.iptv_core.model.SeriesCategories
+import de.itshasan.iptv_core.model.series.category.SeriesCategories
 import de.itshasan.iptv_repository.BuildConfig
 import de.itshasan.iptv_repository.network.callback.SeriesCategoriesCallback
 import de.itshasan.iptv_repository.network.enums.Action
