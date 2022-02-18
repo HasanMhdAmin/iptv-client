@@ -6,6 +6,7 @@ import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.util.Log
+import de.itshasan.iptv_client.category.CategoryActivity
 import de.itshasan.iptv_client.parser.SimpleM3UParser
 import java.io.InputStream
 
@@ -58,10 +59,17 @@ class MainActivity : AppCompatActivity() {
 
 
         button.setOnClickListener {
-            val intent = Intent(this, SimplePlayerActivity::class.java).apply {
+//            val intent = Intent(this, SimplePlayerActivity::class.java).apply {
+//                putExtra(EXTRA_MESSAGE, url)
+//            }
+//            startActivity(intent)
+
+
+            val intent = Intent(this, CategoryActivity::class.java).apply {
                 putExtra(EXTRA_MESSAGE, url)
             }
             startActivity(intent)
+
         }
 
     }

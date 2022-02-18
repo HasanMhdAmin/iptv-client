@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.IPTVClient">
         <activity
+            android:name=".category.CategoryActivity"
+            android:exported="false" />
+        <activity
             android:name=".SimplePlayerActivity"
             android:exported="false" />
         <activity
