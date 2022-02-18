@@ -39,6 +39,19 @@
             android:layout_margin="5dp"
             android:text="Series"
             android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/imdbRating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_margin="5dp"
+            android:background="@drawable/imdb_background"
+            android:padding="3dp"
+            android:text="7.0"
+            android:textColor="@color/black"
+            android:textSize="11sp" />
+
     </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -24,8 +24,8 @@ data class SeriesItem(
 //    val releaseDate: String,
 //    @SerializedName("last_modified")
 //    val lastModified: String,
-//    @SerializedName("rating")
-//    val rating: String,
+    @SerializedName("rating")
+    val rating: String,
 //    @SerializedName("rating_5based")
 //    val rating5based: Int,
 //    @SerializedName("youtube_trailer")

@@ -16,6 +16,7 @@ class SeriesItemViewHolder(
     private val item by lazy { view.findViewById<CardView>(R.id.item) }
     private val itemName by lazy { view.findViewById<TextView>(R.id.itemName) }
     private val cover by lazy { view.findViewById<ImageView>(R.id.cover) }
+    private val imdbRating by lazy { view.findViewById<TextView>(R.id.imdbRating) }
 
     fun onBind(seriesItem: SeriesItem, position: Int) {
 
@@ -32,6 +33,15 @@ class SeriesItemViewHolder(
             .load(seriesItem.cover)
             .centerCrop()
             .into(cover)
+
+        imdbRating.apply {
+            visibility =
+                if (seriesItem.rating.isBlank()
+                    || seriesItem.rating == ""
+                    || seriesItem.rating == "0"
+                ) View.GONE else View.VISIBLE
+            text = seriesItem.rating
+        }
 
     }
 
