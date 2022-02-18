@@ -18,8 +18,8 @@ data class SeriesItem(
 //    val cast: String,
 //    @SerializedName("director")
 //    val director: String,
-//    @SerializedName("genre")
-//    val genre: String,
+    @SerializedName("genre")
+    val genre: String,
 //    @SerializedName("releaseDate")
 //    val releaseDate: String,
 //    @SerializedName("last_modified")

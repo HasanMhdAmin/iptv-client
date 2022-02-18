@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
@@ -15,11 +16,14 @@ import de.itshasan.iptv_client.seriesList.GalleryActivity
 import de.itshasan.iptv_core.model.Constant
 
 private val TAG = GalleryFragment::class.java.simpleName
-class GalleryFragment : Fragment() {
+
+class GalleryFragment : Fragment(), SearchView.OnQueryTextListener {
 
     companion object {
         fun newInstance() = GalleryFragment()
     }
+
+    lateinit var viewModel: GalleryViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,10 +36,12 @@ class GalleryFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val categoriesRecyclerView = view.findViewById<RecyclerView>(R.id.categoriesRecyclerView)
+        val searchView = view.findViewById<SearchView>(R.id.search_view)
+        searchView.setOnQueryTextListener(this)
 
         val categoryId = activity?.intent?.extras?.getString(Constant.CATEGORY_ID)
         val viewModel: GalleryViewModel by viewModels { GalleryViewModelFactory(categoryId!!) }
-
+        this.viewModel = viewModel
         categoriesRecyclerView.apply {
             layoutManager = androidx.recyclerview.widget.GridLayoutManager(context, 3)
             adapter = viewModel.getAdapter().apply {
@@ -62,6 +68,16 @@ class GalleryFragment : Fragment() {
                 }
             }
 
+    }
+
+    override fun onQueryTextSubmit(query: String?): Boolean {
+        viewModel.getAdapter().filter.filter(query)
+        return false
+    }
+
+    override fun onQueryTextChange(query: String?): Boolean {
+        viewModel.getAdapter().filter.filter(query)
+        return false
     }
 
 
