@@ -7,13 +7,13 @@ import de.itshasan.iptv_core.model.series.SeriesList
 import de.itshasan.iptv_repository.network.IptvRepository
 import de.itshasan.iptv_repository.network.callback.SeriesCallback
 
-class GalleryViewModel : ViewModel() {
+class GalleryViewModel(categoryId: String) : ViewModel() {
 
     var recyclerListData: MutableLiveData<SeriesList> = MutableLiveData<SeriesList>()
     var musicRecyclerViewAdapter: GalleryAdapter = GalleryAdapter()
 
     init {
-        makeAPICall()
+        makeAPICall(categoryId)
     }
 
     fun getAdapter(): GalleryAdapter {
@@ -29,9 +29,9 @@ class GalleryViewModel : ViewModel() {
         return recyclerListData
     }
 
-    private fun makeAPICall() {
+    private fun makeAPICall(categoryId: String) {
 
-        IptvRepository.getSeriesByCategoryId("137", object : SeriesCallback() {
+        IptvRepository.getSeriesByCategoryId(categoryId, object : SeriesCallback() {
             override fun onSuccess(backendResponse: SeriesList) {
                 recyclerListData.postValue(backendResponse)
             }

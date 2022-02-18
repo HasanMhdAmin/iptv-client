@@ -9,6 +9,7 @@ import de.itshasan.iptv_client.EXTRA_MESSAGE
 import de.itshasan.iptv_client.R
 import de.itshasan.iptv_client.category.adapter.CategoryAdapter
 import de.itshasan.iptv_client.seriesList.GalleryActivity
+import de.itshasan.iptv_core.model.Constant.CATEGORY_ID
 import de.itshasan.iptv_core.model.series.category.SeriesCategories
 import de.itshasan.iptv_repository.network.IptvRepository
 import de.itshasan.iptv_repository.network.callback.SeriesCategoriesCallback
@@ -42,7 +43,7 @@ class CategoryActivity : AppCompatActivity() {
                         onCategoryClicked = {
                             val intent =
                                 Intent(this@CategoryActivity, GalleryActivity::class.java).apply {
-                                    putExtra(EXTRA_MESSAGE, it.categoryId)
+                                    putExtra(CATEGORY_ID, it.categoryId)
                                 }
                             startActivity(intent)
 
@@ -56,17 +57,6 @@ class CategoryActivity : AppCompatActivity() {
             }
 
         })
-
-//        IptvRepository.getSeriesByCategoryId( "137", object : SeriesCallback() {
-//            override fun onSuccess(backendResponse: SeriesList) {
-//                Log.d(TAG, "onSuccess: getSeriesByCategoryId seriesCount: ${backendResponse.size}")
-//
-//            }
-//            override fun onError(status: Int, message: String) {
-//                Log.d(TAG, "onError: getSeriesByCategoryId: message: $message ")
-//
-//            }
-//        })
 
     }
 }

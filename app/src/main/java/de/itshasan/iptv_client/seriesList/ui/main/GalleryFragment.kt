@@ -7,11 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import de.itshasan.iptv_client.EXTRA_MESSAGE
 import de.itshasan.iptv_client.R
 import de.itshasan.iptv_client.seriesList.GalleryActivity
+import de.itshasan.iptv_core.model.Constant
 
 private val TAG = GalleryFragment::class.java.simpleName
 class GalleryFragment : Fragment() {
@@ -19,8 +20,6 @@ class GalleryFragment : Fragment() {
     companion object {
         fun newInstance() = GalleryFragment()
     }
-
-    private lateinit var viewModel: GalleryViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,8 +33,8 @@ class GalleryFragment : Fragment() {
 
         val categoriesRecyclerView = view.findViewById<RecyclerView>(R.id.categoriesRecyclerView)
 
-
-        viewModel = ViewModelProvider(this)[GalleryViewModel::class.java]
+        val categoryId = activity?.intent?.extras?.getString(Constant.CATEGORY_ID)
+        val viewModel: GalleryViewModel by viewModels { GalleryViewModelFactory(categoryId!!) }
 
         categoriesRecyclerView.apply {
             layoutManager = androidx.recyclerview.widget.GridLayoutManager(context, 3)
@@ -65,10 +64,5 @@ class GalleryFragment : Fragment() {
 
     }
 
-//    override fun onActivityCreated(savedInstanceState: Bundle?) {
-//        super.onActivityCreated(savedInstanceState)
-//        viewModel = ViewModelProvider(this).get(GalleryViewModel::class.java)
-//        // TODO: Use the ViewModel
-//    }
 
 }
