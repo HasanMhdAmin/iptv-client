@@ -3,9 +3,11 @@ package de.itshasan.iptv_repository.network
 import android.util.Log
 import de.itshasan.iptv_core.model.series.SeriesList
 import de.itshasan.iptv_core.model.series.category.SeriesCategories
+import de.itshasan.iptv_core.model.series.info.SeriesInfo
 import de.itshasan.iptv_repository.BuildConfig
 import de.itshasan.iptv_repository.network.callback.SeriesCallback
 import de.itshasan.iptv_repository.network.callback.SeriesCategoriesCallback
+import de.itshasan.iptv_repository.network.callback.SeriesInfoCallback
 import de.itshasan.iptv_repository.network.enums.Action
 import de.itshasan.iptv_repository.network.service.SeriesService
 import retrofit2.Call
@@ -80,6 +82,28 @@ object IptvRepository : IptvRepositoryContract {
         })
 
 
+    }
+
+    override fun getSeriesInfoBySeriesId(seriesId: String, callback: SeriesInfoCallback) {
+        val call: Call<SeriesInfo> = seriesService.getSeriesInfoBySeriesId(username, password,
+            Action.GET_SERIES.value, seriesId)
+
+        val url = call.request().url().toString()
+        printURL("getSeriesInfoBySeriesId", url)
+
+        call.enqueue(object : Callback<SeriesInfo> {
+            override fun onResponse(
+                call: Call<SeriesInfo>,
+                response: Response<SeriesInfo>,
+            ) {
+                callback.onSuccess(response.body()!!)
+            }
+
+            override fun onFailure(call: Call<SeriesInfo>, t: Throwable) {
+                t.printStackTrace()
+                Log.e(TAG, "onFailure: ${t.printStackTrace()}")
+            }
+        })
     }
 
 }

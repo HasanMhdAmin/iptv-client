@@ -5,10 +5,8 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.exoplayer2.ExoPlayer
-import com.google.android.exoplayer2.util.Log
 import de.itshasan.iptv_client.category.CategoryActivity
-import de.itshasan.iptv_client.parser.SimpleM3UParser
-import java.io.InputStream
+import de.itshasan.iptv_client.overview.OverviewActivity
 
 
 private val TAG = MainActivity::class.java.simpleName
@@ -19,8 +17,14 @@ class MainActivity : AppCompatActivity() {
     private var player: ExoPlayer? = null
     val url =
         "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
-    private val button by lazy {
-        findViewById<Button>(R.id.button)
+    private val playerBtn by lazy {
+        findViewById<Button>(R.id.playerBtn)
+    }
+    private val catBtn by lazy {
+        findViewById<Button>(R.id.catBtn)
+    }
+    private val detailsBtn by lazy {
+        findViewById<Button>(R.id.detailsBtn)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,19 +61,25 @@ class MainActivity : AppCompatActivity() {
 //        Log.d(TAG, "onCreate: seriesList: ${seriesList.size}")
 //        Log.d(TAG, "onCreate: moviesList: ${moviesList.size}")
 
+        playerBtn.setOnClickListener {
+            val intent = Intent(this, SimplePlayerActivity::class.java).apply {
+                putExtra(EXTRA_MESSAGE, url)
+            }
+            startActivity(intent)
+        }
 
-        button.setOnClickListener {
-//            val intent = Intent(this, SimplePlayerActivity::class.java).apply {
-//                putExtra(EXTRA_MESSAGE, url)
-//            }
-//            startActivity(intent)
-
-
+        catBtn.setOnClickListener {
             val intent = Intent(this, CategoryActivity::class.java).apply {
                 putExtra(EXTRA_MESSAGE, url)
             }
             startActivity(intent)
+        }
 
+        detailsBtn.setOnClickListener {
+            val intent = Intent(this, OverviewActivity::class.java).apply {
+                putExtra(EXTRA_MESSAGE, url)
+            }
+            startActivity(intent)
         }
 
     }
