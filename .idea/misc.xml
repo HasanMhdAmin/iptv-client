@@ -5,8 +5,12 @@
       <map>
         <entry key="..\:/Users/HAM01/AndroidStudioProjects/flutter/iptv_client/app/src/main/res/drawable-v24/ic_fill_blue_200dp.xml" value="0.254" />
         <entry key="..\:/Users/HAM01/AndroidStudioProjects/flutter/iptv_client/app/src/main/res/drawable/gradient_black.xml" value="0.254" />
+        <entry key="..\:/Users/HAM01/AndroidStudioProjects/flutter/iptv_client/app/src/main/res/drawable/ic_download.xml" value="0.254" />
+        <entry key="..\:/Users/HAM01/AndroidStudioProjects/flutter/iptv_client/app/src/main/res/drawable/ic_imdb.xml" value="0.254" />
         <entry key="..\:/Users/HAM01/AndroidStudioProjects/flutter/iptv_client/app/src/main/res/drawable/ic_play.xml" value="0.254" />
+        <entry key="..\:/Users/HAM01/AndroidStudioProjects/flutter/iptv_client/app/src/main/res/drawable/ic_share.xml" value="0.254" />
         <entry key="..\:/Users/HAM01/AndroidStudioProjects/flutter/iptv_client/app/src/main/res/drawable/imdb_background.xml" value="0.254" />
+        <entry key="..\:/Users/HAM01/AndroidStudioProjects/flutter/iptv_client/app/src/main/res/layout/actions.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/HAM01/AndroidStudioProjects/flutter/iptv_client/app/src/main/res/layout/activity_category.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/HAM01/AndroidStudioProjects/flutter/iptv_client/app/src/main/res/layout/activity_main.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/HAM01/AndroidStudioProjects/flutter/iptv_client/app/src/main/res/layout/activity_main_2.xml" value="0.36666666666666664" />
@@ -20,6 +24,7 @@
         <entry key="..\:/Users/HAM01/AndroidStudioProjects/flutter/iptv_client/app/src/main/res/layout/overview_fragment.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/HAM01/AndroidStudioProjects/flutter/iptv_client/app/src/main/res/layout/progress_bar_custom.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/HAM01/AndroidStudioProjects/flutter/iptv_client/app/src/main/res/layout/text_test.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/HAM01/AndroidStudioProjects/flutter/iptv_client/app/src/main/res/layout/title_progress_plot_cast_director.xml" value="0.36666666666666664" />
       </map>
     </option>
   </component>

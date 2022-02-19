@@ -8,7 +8,7 @@
     <ImageView
         android:id="@+id/cover"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="222dp"
         android:scaleType="centerCrop"
         android:src="@drawable/sample_big"
         app:layout_constraintEnd_toEndOf="parent"
@@ -77,57 +77,23 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/progressConstraintLayout"
+    <include
+        layout="@layout/title_progress_plot_cast_director"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/safe_area"
-        app:layout_constraintTop_toBottomOf="@+id/buttonConstraintLayout">
+        app:layout_constraintTop_toBottomOf="@+id/buttonConstraintLayout" />
 
-        <TextView
-            android:id="@+id/title"
-            style="@style/TextViewBoldColor"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="The Big Bang Theory S01 E01"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/actions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/progressConstraintLayout">
 
         <include
-            android:id="@+id/progress"
-            layout="@layout/progress_bar_custom"
+            android:id="@+id/actions_bar"
+            layout="@layout/actions"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/title" />
-
-        <TextView
-            android:id="@+id/plot"
-            style="@style/TextViewRegularColor"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:maxLines="5"
-            android:text="@string/plot_text_test"
-            app:layout_constraintTop_toBottomOf="@+id/progress" />
-
-        <TextView
-            android:id="@+id/cast"
-            style="@style/TextViewRegular"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="@string/cast_text_test"
-            app:layout_constraintTop_toBottomOf="@+id/plot" />
-
-        <TextView
-            android:id="@+id/director"
-            style="@style/TextViewRegular"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="@string/director_text_test"
-            app:layout_constraintTop_toBottomOf="@+id/cast" />
+            android:layout_height="wrap_content" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
