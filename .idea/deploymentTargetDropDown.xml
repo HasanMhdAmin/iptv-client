@@ -6,23 +6,12 @@
         <type value="RUNNING_DEVICE_TARGET" />
         <deviceKey>
           <Key>
-            <type value="VIRTUAL_DEVICE_PATH" />
-            <value value="C:\Users\HAM01\.android\avd\Pixel_5_API_28.avd" />
+            <type value="SERIAL_NUMBER" />
+            <value value="R3CR301LSTN" />
           </Key>
         </deviceKey>
       </Target>
     </runningDeviceTargetSelectedWithDropDown>
-    <targetSelectedWithDropDown>
-      <Target>
-        <type value="QUICK_BOOT_TARGET" />
-        <deviceKey>
-          <Key>
-            <type value="VIRTUAL_DEVICE_PATH" />
-            <value value="C:\Users\HAM01\.android\avd\Pixel_5_API_28.avd" />
-          </Key>
-        </deviceKey>
-      </Target>
-    </targetSelectedWithDropDown>
-    <timeTargetWasSelectedWithDropDown value="2022-02-19T09:20:58.358125200Z" />
+    <timeTargetWasSelectedWithDropDown value="2022-02-19T10:32:04.712280300Z" />
   </component>
 </project>
