@@ -24,28 +24,32 @@
 
         <TextView
             android:id="@+id/name"
+            style="@style/TextViewBoldColor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="The Big Bang Theory"
             android:textSize="30sp"
-            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/releaseDate"
+            style="@style/TextViewRegular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="2018"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/name" />
 
         <TextView
             android:id="@+id/seasonCount"
+            style="@style/TextViewRegular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:text="12 Seasons"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/releaseDate"
             app:layout_constraintTop_toBottomOf="@+id/name" />
 
@@ -54,6 +58,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/buttonConstraintLayout"
+        style="@style/TextViewRegular"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/safe_area"
@@ -79,11 +84,50 @@
         android:padding="@dimen/safe_area"
         app:layout_constraintTop_toBottomOf="@+id/buttonConstraintLayout">
 
-        <include
-            layout="@layout/progress_bar_custom"
-            app:layout_constraintBottom_toBottomOf="parent"
+        <TextView
+            android:id="@+id/title"
+            style="@style/TextViewBoldColor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="The Big Bang Theory S01 E01"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <include
+            android:id="@+id/progress"
+            layout="@layout/progress_bar_custom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/title" />
+
+        <TextView
+            android:id="@+id/plot"
+            style="@style/TextViewRegularColor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:maxLines="5"
+            android:text="@string/plot_text_test"
+            app:layout_constraintTop_toBottomOf="@+id/progress" />
+
+        <TextView
+            android:id="@+id/cast"
+            style="@style/TextViewRegular"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/cast_text_test"
+            app:layout_constraintTop_toBottomOf="@+id/plot" />
+
+        <TextView
+            android:id="@+id/director"
+            style="@style/TextViewRegular"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/director_text_test"
+            app:layout_constraintTop_toBottomOf="@+id/cast" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
