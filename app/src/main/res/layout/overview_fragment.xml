@@ -23,7 +23,7 @@
         app:layout_constraintTop_toBottomOf="@+id/cover">
 
         <TextView
-            android:id="@+id/name"
+            android:id="@+id/nameTextView"
             style="@style/TextViewBoldColor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -33,14 +33,14 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/releaseDate"
+            android:id="@+id/releaseDateTextView"
             style="@style/TextViewRegular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="2018"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/name" />
+            app:layout_constraintTop_toBottomOf="@+id/nameTextView" />
 
         <TextView
             android:id="@+id/seasonCount"
@@ -50,8 +50,8 @@
             android:layout_marginStart="20dp"
             android:text="12 Seasons"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/releaseDate"
-            app:layout_constraintTop_toBottomOf="@+id/name" />
+            app:layout_constraintStart_toEndOf="@+id/releaseDateTextView"
+            app:layout_constraintTop_toBottomOf="@+id/nameTextView" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

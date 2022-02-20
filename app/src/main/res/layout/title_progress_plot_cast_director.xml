@@ -24,7 +24,7 @@
         app:layout_constraintTop_toBottomOf="@+id/title" />
 
     <TextView
-        android:id="@+id/plot"
+        android:id="@+id/plotTextView"
         style="@style/TextViewRegularColor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -34,21 +34,21 @@
         app:layout_constraintTop_toBottomOf="@+id/progress" />
 
     <TextView
-        android:id="@+id/cast"
+        android:id="@+id/castTextView"
         style="@style/TextViewRegular"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="@string/cast_text_test"
-        app:layout_constraintTop_toBottomOf="@+id/plot" />
+        app:layout_constraintTop_toBottomOf="@+id/plotTextView" />
 
     <TextView
-        android:id="@+id/director"
+        android:id="@+id/directorTextView"
         style="@style/TextViewRegular"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="@string/director_text_test"
-        app:layout_constraintTop_toBottomOf="@+id/cast" />
+        app:layout_constraintTop_toBottomOf="@+id/castTextView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

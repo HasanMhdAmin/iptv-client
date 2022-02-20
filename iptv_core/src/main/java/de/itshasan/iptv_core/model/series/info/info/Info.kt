@@ -22,10 +22,10 @@ data class Info(
     val lastModified: String,
     @SerializedName("rating")
     val rating: String,
-    @SerializedName("rating_5based")
-    val rating5based: Int,
-    @SerializedName("backdrop_path")
-    val backdropPath: List<String>,
+//    @SerializedName("rating_5based")
+//    val rating5based: Int,
+//    @SerializedName("backdrop_path")
+//    val backdropPath: List<String>,
     @SerializedName("youtube_trailer")
     val youtubeTrailer: String,
     @SerializedName("episode_run_time")

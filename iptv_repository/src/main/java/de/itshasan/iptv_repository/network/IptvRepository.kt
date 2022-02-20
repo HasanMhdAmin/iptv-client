@@ -86,7 +86,7 @@ object IptvRepository : IptvRepositoryContract {
 
     override fun getSeriesInfoBySeriesId(seriesId: String, callback: SeriesInfoCallback) {
         val call: Call<SeriesInfo> = seriesService.getSeriesInfoBySeriesId(username, password,
-            Action.GET_SERIES.value, seriesId)
+            Action.GET_SERIES_INFO.value, seriesId)
 
         val url = call.request().url().toString()
         printURL("getSeriesInfoBySeriesId", url)

@@ -10,7 +10,6 @@ import de.itshasan.iptv_client.overview.OverviewActivity
 
 
 private val TAG = MainActivity::class.java.simpleName
-const val EXTRA_MESSAGE = "de.itshasan.iptv_client.URL"
 
 class MainActivity : AppCompatActivity() {
 
@@ -62,23 +61,17 @@ class MainActivity : AppCompatActivity() {
 //        Log.d(TAG, "onCreate: moviesList: ${moviesList.size}")
 
         playerBtn.setOnClickListener {
-            val intent = Intent(this, SimplePlayerActivity::class.java).apply {
-                putExtra(EXTRA_MESSAGE, url)
-            }
+            val intent = Intent(this, SimplePlayerActivity::class.java)
             startActivity(intent)
         }
 
         catBtn.setOnClickListener {
-            val intent = Intent(this, CategoryActivity::class.java).apply {
-                putExtra(EXTRA_MESSAGE, url)
-            }
+            val intent = Intent(this, CategoryActivity::class.java)
             startActivity(intent)
         }
 
         detailsBtn.setOnClickListener {
-            val intent = Intent(this, OverviewActivity::class.java).apply {
-                putExtra(EXTRA_MESSAGE, url)
-            }
+            val intent = Intent(this, OverviewActivity::class.java)
             startActivity(intent)
         }
 

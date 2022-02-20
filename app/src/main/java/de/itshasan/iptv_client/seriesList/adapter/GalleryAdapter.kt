@@ -43,8 +43,8 @@ class GalleryAdapter : RecyclerView.Adapter<SeriesItemViewHolder>(), Filterable 
                     val filteredList = ArrayList<SeriesItem>()
                     categories
                         .filter {
-                            (it.name.contains(constraint!!)) or
-                                (it.genre.contains(constraint))
+                            (it.name.contains(constraint!!, ignoreCase = true)) or
+                                (it.genre.contains(constraint, ignoreCase = true))
 
                         }
                         .forEach { filteredList.add(it) }

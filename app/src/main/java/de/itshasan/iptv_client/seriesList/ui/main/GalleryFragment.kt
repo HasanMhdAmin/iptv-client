@@ -10,10 +10,10 @@ import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
-import de.itshasan.iptv_client.EXTRA_MESSAGE
 import de.itshasan.iptv_client.R
-import de.itshasan.iptv_client.seriesList.GalleryActivity
+import de.itshasan.iptv_client.overview.OverviewActivity
 import de.itshasan.iptv_core.model.Constant
+import de.itshasan.iptv_core.model.Constant.SERIES_ID
 
 private val TAG = GalleryFragment::class.java.simpleName
 
@@ -46,9 +46,11 @@ class GalleryFragment : Fragment(), SearchView.OnQueryTextListener {
             layoutManager = androidx.recyclerview.widget.GridLayoutManager(context, 3)
             adapter = viewModel.getAdapter().apply {
                 onCategoryClicked = {
+                    Log.d(TAG, "onViewCreated: seriesId: ${it.seriesId}")
+
                     val intent =
-                        Intent(context, GalleryActivity::class.java).apply {
-                            putExtra(EXTRA_MESSAGE, it.categoryId)
+                        Intent(context, OverviewActivity::class.java).apply {
+                            putExtra(SERIES_ID, it.seriesId)
                         }
                     startActivity(intent)
                 }
