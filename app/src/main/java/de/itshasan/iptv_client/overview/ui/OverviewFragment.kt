@@ -5,9 +5,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import de.itshasan.iptv_client.R
 import de.itshasan.iptv_core.model.Constant
 
@@ -36,6 +39,7 @@ class OverviewFragment : Fragment() {
         val plotTextView = view.findViewById<TextView>(R.id.plotTextView)
         val castTextView = view.findViewById<TextView>(R.id.castTextView)
         val directorTextView = view.findViewById<TextView>(R.id.directorTextView)
+        val coverImageView = view.findViewById<ImageView>(R.id.coverImageView)
 
         val seriesId = activity?.intent?.extras?.getInt(Constant.SERIES_ID, 0)
         Log.d(TAG, "onViewCreated: seriesId: $seriesId")
@@ -60,6 +64,15 @@ class OverviewFragment : Fragment() {
         this.viewModel.director.observe(requireActivity()) {
             directorTextView.text = it
             if (it.isEmpty()) directorTextView.visibility = View.GONE
+        }
+        this.viewModel.coverImageUrl.observe(requireActivity()) {
+            Glide
+                .with(view.context)
+                .load(it)
+                .centerCrop()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(coverImageView)
+
         }
 
 

@@ -5,6 +5,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import de.itshasan.iptv_client.R
 import de.itshasan.iptv_core.model.series.SeriesItem
 
@@ -32,6 +33,7 @@ class SeriesItemViewHolder(
             .with(view.context)
             .load(seriesItem.cover)
             .centerCrop()
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
             .into(cover)
 
         imdbRating.apply {

@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/cover"
+        android:id="@+id/coverImageView"
         android:layout_width="match_parent"
         android:layout_height="222dp"
         android:scaleType="centerCrop"
@@ -20,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/safe_area"
-        app:layout_constraintTop_toBottomOf="@+id/cover">
+        app:layout_constraintTop_toBottomOf="@+id/coverImageView">
 
         <TextView
             android:id="@+id/nameTextView"

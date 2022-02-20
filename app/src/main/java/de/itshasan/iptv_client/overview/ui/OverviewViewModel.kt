@@ -13,7 +13,7 @@ class OverviewViewModel(seriesId: Int) : ViewModel() {
     var plot: MutableLiveData<String> = MutableLiveData<String>()
     var cast: MutableLiveData<String> = MutableLiveData<String>()
     var director: MutableLiveData<String> = MutableLiveData<String>()
-
+    var coverImageUrl: MutableLiveData<String> = MutableLiveData<String>()
 
     init {
         makeAPICall(seriesId)
@@ -28,6 +28,7 @@ class OverviewViewModel(seriesId: Int) : ViewModel() {
                 plot.postValue(backendResponse.info.plot)
                 cast.postValue(backendResponse.info.cast)
                 director.postValue(backendResponse.info.director)
+                coverImageUrl.postValue(backendResponse.info.cover)
             }
 
             override fun onError(status: Int, message: String) {
