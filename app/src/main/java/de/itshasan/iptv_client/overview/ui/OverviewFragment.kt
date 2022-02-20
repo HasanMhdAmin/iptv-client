@@ -47,15 +47,19 @@ class OverviewFragment : Fragment() {
         }
         this.viewModel.releaseDate.observe(requireActivity()) {
             releaseDateTextView.text = it
+            if (it.isEmpty()) releaseDateTextView.visibility = View.GONE
         }
         this.viewModel.plot.observe(requireActivity()) {
             plotTextView.text = it
+            if (it.isEmpty()) plotTextView.visibility = View.GONE
         }
         this.viewModel.cast.observe(requireActivity()) {
             castTextView.text = it
+            if (it.isEmpty()) castTextView.visibility = View.GONE
         }
         this.viewModel.director.observe(requireActivity()) {
             directorTextView.text = it
+            if (it.isEmpty()) directorTextView.visibility = View.GONE
         }
 
 
