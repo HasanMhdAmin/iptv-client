@@ -31,6 +31,18 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="ImageTintColor" parent="MainColorTint" />
+
+    <style name="ButtonPrimary" parent="ButtonPrimaryStyle" />
+
+    <style name="ButtonRegular" parent="Widget.MaterialComponents.Button">
+        <item name="backgroundTint">@color/light_gray</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="iconTint">@color/white</item>
+        <item name="fontFamily">@font/ubuntu_regular</item>
+        <item name="textAllCaps">false</item>
+    </style>
+
     <style name="ProgressPrimaryStyle" parent="Widget.MaterialComponents.LinearProgressIndicator">
         <item name="android:progressTint">@color/golden_yellow</item>
     </style>

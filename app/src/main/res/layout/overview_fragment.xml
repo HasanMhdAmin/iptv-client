@@ -66,9 +66,10 @@
 
         <Button
             android:id="@+id/play"
-            style="@style/ButtonPrimaryStyle"
+            style="@style/ButtonPrimary"
             android:layout_width="match_parent"
             android:text="Play"
+            android:layout_margin="@dimen/safe_area"
             app:icon="@drawable/ic_play"
             app:iconGravity="textStart"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -87,6 +88,7 @@
         android:id="@+id/actions"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         app:layout_constraintTop_toBottomOf="@+id/progressConstraintLayout">
 
         <include
@@ -95,6 +97,27 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/gray"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/actions_bar" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:id="@+id/seasons"
+        style="@style/ButtonRegular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/safe_area"
+        android:text="Season 1"
+        app:icon="@drawable/ic_arrow_drop_down"
+        app:iconGravity="textStart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/actions" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

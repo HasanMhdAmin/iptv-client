@@ -28,4 +28,8 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
+    <style name="MainColorTint">
+        <item name="android:tint">@color/black</item>
+    </style>
+
 </resources>
