@@ -11,7 +11,7 @@ import de.itshasan.iptv_core.model.series.SeriesItem
 
 class SeriesItemViewHolder(
     private val view: View,
-    private val onItemClicked: ((SeriesItem) -> Unit)? = null,
+    private val onItemClicked: ((SeriesItem, ImageView, TextView) -> Unit)? = null,
 ) : androidx.recyclerview.widget.RecyclerView.ViewHolder(view) {
 
     private val item by lazy { view.findViewById<CardView>(R.id.item) }
@@ -26,7 +26,7 @@ class SeriesItemViewHolder(
         }
 
         item.setOnClickListener {
-            onItemClicked?.let { it1 -> it1(seriesItem) }
+            onItemClicked?.let { it1 -> it1(seriesItem, cover, itemName) }
         }
 
         Glide

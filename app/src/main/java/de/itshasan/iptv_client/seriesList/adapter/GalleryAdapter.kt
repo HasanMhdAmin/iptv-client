@@ -4,6 +4,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import de.itshasan.iptv_client.R
 import de.itshasan.iptv_core.model.series.SeriesItem
@@ -13,7 +15,7 @@ class GalleryAdapter : RecyclerView.Adapter<SeriesItemViewHolder>(), Filterable 
     private var categories: MutableList<SeriesItem> = mutableListOf()
     private var categoriesFiltered: MutableList<SeriesItem> = mutableListOf()
 
-    var onCategoryClicked: ((SeriesItem) -> Unit)? = null
+    var onCategoryClicked: ((SeriesItem, ImageView, TextView) -> Unit)? = null
 
     fun setDataList(data: ArrayList<SeriesItem>) {
         this.categories = data

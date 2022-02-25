@@ -42,6 +42,9 @@ class OverviewFragment : Fragment() {
         val coverImageView = view.findViewById<ImageView>(R.id.coverImageView)
 
         val seriesId = activity?.intent?.extras?.getInt(Constant.SERIES_ID, 0)
+
+        val imageUrl = activity?.intent?.extras?.getString("IMAGE_URL")
+        val title = activity?.intent?.extras?.getString("SERIES_TITLE")
         Log.d(TAG, "onViewCreated: seriesId: $seriesId")
         val viewModel: OverviewViewModel by viewModels { OverviewViewModelFactory(seriesId!!) }
         this.viewModel = viewModel
@@ -65,15 +68,24 @@ class OverviewFragment : Fragment() {
             directorTextView.text = it
             if (it.isEmpty()) directorTextView.visibility = View.GONE
         }
-        this.viewModel.coverImageUrl.observe(requireActivity()) {
-            Glide
-                .with(view.context)
-                .load(it)
-                .centerCrop()
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(coverImageView)
+//        this.viewModel.coverImageUrl.observe(requireActivity()) {
+//            Glide
+//                .with(view.context)
+//                .load(it)
+//                .centerCrop()
+//                .diskCacheStrategy(DiskCacheStrategy.ALL)
+//                .into(coverImageView)
+//
+//        }
 
-        }
+        nameTextView.text = title
+
+        Glide
+            .with(view.context)
+            .load(imageUrl)
+            .centerCrop()
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .into(coverImageView)
 
 
     }

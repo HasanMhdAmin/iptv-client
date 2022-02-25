@@ -6,7 +6,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.SearchView
+import android.widget.TextView
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.util.Pair
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
@@ -14,6 +18,7 @@ import de.itshasan.iptv_client.R
 import de.itshasan.iptv_client.overview.OverviewActivity
 import de.itshasan.iptv_core.model.Constant
 import de.itshasan.iptv_core.model.Constant.SERIES_ID
+import de.itshasan.iptv_core.model.series.SeriesItem
 
 private val TAG = GalleryFragment::class.java.simpleName
 
@@ -45,14 +50,27 @@ class GalleryFragment : Fragment(), SearchView.OnQueryTextListener {
         categoriesRecyclerView.apply {
             layoutManager = androidx.recyclerview.widget.GridLayoutManager(context, 3)
             adapter = viewModel.getAdapter().apply {
-                onCategoryClicked = {
-                    Log.d(TAG, "onViewCreated: seriesId: ${it.seriesId}")
+
+                onCategoryClicked = { seriesItem: SeriesItem, imageView: ImageView, textview: TextView ->
+                    Log.d(TAG, "onViewCreated: seriesId: ${seriesItem.seriesId}")
 
                     val intent =
                         Intent(context, OverviewActivity::class.java).apply {
-                            putExtra(SERIES_ID, it.seriesId)
+                            putExtra(SERIES_ID, seriesItem.seriesId)
+                            putExtra("IMAGE_URL", seriesItem.cover)
+                            putExtra("SERIES_TITLE", seriesItem.name)
                         }
-                    startActivity(intent)
+
+                    val pair1 = Pair.create<View, String>(imageView, "cover_transition")
+                    val pair2 = Pair.create<View, String>(textview, "title_transition")
+                    val options = ActivityOptionsCompat.makeSceneTransitionAnimation(requireActivity(), pair1, pair2)
+
+//                    val activityOptionsCompat: ActivityOptionsCompat =
+//                        ActivityOptionsCompat.makeSceneTransitionAnimation(requireActivity(),
+//                            imageView,
+//                            "cover_transition")
+
+                    startActivity(intent, options.toBundle())
                 }
             }
         }
