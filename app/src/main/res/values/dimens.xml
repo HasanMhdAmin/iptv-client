@@ -4,5 +4,6 @@
     <dimen name="regular_button_height">60dp</dimen>
     <dimen name="regular_button_text_size">16sp</dimen>
     <dimen name="safe_area">7dp</dimen>
+    <dimen name="dialog_floating_button">20dp</dimen>
 
 </resources>

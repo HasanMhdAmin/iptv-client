@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
@@ -12,6 +13,7 @@ import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import de.itshasan.iptv_client.R
+import de.itshasan.iptv_client.overview.dialog.SeasonsDialog
 import de.itshasan.iptv_core.model.Constant
 
 private val TAG = OverviewFragment::class.java.simpleName
@@ -40,6 +42,7 @@ class OverviewFragment : Fragment() {
         val castTextView = view.findViewById<TextView>(R.id.castTextView)
         val directorTextView = view.findViewById<TextView>(R.id.directorTextView)
         val coverImageView = view.findViewById<ImageView>(R.id.coverImageView)
+        val seasons = view.findViewById<Button>(R.id.seasons)
 
         val seriesId = activity?.intent?.extras?.getInt(Constant.SERIES_ID, 0)
 
@@ -67,6 +70,17 @@ class OverviewFragment : Fragment() {
         this.viewModel.director.observe(requireActivity()) {
             directorTextView.text = it
             if (it.isEmpty()) directorTextView.visibility = View.GONE
+        }
+        this.viewModel.seasons.observe(requireActivity()) { seasonsList ->
+            Log.d(TAG, "onViewCreated: seasons: ${seasonsList.size}")
+            seasons.setOnClickListener {
+                if (seasonsList != null) {
+//                    var list = seasonsList + seasonsList + seasonsList
+                    val seasonsDialog = SeasonsDialog.newInstance()
+                    seasonsDialog.seasons = seasonsList
+                    seasonsDialog.show(parentFragmentManager, TAG)
+                }
+            }
         }
 //        this.viewModel.coverImageUrl.observe(requireActivity()) {
 //            Glide

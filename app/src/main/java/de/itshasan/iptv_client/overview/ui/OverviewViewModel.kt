@@ -1,10 +1,14 @@
 package de.itshasan.iptv_client.overview.ui
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import de.itshasan.iptv_core.model.series.info.SeriesInfo
+import de.itshasan.iptv_core.model.series.info.season.Season
 import de.itshasan.iptv_repository.network.IptvRepository
 import de.itshasan.iptv_repository.network.callback.SeriesInfoCallback
+
+private val TAG = OverviewViewModel::class.java.simpleName
 
 class OverviewViewModel(seriesId: Int) : ViewModel() {
 
@@ -14,9 +18,10 @@ class OverviewViewModel(seriesId: Int) : ViewModel() {
     var cast: MutableLiveData<String> = MutableLiveData<String>()
     var director: MutableLiveData<String> = MutableLiveData<String>()
     var coverImageUrl: MutableLiveData<String> = MutableLiveData<String>()
+    var seasons = MutableLiveData<List<Season>>()
 
     init {
-//        makeAPICall(seriesId)
+        makeAPICall(seriesId)
     }
 
     private fun makeAPICall(seriesId: Int) {
@@ -29,6 +34,8 @@ class OverviewViewModel(seriesId: Int) : ViewModel() {
                 cast.postValue(backendResponse.info.cast)
                 director.postValue(backendResponse.info.director)
                 coverImageUrl.postValue(backendResponse.info.cover)
+                seasons.postValue(backendResponse.seasons)
+                Log.d(TAG, "onSuccess: ")
             }
 
             override fun onError(status: Int, message: String) {

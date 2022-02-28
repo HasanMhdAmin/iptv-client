@@ -129,24 +129,12 @@ object IptvRepository : IptvRepositoryContract {
 
                 val listType = object : TypeToken<List<Episode>>() {}.type
                 seasonKeys.map {
-                    Log.d(TAG, "onResponse: key: $it")
-//                    val listOfSeasonEpisodes : MutableList<Episode> = mutableListOf()
                     val listOfSeasonEpisodes = gson.fromJson<List<Episode>>(episodesJsonObjectWrapper.getString(it), listType)
                     listOfSeason.add(listOfSeasonEpisodes)
                 }
 
                 val seriesInfo = SeriesInfo(seasonInfo, info, listOfSeason)
 
-//                halfParsedResponse.episodesMap.entries.forEachIndexed { index, entry ->
-//
-//                    val jsonListOfEpisode = entry.value
-//                    Log.d(TAG, "onResponse: jsonListOfEpisode: $jsonListOfEpisode")
-//
-////                    val test = jsonListOfEpisode.getJSONObject(index).get("title")
-////                    Log.d(TAG, "onResponse: title: $test")
-//
-////                    halfParsedResponse.episodes.add(episode)
-//                }
                 callback.onSuccess(seriesInfo)
             }
 
