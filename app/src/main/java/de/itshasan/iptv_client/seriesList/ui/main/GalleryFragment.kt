@@ -65,11 +65,6 @@ class GalleryFragment : Fragment(), SearchView.OnQueryTextListener {
                     val pair2 = Pair.create<View, String>(textview, "title_transition")
                     val options = ActivityOptionsCompat.makeSceneTransitionAnimation(requireActivity(), pair1, pair2)
 
-//                    val activityOptionsCompat: ActivityOptionsCompat =
-//                        ActivityOptionsCompat.makeSceneTransitionAnimation(requireActivity(),
-//                            imageView,
-//                            "cover_transition")
-
                     startActivity(intent, options.toBundle())
                 }
             }

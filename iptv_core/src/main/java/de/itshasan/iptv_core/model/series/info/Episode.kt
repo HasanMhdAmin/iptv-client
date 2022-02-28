@@ -4,7 +4,7 @@ package de.itshasan.iptv_core.model.series.info
 import com.google.gson.annotations.SerializedName
 import de.itshasan.iptv_core.model.series.info.episode.episodInfo.EpisodInfo
 
-data class X1(
+data class Episode(
     @SerializedName("id")
     val id: String,
     @SerializedName("episode_num")
@@ -13,8 +13,8 @@ data class X1(
     val title: String,
     @SerializedName("container_extension")
     val containerExtension: String,
-    @SerializedName("info")
-    val info: EpisodInfo,
+//    @SerializedName("info")
+//    val info: EpisodInfo,
     @SerializedName("custom_sid")
     val customSid: String,
     @SerializedName("added")

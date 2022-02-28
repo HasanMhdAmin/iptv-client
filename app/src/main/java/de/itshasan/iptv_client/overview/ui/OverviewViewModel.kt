@@ -16,7 +16,7 @@ class OverviewViewModel(seriesId: Int) : ViewModel() {
     var coverImageUrl: MutableLiveData<String> = MutableLiveData<String>()
 
     init {
-        makeAPICall(seriesId)
+//        makeAPICall(seriesId)
     }
 
     private fun makeAPICall(seriesId: Int) {

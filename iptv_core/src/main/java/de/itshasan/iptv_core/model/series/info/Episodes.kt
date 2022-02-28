@@ -1,4 +1,4 @@
 package de.itshasan.iptv_core.model.series.info
 
 
-class Episodes : ArrayList<ArrayList<X1>>()
+class Episodes : ArrayList<ArrayList<Episode>>()
