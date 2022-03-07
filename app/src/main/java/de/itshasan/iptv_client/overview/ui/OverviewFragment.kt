@@ -10,9 +10,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import de.itshasan.iptv_client.R
+import de.itshasan.iptv_client.overview.adapter.episodes.EpisodeAdapter
 import de.itshasan.iptv_client.overview.dialog.SeasonsDialog
 import de.itshasan.iptv_core.model.Constant
 
@@ -43,6 +45,7 @@ class OverviewFragment : Fragment() {
         val directorTextView = view.findViewById<TextView>(R.id.directorTextView)
         val coverImageView = view.findViewById<ImageView>(R.id.coverImageView)
         val seasons = view.findViewById<Button>(R.id.seasons)
+        val episodesRecyclerview = view.findViewById<RecyclerView>(R.id.episodesRecyclerview)
 
         val seriesId = activity?.intent?.extras?.getInt(Constant.SERIES_ID, 0)
 
@@ -79,6 +82,18 @@ class OverviewFragment : Fragment() {
                     val seasonsDialog = SeasonsDialog.newInstance()
                     seasonsDialog.seasons = seasonsList
                     seasonsDialog.show(parentFragmentManager, TAG)
+                }
+            }
+        }
+
+        this.viewModel.episodesToShow.observe(requireActivity()) { episodesList ->
+            val episodeAdapter = EpisodeAdapter(episodes = episodesList)
+            episodesRecyclerview.apply {
+                layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
+                adapter = episodeAdapter.apply {
+                    onEpisodeClicked = {
+
+                    }
                 }
             }
         }

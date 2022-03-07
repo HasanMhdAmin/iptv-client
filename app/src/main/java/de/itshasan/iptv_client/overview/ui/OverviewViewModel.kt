@@ -3,6 +3,7 @@ package de.itshasan.iptv_client.overview.ui
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import de.itshasan.iptv_core.model.series.info.Episode
 import de.itshasan.iptv_core.model.series.info.SeriesInfo
 import de.itshasan.iptv_core.model.series.info.season.Season
 import de.itshasan.iptv_repository.network.IptvRepository
@@ -19,6 +20,7 @@ class OverviewViewModel(seriesId: Int) : ViewModel() {
     var director: MutableLiveData<String> = MutableLiveData<String>()
     var coverImageUrl: MutableLiveData<String> = MutableLiveData<String>()
     var seasons = MutableLiveData<List<Season>>()
+    var episodesToShow = MutableLiveData<List<Episode>>()
 
     init {
         makeAPICall(seriesId)
@@ -35,6 +37,7 @@ class OverviewViewModel(seriesId: Int) : ViewModel() {
                 director.postValue(backendResponse.info.director)
                 coverImageUrl.postValue(backendResponse.info.cover)
                 seasons.postValue(backendResponse.seasons)
+                episodesToShow.postValue(backendResponse.episodes[0])
                 Log.d(TAG, "onSuccess: ")
             }
 

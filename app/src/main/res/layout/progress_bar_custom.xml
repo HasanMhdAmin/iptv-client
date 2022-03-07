@@ -3,7 +3,7 @@
     android:id="@+id/progressBar"
     style="?android:attr/progressBarStyleHorizontal"
     android:layout_width="match_parent"
-    android:layout_height="2dp"
+    android:layout_height="@dimen/progress_bar_height"
     android:max="100"
     android:progress="70"
     android:progressTint="@color/golden_yellow" />

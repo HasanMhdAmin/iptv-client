@@ -13,8 +13,8 @@ data class Episode(
     val title: String,
     @SerializedName("container_extension")
     val containerExtension: String,
-//    @SerializedName("info")
-//    val info: EpisodInfo,
+    @SerializedName("info")
+    val info: EpisodInfo,
     @SerializedName("custom_sid")
     val customSid: String,
     @SerializedName("added")

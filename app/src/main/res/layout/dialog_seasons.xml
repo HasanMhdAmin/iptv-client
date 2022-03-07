@@ -6,7 +6,6 @@
     android:layout_margin="@dimen/safe_area"
     android:background="@android:color/transparent">
 
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/seasonsRecyclerview"
         android:layout_width="match_parent"

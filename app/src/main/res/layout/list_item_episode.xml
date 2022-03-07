@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/safe_area">
+
+    <ImageView
+        android:id="@+id/thumbImageView"
+        android:layout_width="160dp"
+        android:layout_height="90dp"
+        android:src="@color/gray"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/ic_play_circle"
+        app:layout_constraintBottom_toBottomOf="@+id/thumbImageView"
+        app:layout_constraintEnd_toEndOf="@+id/thumbImageView"
+        app:layout_constraintStart_toStartOf="@+id/thumbImageView"
+        app:layout_constraintTop_toTopOf="@+id/thumbImageView" />
+
+    <include
+        android:id="@+id/progress"
+        layout="@layout/progress_bar_custom"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/progress_bar_height"
+        app:layout_constraintBottom_toBottomOf="@+id/thumbImageView"
+        app:layout_constraintEnd_toEndOf="@+id/thumbImageView"
+        app:layout_constraintStart_toStartOf="@+id/thumbImageView" />
+
+    <TextView
+        android:id="@+id/titleTextView"
+        style="@style/TextViewBoldColor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/safe_area"
+        android:text="This is title placeholder"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/thumbImageView"
+        app:layout_constraintTop_toTopOf="@+id/thumbImageView" />
+
+    <TextView
+        android:id="@+id/durationTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/safe_area"
+        android:text="22 min"
+        app:layout_constraintStart_toEndOf="@+id/thumbImageView"
+        app:layout_constraintTop_toBottomOf="@+id/titleTextView" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
