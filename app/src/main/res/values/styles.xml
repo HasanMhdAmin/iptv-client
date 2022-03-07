@@ -2,32 +2,32 @@
 <resources>
 
     <style name="TextViewLight">
-        <item name="android:fontFamily">@font/ubuntu_light</item>
-        <item name="fontFamily">@font/ubuntu_light</item>
+        <item name="android:fontFamily">@font/almarai_light</item>
+        <item name="fontFamily">@font/almarai_light</item>
         <item name="android:textStyle">normal</item>
     </style>
 
     <style name="TextViewRegular">
-        <item name="android:fontFamily">@font/ubuntu_regular</item>
-        <item name="fontFamily">@font/ubuntu_regular</item>
+        <item name="android:fontFamily">@font/almarai_regular</item>
+        <item name="fontFamily">@font/almarai_regular</item>
         <item name="android:textStyle">normal</item>
     </style>
 
     <style name="TextViewRegularColor" parent="TextViewColor">
-        <item name="android:fontFamily">@font/ubuntu_regular</item>
-        <item name="fontFamily">@font/ubuntu_regular</item>
+        <item name="android:fontFamily">@font/almarai_regular</item>
+        <item name="fontFamily">@font/almarai_regular</item>
         <item name="android:textStyle">normal</item>
     </style>
 
     <style name="TextViewBold">
-        <item name="android:fontFamily">@font/ubuntu_bold</item>
-        <item name="fontFamily">@font/ubuntu_bold</item>
+        <item name="android:fontFamily">@font/almarai_bold</item>
+        <item name="fontFamily">@font/almarai_bold</item>
         <item name="android:textStyle">bold</item>
     </style>
 
     <style name="TextViewBoldColor" parent="TextViewColor">
-        <item name="android:fontFamily">@font/ubuntu_bold</item>
-        <item name="fontFamily">@font/ubuntu_bold</item>
+        <item name="android:fontFamily">@font/almarai_bold</item>
+        <item name="fontFamily">@font/almarai_bold</item>
         <item name="android:textStyle">bold</item>
     </style>
 
@@ -39,7 +39,7 @@
         <item name="backgroundTint">@color/light_gray</item>
         <item name="android:textColor">@color/white</item>
         <item name="iconTint">@color/white</item>
-        <item name="fontFamily">@font/ubuntu_regular</item>
+        <item name="fontFamily">@font/almarai_regular</item>
         <item name="textAllCaps">false</item>
     </style>
 
