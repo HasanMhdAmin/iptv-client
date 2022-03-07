@@ -21,7 +21,7 @@
         <item name="backgroundTint">@color/white</item>
         <item name="android:textColor">@color/black</item>
         <item name="iconTint">@color/black</item>
-        <item name="fontFamily">@font/ubuntu_bold</item>
+        <item name="fontFamily">@font/almarai_bold</item>
         <item name="textAllCaps">false</item>
         <item name="android:textSize">18sp</item>
     </style>
