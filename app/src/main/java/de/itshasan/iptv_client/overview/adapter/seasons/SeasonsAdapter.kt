@@ -8,6 +8,7 @@ import de.itshasan.iptv_core.model.series.info.season.Season
 
 class SeasonsAdapter(
     var seasons: List<Season>,
+    var selectedSeason: Season
 ) :
     RecyclerView.Adapter<SeasonsViewHolder>() {
 
@@ -21,7 +22,7 @@ class SeasonsAdapter(
 
     override fun onBindViewHolder(holder: SeasonsViewHolder, position: Int) {
         val season = seasons[position]
-        holder.onBind(season, position)
+        holder.onBind(season, position, selectedSeason == season)
     }
 
     override fun getItemCount() = seasons.size

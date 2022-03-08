@@ -1,6 +1,7 @@
 package de.itshasan.iptv_client.overview.dialog
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,8 @@ import de.itshasan.iptv_client.R
 import de.itshasan.iptv_client.overview.adapter.seasons.SeasonsAdapter
 import de.itshasan.iptv_core.model.series.info.season.Season
 
+private val TAG = SeasonsDialog::class.java.simpleName
+
 class SeasonsDialog : DialogFragment() {
 
     companion object {
@@ -19,6 +22,8 @@ class SeasonsDialog : DialogFragment() {
     }
 
     lateinit var seasons: List<Season>
+    lateinit var selectedSeason: Season
+    lateinit var onSeasonSelected: ((Season) -> Unit)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,13 +59,14 @@ class SeasonsDialog : DialogFragment() {
         val seasonsRecyclerview = view.findViewById<RecyclerView>(R.id.seasonsRecyclerview)
         val closeActionButton = view.findViewById<FloatingActionButton>(R.id.closeActionButton)
 
-        val categoryAdapter = SeasonsAdapter(seasons = seasons)
+        val seasonAdapter = SeasonsAdapter(seasons = seasons, selectedSeason = selectedSeason)
 
         seasonsRecyclerview.apply {
             layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
-            adapter = categoryAdapter.apply {
+            adapter = seasonAdapter.apply {
                 onSeasonClicked = {
-
+                    onSeasonSelected(it)
+                    dismiss()
                 }
             }
         }
@@ -69,6 +75,4 @@ class SeasonsDialog : DialogFragment() {
             dismiss()
         }
     }
-
-
 }

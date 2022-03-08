@@ -1,6 +1,5 @@
 package de.itshasan.iptv_client.overview.ui
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import de.itshasan.iptv_core.model.series.info.Episode
@@ -20,16 +19,25 @@ class OverviewViewModel(seriesId: Int) : ViewModel() {
     var director: MutableLiveData<String> = MutableLiveData<String>()
     var coverImageUrl: MutableLiveData<String> = MutableLiveData<String>()
     var seasons = MutableLiveData<List<Season>>()
+    var allEpisodes = MutableLiveData<List<List<Episode>>>()
     var episodesToShow = MutableLiveData<List<Episode>>()
+    var selectedSeason = MutableLiveData<Season>()
 
     init {
         makeAPICall(seriesId)
+    }
+
+    fun setSelectedSeason(season: Season) {
+        selectedSeason.postValue(season)
+        val index: Int = seasons.value!!.indexOf(season)
+        episodesToShow.postValue(allEpisodes.value!![index])
     }
 
     private fun makeAPICall(seriesId: Int) {
 
         IptvRepository.getSeriesInfoBySeriesId(seriesId.toString(), object : SeriesInfoCallback() {
             override fun onSuccess(backendResponse: SeriesInfo) {
+                // TODO is postValue assign the value also?
                 contentName.postValue(backendResponse.info.name)
                 releaseDate.postValue(backendResponse.info.releaseDate)
                 plot.postValue(backendResponse.info.plot)
@@ -37,8 +45,11 @@ class OverviewViewModel(seriesId: Int) : ViewModel() {
                 director.postValue(backendResponse.info.director)
                 coverImageUrl.postValue(backendResponse.info.cover)
                 seasons.postValue(backendResponse.seasons)
+                seasons.value = backendResponse.seasons
+                allEpisodes.postValue(backendResponse.episodes)
+                allEpisodes.value = backendResponse.episodes
                 episodesToShow.postValue(backendResponse.episodes[0])
-                Log.d(TAG, "onSuccess: ")
+                setSelectedSeason(backendResponse.seasons[0])
             }
 
             override fun onError(status: Int, message: String) {

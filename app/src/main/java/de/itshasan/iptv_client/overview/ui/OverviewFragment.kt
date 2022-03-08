@@ -78,12 +78,19 @@ class OverviewFragment : Fragment() {
             Log.d(TAG, "onViewCreated: seasons: ${seasonsList.size}")
             seasons.setOnClickListener {
                 if (seasonsList != null) {
-//                    var list = seasonsList + seasonsList + seasonsList
                     val seasonsDialog = SeasonsDialog.newInstance()
                     seasonsDialog.seasons = seasonsList
+                    seasonsDialog.selectedSeason = viewModel.selectedSeason.value!!
                     seasonsDialog.show(parentFragmentManager, TAG)
+                    seasonsDialog.onSeasonSelected = {
+                        viewModel.setSelectedSeason(it)
+                    }
                 }
             }
+        }
+
+        this.viewModel.selectedSeason.observe(requireActivity()) {
+            seasons.text = it.name
         }
 
         this.viewModel.episodesToShow.observe(requireActivity()) { episodesList ->
