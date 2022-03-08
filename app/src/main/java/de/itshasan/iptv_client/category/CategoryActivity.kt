@@ -12,8 +12,12 @@ import de.itshasan.iptv_core.model.Constant.ALL_SERIES
 import de.itshasan.iptv_core.model.Constant.CATEGORY_ID
 import de.itshasan.iptv_core.model.series.category.SeriesCategories
 import de.itshasan.iptv_core.model.series.category.SeriesCategoriesItem
+import de.itshasan.iptv_database.database.IptvDatabase
 import de.itshasan.iptv_repository.network.IptvRepository
 import de.itshasan.iptv_repository.network.callback.SeriesCategoriesCallback
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
 private val TAG = CategoryActivity::class.java.simpleName
@@ -27,38 +31,64 @@ class CategoryActivity : AppCompatActivity() {
         map[key] = map[key]!! + 1
     }
 
+    private val database by lazy { IptvDatabase.getInstance(this@CategoryActivity) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_category)
 
+
+        ////
+        GlobalScope.launch(Dispatchers.IO) {
+            val categories = database.seriesCategoryDao().getAll()
+            Log.d(TAG, "onCreate: categories: ${categories.size}")
+            if (categories.isEmpty()) {
+                loadSeriesCategories()
+            } else {
+                val seriesCategories = SeriesCategories()
+                seriesCategories.addAll(categories)
+                bindData(seriesCategories)
+            }
+
+        }
+    }
+
+    private fun bindData(seriesCategories: SeriesCategories) {
+        val categoryAdapter = CategoryAdapter()
+
+        categoryAdapter.setDataList(seriesCategories)
+
+        categoriesRecyclerView.apply {
+            layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
+            adapter = categoryAdapter.apply {
+                onCategoryClicked = {
+                    val intent =
+                        Intent(this@CategoryActivity, GalleryActivity::class.java).apply {
+                            putExtra(CATEGORY_ID, it.categoryId)
+                        }
+                    startActivity(intent)
+                }
+            }
+        }
+    }
+
+    private fun loadSeriesCategories() {
         IptvRepository.getSeriesCategories(object : SeriesCategoriesCallback() {
             override fun onSuccess(backendResponse: SeriesCategories) {
                 Log.d(TAG,
                     "onSuccess: getSeriesCategories seriesCategoriesCount: ${backendResponse.size}")
-                val categoryAdapter = CategoryAdapter()
-
                 // ALL_SERIES is id to get all the series.
                 val allSeries =
                     SeriesCategoriesItem(categoryId = ALL_SERIES,
                         categoryName = "All",
                         parentId = 0)
                 backendResponse.add(0, allSeries)
-
-                categoryAdapter.setDataList(backendResponse)
-
-                categoriesRecyclerView.apply {
-                    layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
-                    adapter = categoryAdapter.apply {
-                        onCategoryClicked = {
-                            val intent =
-                                Intent(this@CategoryActivity, GalleryActivity::class.java).apply {
-                                    putExtra(CATEGORY_ID, it.categoryId)
-                                }
-                            startActivity(intent)
-
-                        }
+                GlobalScope.launch(Dispatchers.IO) {
+                    backendResponse.forEach {
+                        database.seriesCategoryDao().insert(it)
                     }
                 }
+                bindData(backendResponse)
             }
 
             override fun onError(status: Int, message: String) {
