@@ -24,6 +24,7 @@
             android:exported="false" />
         <activity
             android:name=".SimplePlayerActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".player.PlayerActivity"

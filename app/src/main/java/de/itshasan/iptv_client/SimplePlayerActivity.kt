@@ -10,11 +10,12 @@ import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.util.Util
+import de.itshasan.iptv_core.model.Constant
 
 class SimplePlayerActivity : AppCompatActivity() {
 
     private var player: ExoPlayer? = null
-    val url =
+    var url =
         "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
     private val videoView by lazy {
         findViewById<PlayerView>(R.id.videoView)
@@ -32,6 +33,7 @@ class SimplePlayerActivity : AppCompatActivity() {
         super.onResume()
         hideSystemUi()
         if ((Util.SDK_INT < 24 || player == null)) {
+            url = intent?.extras?.getString(Constant.CONTENT_URL).toString()
             initializePlayer()
         }
     }

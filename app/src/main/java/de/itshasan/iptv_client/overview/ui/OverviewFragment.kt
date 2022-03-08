@@ -1,5 +1,6 @@
 package de.itshasan.iptv_client.overview.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,8 +15,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import de.itshasan.iptv_client.R
+import de.itshasan.iptv_client.SimplePlayerActivity
 import de.itshasan.iptv_client.overview.adapter.episodes.EpisodeAdapter
 import de.itshasan.iptv_client.overview.dialog.SeasonsDialog
+import de.itshasan.iptv_client.seriesList.GalleryActivity
 import de.itshasan.iptv_core.model.Constant
 
 private val TAG = OverviewFragment::class.java.simpleName
@@ -51,7 +54,7 @@ class OverviewFragment : Fragment() {
 
         val imageUrl = activity?.intent?.extras?.getString("IMAGE_URL")
         val title = activity?.intent?.extras?.getString("SERIES_TITLE")
-        Log.d(TAG, "onViewCreated: seriesId: $seriesId")
+
         val viewModel: OverviewViewModel by viewModels { OverviewViewModelFactory(seriesId!!) }
         this.viewModel = viewModel
 
@@ -75,7 +78,6 @@ class OverviewFragment : Fragment() {
             if (it.isEmpty()) directorTextView.visibility = View.GONE
         }
         this.viewModel.seasons.observe(requireActivity()) { seasonsList ->
-            Log.d(TAG, "onViewCreated: seasons: ${seasonsList.size}")
             seasons.setOnClickListener {
                 if (seasonsList != null) {
                     val seasonsDialog = SeasonsDialog.newInstance()
@@ -100,19 +102,16 @@ class OverviewFragment : Fragment() {
                 adapter = episodeAdapter.apply {
                     onEpisodeClicked = {
 
+                        val episodeUrl = "http://teslaiptv.com:8080/series/hasanxmhdxamin/569247364/${it.id}.${it.containerExtension}"
+                        val intent =
+                            Intent(context, SimplePlayerActivity::class.java).apply {
+                                putExtra(Constant.CONTENT_URL, episodeUrl)
+                            }
+                        startActivity(intent)
                     }
                 }
             }
         }
-//        this.viewModel.coverImageUrl.observe(requireActivity()) {
-//            Glide
-//                .with(view.context)
-//                .load(it)
-//                .centerCrop()
-//                .diskCacheStrategy(DiskCacheStrategy.ALL)
-//                .into(coverImageView)
-//
-//        }
 
         nameTextView.text = title
 
