@@ -45,7 +45,7 @@ class GalleryFragment : Fragment(), SearchView.OnQueryTextListener {
         searchView.setOnQueryTextListener(this)
 
         val categoryId = activity?.intent?.extras?.getString(Constant.CATEGORY_ID)
-        val viewModel: GalleryViewModel by viewModels { GalleryViewModelFactory(categoryId!!) }
+        val viewModel: GalleryViewModel by viewModels { GalleryViewModelFactory(categoryId!!, requireActivity().application) }
         this.viewModel = viewModel
         categoriesRecyclerView.apply {
             layoutManager = androidx.recyclerview.widget.GridLayoutManager(context, 3)

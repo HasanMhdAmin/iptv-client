@@ -1,19 +1,44 @@
 package de.itshasan.iptv_client.seriesList.ui.main
 
+import android.app.Application
+import android.util.Log
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import de.itshasan.iptv_client.seriesList.adapter.GalleryAdapter
+import de.itshasan.iptv_core.model.Constant
 import de.itshasan.iptv_core.model.series.SeriesList
+import de.itshasan.iptv_database.database.IptvDatabase
 import de.itshasan.iptv_repository.network.IptvRepository
 import de.itshasan.iptv_repository.network.callback.SeriesCallback
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-class GalleryViewModel(categoryId: String) : ViewModel() {
+private val TAG = GalleryViewModel::class.java.simpleName
+
+class GalleryViewModel(categoryId: String, application: Application) :
+    AndroidViewModel(application) {
 
     var recyclerListData: MutableLiveData<SeriesList> = MutableLiveData<SeriesList>()
     var musicRecyclerViewAdapter: GalleryAdapter = GalleryAdapter()
+    private val database by lazy { IptvDatabase.getInstance(application) }
 
     init {
-        makeAPICall(categoryId)
+        viewModelScope.launch(Dispatchers.IO) {
+
+            val series = if (categoryId == Constant.ALL_SERIES)
+                database.seriesItemDao().getAll()
+            else
+                database.seriesItemDao().getSeriesByCategoryId(categoryId)
+            if (series.isEmpty()) {
+                makeAPICall(categoryId)
+            } else {
+                val seriesList = SeriesList()
+                seriesList.addAll(series)
+                recyclerListData.postValue(seriesList)
+            }
+
+        }
     }
 
     fun getAdapter(): GalleryAdapter {
@@ -34,6 +59,11 @@ class GalleryViewModel(categoryId: String) : ViewModel() {
         IptvRepository.getSeriesByCategoryId(categoryId, object : SeriesCallback() {
             override fun onSuccess(backendResponse: SeriesList) {
                 recyclerListData.postValue(backendResponse)
+
+                // Cache to database
+                viewModelScope.launch(Dispatchers.IO) {
+                    database.seriesItemDao().insertAll(backendResponse)
+                }
             }
 
             override fun onError(status: Int, message: String) {

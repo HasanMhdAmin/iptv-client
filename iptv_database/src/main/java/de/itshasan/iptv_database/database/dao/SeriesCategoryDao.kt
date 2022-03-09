@@ -18,7 +18,7 @@ interface SeriesCategoryDao {
     fun getAll(): List<SeriesCategoriesItem>
 
     @Delete
-    fun delete(cmsCache: SeriesCategoriesItem)
+    fun delete(seriesCategoriesItem: SeriesCategoriesItem)
 
     @Query("DELETE FROM SeriesCategoriesItem")
     fun deleteAll()

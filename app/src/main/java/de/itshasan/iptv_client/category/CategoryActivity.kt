@@ -41,7 +41,6 @@ class CategoryActivity : AppCompatActivity() {
         ////
         GlobalScope.launch(Dispatchers.IO) {
             val categories = database.seriesCategoryDao().getAll()
-            Log.d(TAG, "onCreate: categories: ${categories.size}")
             if (categories.isEmpty()) {
                 loadSeriesCategories()
             } else {
