@@ -1,26 +1,39 @@
 package de.itshasan.iptv_client
 
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.util.Util
+import com.google.gson.Gson
 import de.itshasan.iptv_core.model.Constant
+import de.itshasan.iptv_core.model.WatchHistory
+import de.itshasan.iptv_core.model.series.info.Episode
+import de.itshasan.iptv_database.database.IptvDatabase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+
+private val TAG = SimplePlayerActivity::class.java.simpleName
 
 class SimplePlayerActivity : AppCompatActivity() {
 
     private var player: ExoPlayer? = null
     var url =
         "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
+    private lateinit var episode: Episode
+    private lateinit var seriesId: String
     private val videoView by lazy {
         findViewById<PlayerView>(R.id.videoView)
     }
+    private val database by lazy { IptvDatabase.getInstance(application) }
+
     private var playWhenReady = true
     private var currentWindow = 0
     private var playbackPosition = 0L
@@ -35,7 +48,15 @@ class SimplePlayerActivity : AppCompatActivity() {
         super.onResume()
         hideSystemUi()
         if ((Util.SDK_INT < 24 || player == null)) {
-            url = intent?.extras?.getString(Constant.CONTENT_URL).toString()
+            val gson = Gson()
+            val serializedEpisode = intent?.extras?.getString(Constant.CONTENT).toString()
+            episode = gson.fromJson(serializedEpisode, Episode::class.java)
+            seriesId = intent?.extras?.getString(Constant.SERIES_ID).toString()
+            Log.d(TAG, "onResume: seriesId test: $seriesId")
+            val episodeUrl =
+                "http://teslaiptv.com:8080/series/hasanxmhdxamin/569247364/${episode.id}.${episode.containerExtension}"
+            url = episodeUrl
+
             initializePlayer()
         }
     }
@@ -81,6 +102,33 @@ class SimplePlayerActivity : AppCompatActivity() {
             playWhenReady = this.playWhenReady
             release()
         }
+
+        val progress = 100 * playbackPosition / player!!.contentDuration
+        val totalTime = player?.contentDuration
+
+        Log.d(TAG, "releasePlayer: seriesId : $seriesId")
+
+        if (playbackPosition > 0) {
+
+            GlobalScope.launch(Dispatchers.IO) {
+                database.watchHistoryDao().insert(
+                    WatchHistory(
+                        0,
+                        episode.id,
+                        parentId = seriesId,
+                        name = episode.title,
+                        "s",
+                        System.currentTimeMillis(),
+                        currentTime = playbackPosition,
+                        totalTime = totalTime!!
+                    ))
+            }
+        }
+
+        Log.d(TAG, "releasePlayer: playbackPosition: $playbackPosition")
+        Log.d(TAG, "releasePlayer: contentDuration: ${player?.contentDuration}")
+        Log.d(TAG, "releasePlayer: currentWindow: $currentWindow")
+        Log.d(TAG, "releasePlayer: playWhenReady: $playWhenReady")
 
         player = null
     }

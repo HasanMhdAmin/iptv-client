@@ -14,12 +14,13 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.google.gson.Gson
 import de.itshasan.iptv_client.R
 import de.itshasan.iptv_client.SimplePlayerActivity
 import de.itshasan.iptv_client.overview.adapter.episodes.EpisodeAdapter
 import de.itshasan.iptv_client.overview.dialog.SeasonsDialog
-import de.itshasan.iptv_client.seriesList.GalleryActivity
 import de.itshasan.iptv_core.model.Constant
+
 
 private val TAG = OverviewFragment::class.java.simpleName
 
@@ -30,6 +31,7 @@ class OverviewFragment : Fragment() {
     }
 
     private lateinit var viewModel: OverviewViewModel
+    private var seriesId: Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,7 +52,7 @@ class OverviewFragment : Fragment() {
         val seasons = view.findViewById<Button>(R.id.seasons)
         val episodesRecyclerview = view.findViewById<RecyclerView>(R.id.episodesRecyclerview)
 
-        val seriesId = activity?.intent?.extras?.getInt(Constant.SERIES_ID, 0)
+        seriesId = activity?.intent?.extras?.getInt(Constant.SERIES_ID, 0)!!
 
         val imageUrl = activity?.intent?.extras?.getString("IMAGE_URL")
         val title = activity?.intent?.extras?.getString("SERIES_TITLE")
@@ -105,7 +107,11 @@ class OverviewFragment : Fragment() {
                         val episodeUrl = "http://teslaiptv.com:8080/series/hasanxmhdxamin/569247364/${it.id}.${it.containerExtension}"
                         val intent =
                             Intent(context, SimplePlayerActivity::class.java).apply {
-                                putExtra(Constant.CONTENT_URL, episodeUrl)
+                                val gson = Gson()
+                                val serializedEpisode = gson.toJson(it)
+                                putExtra(Constant.CONTENT, serializedEpisode)
+                                Log.d(TAG, "onViewCreated: seriesId : $seriesId")
+                                putExtra(Constant.SERIES_ID, seriesId.toString())
                             }
                         startActivity(intent)
                     }

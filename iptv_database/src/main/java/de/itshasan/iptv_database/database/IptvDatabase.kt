@@ -4,12 +4,14 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import de.itshasan.iptv_core.model.WatchHistory
 import de.itshasan.iptv_core.model.series.SeriesItem
 import de.itshasan.iptv_core.model.series.category.SeriesCategoriesItem
 import de.itshasan.iptv_database.database.dao.SeriesCategoryDao
 import de.itshasan.iptv_database.database.dao.SeriesItemDao
+import de.itshasan.iptv_database.database.dao.WatchHistoryDao
 
-@Database(entities = [SeriesCategoriesItem::class, SeriesItem::class], version = 4, exportSchema = false)
+@Database(entities = [SeriesCategoriesItem::class, SeriesItem::class, WatchHistory::class], version = 6, exportSchema = false)
 abstract class IptvDatabase : RoomDatabase() {
 
     companion object {
@@ -33,5 +35,6 @@ abstract class IptvDatabase : RoomDatabase() {
 
     abstract fun seriesCategoryDao(): SeriesCategoryDao
     abstract fun seriesItemDao(): SeriesItemDao
+    abstract fun watchHistoryDao(): WatchHistoryDao
 
 }

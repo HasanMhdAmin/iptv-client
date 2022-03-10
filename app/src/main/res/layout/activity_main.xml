@@ -10,7 +10,7 @@
         android:id="@+id/playerBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Player"
+        android:text="History"
         app:layout_constraintEnd_toStartOf="@+id/catBtn"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
