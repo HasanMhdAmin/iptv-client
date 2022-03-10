@@ -2,7 +2,6 @@ package de.itshasan.iptv_repository.network
 
 import android.util.Log
 import com.google.gson.GsonBuilder
-import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
 import de.itshasan.iptv_core.model.series.SeriesList
 import de.itshasan.iptv_core.model.series.category.SeriesCategories
@@ -17,14 +16,12 @@ import de.itshasan.iptv_repository.network.callback.SeriesInfoCallback
 import de.itshasan.iptv_repository.network.enums.Action
 import de.itshasan.iptv_repository.network.service.SeriesService
 import okhttp3.ResponseBody
-import org.json.JSONArray
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.util.*
 
 
 object IptvRepository : IptvRepositoryContract {
@@ -119,7 +116,6 @@ object IptvRepository : IptvRepositoryContract {
 
                 val seasonInfo = gson.fromJson<MutableList<Season>>(allJson.getString("seasons"), seasonType)
                 val toRemove = seasonInfo.firstOrNull { it.seasonNumber == 0 }
-
                 // remove not wanted entry. (tested on The Big Bang Theory)
                 toRemove?.let {
                     seasonInfo.remove(it)
@@ -130,14 +126,30 @@ object IptvRepository : IptvRepositoryContract {
 
                 val seasonKeys = seasonHashMap.keys
 
-                val listOfSeason : MutableList<List<Episode>> = mutableListOf()
+                val listOfSeason: MutableList<List<Episode>> = mutableListOf()
 
                 val listType = object : TypeToken<List<Episode>>() {}.type
                 seasonKeys.map {
-                    val listOfSeasonEpisodes = gson.fromJson<List<Episode>>(episodesJsonObjectWrapper.getString(it), listType)
+                    val listOfSeasonEpisodes = gson.fromJson<List<Episode>>(
+                        episodesJsonObjectWrapper.getString(it),
+                        listType)
                     listOfSeason.add(listOfSeasonEpisodes)
                 }
-
+                if (seasonInfo.isEmpty()) {
+                    listOfSeason.forEachIndexed { index, episodes ->
+                        // build season list if not available
+                        seasonInfo.add(Season(
+                            0,
+                            episodes.size,
+                            index + 1,
+                            "Season ${index + 1}",
+                            "",
+                            index + 1,
+                            "",
+                            ""
+                        ))
+                    }
+                }
                 val seriesInfo = SeriesInfo(seasonInfo, info, listOfSeason)
 
                 callback.onSuccess(seriesInfo)
