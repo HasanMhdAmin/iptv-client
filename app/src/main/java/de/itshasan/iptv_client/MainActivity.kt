@@ -4,9 +4,16 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.exoplayer2.ExoPlayer
 import de.itshasan.iptv_client.category.CategoryActivity
+import de.itshasan.iptv_client.continueWatching.adapter.ContinueWatchingAdapter
 import de.itshasan.iptv_client.overview.OverviewActivity
+import de.itshasan.iptv_database.database.IptvDatabase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
 private val TAG = MainActivity::class.java.simpleName
@@ -25,10 +32,29 @@ class MainActivity : AppCompatActivity() {
     private val detailsBtn by lazy {
         findViewById<Button>(R.id.detailsBtn)
     }
+    private val continueWatchingRecyclerView by lazy {
+        findViewById<RecyclerView>(R.id.continueWatchingRecyclerView)
+    }
+    private val database by lazy { IptvDatabase.getInstance(application) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        GlobalScope.launch(Dispatchers.IO) {
+            val history = database.watchHistoryDao().getAll()
+
+            val continueWatchingAdapter = ContinueWatchingAdapter(history)
+            continueWatchingRecyclerView.apply {
+                layoutManager =
+                    LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false);
+                adapter = continueWatchingAdapter.apply {
+                    onWatchHistoryClicked = {
+
+                    }
+                }
+            }
+        }
 
 
 //        val inputStream: InputStream = assets.open("m3u/channels.m3u")

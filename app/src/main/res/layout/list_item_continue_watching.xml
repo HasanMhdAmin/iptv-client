@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/item"
+        android:layout_width="100dp"
+        android:layout_height="160dp"
+        android:layout_margin="5dp"
+        app:cardBackgroundColor="#03A9F4"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_margin="5dp"
+            android:text="Series"
+            android:textStyle="bold" />
+
+        <include
+            android:id="@+id/progress"
+            layout="@layout/progress_bar_custom"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/progress_bar_height"
+            android:layout_gravity="bottom"
+            app:layout_constraintBottom_toBottomOf="@+id/thumbImageView"
+            app:layout_constraintEnd_toEndOf="@+id/thumbImageView"
+            app:layout_constraintStart_toStartOf="@+id/thumbImageView" />
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

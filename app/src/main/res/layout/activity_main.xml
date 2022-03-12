@@ -37,25 +37,15 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/item"
-        android:layout_width="100dp"
-        android:layout_height="160dp"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/continueWatchingRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        app:cardBackgroundColor="#03A9F4"
-        app:cardCornerRadius="10dp"
-        app:cardElevation="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/playerBtn">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_margin="5dp"
-            android:text="Series"
-            android:textStyle="bold" />
-    </androidx.cardview.widget.CardView>
+    </androidx.recyclerview.widget.RecyclerView>
 
 
     <androidx.cardview.widget.CardView
@@ -66,7 +56,7 @@
         app:cardBackgroundColor="#abcdef"
         app:cardCornerRadius="20dp"
         app:cardElevation="10dp"
-        app:layout_constraintTop_toBottomOf="@+id/item">
+        app:layout_constraintTop_toBottomOf="@+id/continueWatchingRecyclerView">
 
         <TextView
             android:layout_width="wrap_content"
