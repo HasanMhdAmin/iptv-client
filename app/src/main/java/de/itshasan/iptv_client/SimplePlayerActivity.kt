@@ -2,6 +2,8 @@ package de.itshasan.iptv_client
 
 import android.os.Bundle
 import android.util.Log
+import android.view.MotionEvent
+import android.view.ScaleGestureDetector
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -12,6 +14,7 @@ import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.util.Util
 import com.google.gson.Gson
+import de.itshasan.iptv_client.player.listener.CustomOnScaleGestureListener
 import de.itshasan.iptv_core.model.Constant
 import de.itshasan.iptv_core.model.WatchHistory
 import de.itshasan.iptv_core.model.series.info.Episode
@@ -39,6 +42,7 @@ class SimplePlayerActivity : AppCompatActivity() {
     private var playWhenReady = true
     private var currentWindow = 0
     private var playbackPosition = 0L
+    private var scaleGestureDetector: ScaleGestureDetector? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -141,7 +145,16 @@ class SimplePlayerActivity : AppCompatActivity() {
                 exoPlayer.playWhenReady = playWhenReady
                 exoPlayer.seekTo(currentWindow, playbackPosition)
                 exoPlayer.prepare()
+
+                scaleGestureDetector = ScaleGestureDetector(this, CustomOnScaleGestureListener(videoView))
+
             }
+    }
+
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        super.onTouchEvent(event)
+        scaleGestureDetector?.onTouchEvent(event)
+        return true
     }
 
     override fun onSaveInstanceState(savedInstanceState: Bundle) {
