@@ -9,4 +9,5 @@ interface IptvRepositoryContract {
     fun getSeriesCategories(callback: SeriesCategoriesCallback)
     fun getSeriesByCategoryId(categoryId: String, callback: SeriesCallback)
     fun getSeriesInfoBySeriesId(seriesId: String, callback: SeriesInfoCallback)
+    fun getEpisodeStreamUrl(episodeId: String, episodeExtension: String): String
 }

@@ -162,4 +162,7 @@ object IptvRepository : IptvRepositoryContract {
         })
     }
 
+    override fun getEpisodeStreamUrl(episodeId: String, episodeExtension: String) =
+        "http://teslaiptv.com:8080/series/hasanxmhdxamin/569247364/$episodeId.$episodeExtension"
+
 }

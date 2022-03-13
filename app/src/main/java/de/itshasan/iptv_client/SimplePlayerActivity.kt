@@ -16,6 +16,7 @@ import de.itshasan.iptv_core.model.Constant
 import de.itshasan.iptv_core.model.WatchHistory
 import de.itshasan.iptv_core.model.series.info.Episode
 import de.itshasan.iptv_database.database.IptvDatabase
+import de.itshasan.iptv_repository.network.IptvRepository.getEpisodeStreamUrl
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -54,8 +55,7 @@ class SimplePlayerActivity : AppCompatActivity() {
             episode = gson.fromJson(serializedEpisode, Episode::class.java)
             seriesId = intent?.extras?.getString(Constant.SERIES_ID).toString()
             coverUrl = intent?.extras?.getString(Constant.COVER_URL).toString()
-            val episodeUrl =
-                "http://teslaiptv.com:8080/series/hasanxmhdxamin/569247364/${episode.id}.${episode.containerExtension}"
+            val episodeUrl = getEpisodeStreamUrl(episode.id, episode.containerExtension)
             url = episodeUrl
 
             initializePlayer()
