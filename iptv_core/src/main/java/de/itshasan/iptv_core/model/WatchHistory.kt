@@ -15,4 +15,5 @@ data class WatchHistory(
     val timestamp: Long,
     val currentTime: Long,
     val totalTime: Long,
+    val coverUrl: String
 )

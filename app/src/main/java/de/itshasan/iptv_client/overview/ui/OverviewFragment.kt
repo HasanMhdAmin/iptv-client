@@ -2,7 +2,6 @@ package de.itshasan.iptv_client.overview.ui
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -54,8 +53,8 @@ class OverviewFragment : Fragment() {
 
         seriesId = activity?.intent?.extras?.getInt(Constant.SERIES_ID, 0)!!
 
-        val imageUrl = activity?.intent?.extras?.getString("IMAGE_URL")
-        val title = activity?.intent?.extras?.getString("SERIES_TITLE")
+        val imageUrl = activity?.intent?.extras?.getString(Constant.COVER_URL)
+        val title = activity?.intent?.extras?.getString(Constant.SERIES_TITLE)
 
         val viewModel: OverviewViewModel by viewModels { OverviewViewModelFactory(seriesId!!) }
         this.viewModel = viewModel
@@ -110,8 +109,8 @@ class OverviewFragment : Fragment() {
                                 val gson = Gson()
                                 val serializedEpisode = gson.toJson(it)
                                 putExtra(Constant.CONTENT, serializedEpisode)
-                                Log.d(TAG, "onViewCreated: seriesId : $seriesId")
                                 putExtra(Constant.SERIES_ID, seriesId.toString())
+                                putExtra(Constant.COVER_URL, imageUrl)
                             }
                         startActivity(intent)
                     }

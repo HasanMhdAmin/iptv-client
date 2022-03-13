@@ -6,5 +6,7 @@ object Constant {
     const val ALL_SERIES = ROOT + "ALL_SERIES"
     const val SERIES_ID = ROOT + "SERIES_ID"
     const val CONTENT = ROOT + "CONTENT"
+    const val COVER_URL = ROOT + "COVER_URL"
+    const val SERIES_TITLE = ROOT + "SERIES_TITLE"
 
 }

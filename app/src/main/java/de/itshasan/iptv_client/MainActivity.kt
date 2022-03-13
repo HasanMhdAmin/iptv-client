@@ -41,22 +41,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        GlobalScope.launch(Dispatchers.IO) {
-            val history = database.watchHistoryDao().getAll()
-
-            val continueWatchingAdapter = ContinueWatchingAdapter(history)
-            continueWatchingRecyclerView.apply {
-                layoutManager =
-                    LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false);
-                adapter = continueWatchingAdapter.apply {
-                    onWatchHistoryClicked = {
-
-                    }
-                }
-            }
-        }
-
-
 //        val inputStream: InputStream = assets.open("m3u/channels.m3u")
 //        val simpleM3UParser = SimpleM3UParser()
 //        val list = simpleM3UParser.parse(inputStream)
@@ -104,4 +88,26 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+    override fun onResume() {
+        super.onResume()
+        GlobalScope.launch(Dispatchers.IO) {
+            val history = database.watchHistoryDao().getAll()
+
+            launch(Dispatchers.Main) {
+                val continueWatchingAdapter = ContinueWatchingAdapter(history)
+                continueWatchingRecyclerView.apply {
+                    layoutManager =
+                        LinearLayoutManager(this@MainActivity,
+                            LinearLayoutManager.HORIZONTAL,
+                            false);
+                    adapter = continueWatchingAdapter.apply {
+                        onWatchHistoryClicked = {
+
+                        }
+                    }
+                }
+            }
+
+        }
+    }
 }

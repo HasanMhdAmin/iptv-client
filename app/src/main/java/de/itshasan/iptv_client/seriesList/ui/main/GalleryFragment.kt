@@ -17,7 +17,9 @@ import androidx.recyclerview.widget.RecyclerView
 import de.itshasan.iptv_client.R
 import de.itshasan.iptv_client.overview.OverviewActivity
 import de.itshasan.iptv_core.model.Constant
+import de.itshasan.iptv_core.model.Constant.COVER_URL
 import de.itshasan.iptv_core.model.Constant.SERIES_ID
+import de.itshasan.iptv_core.model.Constant.SERIES_TITLE
 import de.itshasan.iptv_core.model.series.SeriesItem
 
 private val TAG = GalleryFragment::class.java.simpleName
@@ -57,8 +59,8 @@ class GalleryFragment : Fragment(), SearchView.OnQueryTextListener {
                     val intent =
                         Intent(context, OverviewActivity::class.java).apply {
                             putExtra(SERIES_ID, seriesItem.seriesId)
-                            putExtra("IMAGE_URL", seriesItem.cover)
-                            putExtra("SERIES_TITLE", seriesItem.name)
+                            putExtra(COVER_URL, seriesItem.cover)
+                            putExtra(SERIES_TITLE, seriesItem.name)
                         }
 
                     val pair1 = Pair.create<View, String>(imageView, "cover_transition")

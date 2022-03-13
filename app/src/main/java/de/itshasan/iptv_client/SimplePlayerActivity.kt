@@ -29,6 +29,7 @@ class SimplePlayerActivity : AppCompatActivity() {
         "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
     private lateinit var episode: Episode
     private lateinit var seriesId: String
+    private lateinit var coverUrl: String
     private val videoView by lazy {
         findViewById<PlayerView>(R.id.videoView)
     }
@@ -52,7 +53,7 @@ class SimplePlayerActivity : AppCompatActivity() {
             val serializedEpisode = intent?.extras?.getString(Constant.CONTENT).toString()
             episode = gson.fromJson(serializedEpisode, Episode::class.java)
             seriesId = intent?.extras?.getString(Constant.SERIES_ID).toString()
-            Log.d(TAG, "onResume: seriesId test: $seriesId")
+            coverUrl = intent?.extras?.getString(Constant.COVER_URL).toString()
             val episodeUrl =
                 "http://teslaiptv.com:8080/series/hasanxmhdxamin/569247364/${episode.id}.${episode.containerExtension}"
             url = episodeUrl
@@ -78,20 +79,20 @@ class SimplePlayerActivity : AppCompatActivity() {
 
     private fun hideSystemUi() {
 
-        supportActionBar?.hide()
-        actionBar?.hide()
-        @Suppress("DEPRECATION")
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            val controller = window.insetsController
-            controller?.hide(WindowInsets.Type.statusBars())
-        } else {
-            window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_FULLSCREEN
-                or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                or View.SYSTEM_UI_FLAG_IMMERSIVE
-                or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION)
-        }
+//        supportActionBar?.hide()
+//        actionBar?.hide()
+//        @Suppress("DEPRECATION")
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+//            val controller = window.insetsController
+//            controller?.hide(WindowInsets.Type.statusBars())
+//        } else {
+//            window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_FULLSCREEN
+//                or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+//                or View.SYSTEM_UI_FLAG_IMMERSIVE
+//                or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+//                or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+//                or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION)
+//        }
 
     }
 
@@ -120,7 +121,8 @@ class SimplePlayerActivity : AppCompatActivity() {
                         "s",
                         System.currentTimeMillis(),
                         currentTime = playbackPosition,
-                        totalTime = totalTime!!
+                        totalTime = totalTime!!,
+                        coverUrl = coverUrl
                     ))
             }
         }
