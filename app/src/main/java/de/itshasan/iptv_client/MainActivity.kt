@@ -91,8 +91,7 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         GlobalScope.launch(Dispatchers.IO) {
-            val history = database.watchHistoryDao().getAll()
-
+            val history = database.watchHistoryDao().getContinueWatching()
             launch(Dispatchers.Main) {
                 val continueWatchingAdapter = ContinueWatchingAdapter(history)
                 continueWatchingRecyclerView.apply {

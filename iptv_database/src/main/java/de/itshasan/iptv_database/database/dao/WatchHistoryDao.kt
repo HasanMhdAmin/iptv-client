@@ -12,6 +12,9 @@ interface WatchHistoryDao {
     @Query("SELECT * FROM WatchHistory WHERE parentId == :parentId")
     fun getSeriesByParentId(parentId: String): List<WatchHistory>
 
+    @Query("SELECT * FROM WatchHistory  GROUP BY parentId HAVING max(timestamp) Order by timestamp DESC")
+    fun getContinueWatching(): List<WatchHistory>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(watchHistory: WatchHistory)
 
