@@ -2,7 +2,6 @@ package de.itshasan.iptv_database.database.dao
 
 import androidx.room.*
 import de.itshasan.iptv_core.model.WatchHistory
-import de.itshasan.iptv_core.model.series.SeriesItem
 
 @Dao
 interface WatchHistoryDao {
@@ -12,7 +11,7 @@ interface WatchHistoryDao {
     @Query("SELECT * FROM WatchHistory WHERE parentId == :parentId")
     fun getSeriesByParentId(parentId: String): List<WatchHistory>
 
-    @Query("SELECT * FROM WatchHistory  GROUP BY parentId HAVING max(timestamp) Order by timestamp DESC")
+    @Query("SELECT * FROM WatchHistory GROUP BY parentId HAVING max(timestamp) Order by timestamp DESC")
     fun getContinueWatching(): List<WatchHistory>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

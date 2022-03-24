@@ -59,6 +59,8 @@ class SimplePlayerActivity : AppCompatActivity() {
             episode = gson.fromJson(serializedEpisode, Episode::class.java)
             seriesId = intent?.extras?.getString(Constant.SERIES_ID).toString()
             coverUrl = intent?.extras?.getString(Constant.COVER_URL).toString()
+            playbackPosition = intent?.extras?.getLong(Constant.CURRENT_TIME, 0)!!
+
             val episodeUrl = getEpisodeStreamUrl(episode.id, episode.containerExtension)
             url = episodeUrl
 

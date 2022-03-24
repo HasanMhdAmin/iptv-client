@@ -8,5 +8,6 @@ object Constant {
     const val CONTENT = ROOT + "CONTENT"
     const val COVER_URL = ROOT + "COVER_URL"
     const val SERIES_TITLE = ROOT + "SERIES_TITLE"
+    const val CURRENT_TIME = ROOT + "CURRENT_TIME"
 
 }

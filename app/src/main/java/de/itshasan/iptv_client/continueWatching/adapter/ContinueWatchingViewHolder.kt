@@ -32,17 +32,10 @@ class ContinueWatchingViewHolder(
             .load(watchHistory.coverUrl)
             .centerCrop()
             .into(coverImageView)
-//        Glide.with(view.context)
-//            .load(watchHistory.coverUrl)
-//            .into(object : SimpleTarget<Drawable?>() {
-//                override fun onResourceReady(
-//                    resource: Drawable,
-//                    transition: Transition<in Drawable?>?,
-//                ) {
-//                    item.background = resource
-//                }
-//            })
 
+        item.setOnClickListener {
+            onItemClicked(watchHistory)
+        }
     }
 
 
