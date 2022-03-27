@@ -12,7 +12,7 @@ import de.itshasan.iptv_core.model.Constant.ALL_SERIES
 import de.itshasan.iptv_core.model.Constant.CATEGORY_ID
 import de.itshasan.iptv_core.model.series.category.SeriesCategories
 import de.itshasan.iptv_core.model.series.category.SeriesCategoriesItem
-import de.itshasan.iptv_database.database.IptvDatabase
+import de.itshasan.iptv_database.database.iptvDatabase
 import de.itshasan.iptv_repository.network.IptvRepository
 import de.itshasan.iptv_repository.network.callback.SeriesCategoriesCallback
 import kotlinx.coroutines.Dispatchers
@@ -31,8 +31,6 @@ class CategoryActivity : AppCompatActivity() {
         map[key] = map[key]!! + 1
     }
 
-    private val database by lazy { IptvDatabase.getInstance(this@CategoryActivity) }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_category)
@@ -40,7 +38,7 @@ class CategoryActivity : AppCompatActivity() {
 
         ////
         GlobalScope.launch(Dispatchers.IO) {
-            val categories = database.seriesCategoryDao().getAll()
+            val categories = iptvDatabase.seriesCategoryDao().getAll()
             if (categories.isEmpty()) {
                 loadSeriesCategories()
             } else {
@@ -84,7 +82,7 @@ class CategoryActivity : AppCompatActivity() {
                 backendResponse.add(0, allSeries)
                 GlobalScope.launch(Dispatchers.IO) {
                     backendResponse.forEach {
-                        database.seriesCategoryDao().insert(it)
+                        iptvDatabase.seriesCategoryDao().insert(it)
                     }
                 }
                 bindData(backendResponse)

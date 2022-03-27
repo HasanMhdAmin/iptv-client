@@ -18,7 +18,7 @@ import de.itshasan.iptv_core.model.Constant
 import de.itshasan.iptv_core.model.WatchHistory
 import de.itshasan.iptv_core.model.series.info.Episode
 import de.itshasan.iptv_core.model.series.info.SeriesInfo
-import de.itshasan.iptv_database.database.IptvDatabase
+import de.itshasan.iptv_database.database.iptvDatabase
 import de.itshasan.iptv_repository.network.IptvRepository
 import de.itshasan.iptv_repository.network.callback.SeriesInfoCallback
 import kotlinx.coroutines.Dispatchers
@@ -45,7 +45,6 @@ class MainActivity : AppCompatActivity() {
     private val continueWatchingRecyclerView by lazy {
         findViewById<RecyclerView>(R.id.continueWatchingRecyclerView)
     }
-    private val database by lazy { IptvDatabase.getInstance(application) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -104,14 +103,14 @@ class MainActivity : AppCompatActivity() {
 
     private fun refreshContinueWatch() {
         GlobalScope.launch(Dispatchers.IO) {
-            val history = database.watchHistoryDao().getContinueWatching()
+            val history = iptvDatabase.watchHistoryDao().getContinueWatching()
             launch(Dispatchers.Main) {
                 val continueWatchingAdapter = ContinueWatchingAdapter(history)
                 continueWatchingRecyclerView.apply {
                     layoutManager =
                         LinearLayoutManager(this@MainActivity,
                             LinearLayoutManager.HORIZONTAL,
-                            false);
+                            false)
                     adapter = continueWatchingAdapter.apply {
                         onWatchHistoryClicked = {
 

@@ -18,7 +18,7 @@ import de.itshasan.iptv_client.player.listener.CustomOnScaleGestureListener
 import de.itshasan.iptv_core.model.Constant
 import de.itshasan.iptv_core.model.WatchHistory
 import de.itshasan.iptv_core.model.series.info.Episode
-import de.itshasan.iptv_database.database.IptvDatabase
+import de.itshasan.iptv_database.database.iptvDatabase
 import de.itshasan.iptv_repository.network.IptvRepository.getEpisodeStreamUrl
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -37,7 +37,6 @@ class SimplePlayerActivity : AppCompatActivity() {
     private val videoView by lazy {
         findViewById<PlayerView>(R.id.videoView)
     }
-    private val database by lazy { IptvDatabase.getInstance(application) }
 
     private var playWhenReady = true
     private var currentWindow = 0
@@ -112,7 +111,7 @@ class SimplePlayerActivity : AppCompatActivity() {
         if (playbackPosition > 0) {
 
             GlobalScope.launch(Dispatchers.IO) {
-                database.watchHistoryDao().insert(
+                iptvDatabase.watchHistoryDao().insert(
                     WatchHistory(
                         0,
                         episode.id,
@@ -124,7 +123,7 @@ class SimplePlayerActivity : AppCompatActivity() {
                         totalTime = totalTime!!,
                         coverUrl = coverUrl
                     ))
-                database.watchHistoryDao().updateContinueWatchStatus(seriesId, true)
+                iptvDatabase.watchHistoryDao().updateContinueWatchStatus(seriesId, true)
             }
         }
 
