@@ -13,7 +13,7 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/iptv_core" />
             <option value="$PROJECT_DIR$/iptv_database" />
-            <option value="$PROJECT_DIR$/iptv_repository" />
+            <option value="$PROJECT_DIR$/iptv_network" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

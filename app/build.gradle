@@ -54,7 +54,7 @@ dependencies {
 
 
     implementation project(':iptv_core')
-    implementation project(':iptv_repository')
+    implementation project(':iptv_network')
     implementation project(':iptv_database')
 
     testImplementation 'junit:junit:4.13.2'

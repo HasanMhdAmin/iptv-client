@@ -15,5 +15,5 @@ dependencyResolutionManagement {
 rootProject.name = "IPTV Client"
 include ':app'
 include ':iptv_core'
-include ':iptv_repository'
+include ':iptv_network'
 include ':iptv_database'
