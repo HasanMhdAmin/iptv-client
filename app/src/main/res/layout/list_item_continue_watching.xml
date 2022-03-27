@@ -29,12 +29,13 @@
 
         <TextView
             android:id="@+id/title"
-            style="@style/TextViewColor"
+            style="@style/TextViewRegular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:layout_margin="5dp"
-            android:text="Series" />
+            android:text="Series"
+            android:textColor="@color/white" />
 
         <include
             android:id="@+id/progress"
