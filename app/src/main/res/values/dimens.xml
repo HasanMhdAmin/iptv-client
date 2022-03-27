@@ -6,7 +6,9 @@
     <dimen name="safe_area">7dp</dimen>
     <dimen name="dialog_floating_button">20dp</dimen>
     <dimen name="progress_bar_height">2dp</dimen>
+
     <dimen name="not_selected_season_textview_size">20sp</dimen>
     <dimen name="selected_season_textview_size">25sp</dimen>
+    <dimen name="title_text_size">30sp</dimen>
 
 </resources>

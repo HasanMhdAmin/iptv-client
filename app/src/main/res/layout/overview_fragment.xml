@@ -33,7 +33,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="The Big Bang Theory"
-                android:textSize="30sp"
+                android:textSize="@dimen/title_text_size"
                 android:transitionName="title_transition"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
