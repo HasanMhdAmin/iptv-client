@@ -12,12 +12,13 @@ class ContinueWatchingAdapter(
     RecyclerView.Adapter<ContinueWatchingViewHolder>() {
 
     lateinit var onWatchHistoryClicked: ((WatchHistory) -> Unit)
+    lateinit var onWatchHistoryLongClicked: ((WatchHistory) -> Unit)
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContinueWatchingViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.list_item_continue_watching, parent, false)
-        return ContinueWatchingViewHolder(view, onWatchHistoryClicked)
+        return ContinueWatchingViewHolder(view, onWatchHistoryClicked, onWatchHistoryLongClicked)
     }
 
     override fun onBindViewHolder(holder: ContinueWatchingViewHolder, position: Int) {

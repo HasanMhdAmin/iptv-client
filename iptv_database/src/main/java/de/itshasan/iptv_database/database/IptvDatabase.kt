@@ -10,10 +10,29 @@ import de.itshasan.iptv_core.model.series.category.SeriesCategoriesItem
 import de.itshasan.iptv_database.database.dao.SeriesCategoryDao
 import de.itshasan.iptv_database.database.dao.SeriesItemDao
 import de.itshasan.iptv_database.database.dao.WatchHistoryDao
+import de.itshasan.iptv_database.database.di.DaggerDatabaseComponent
+import de.itshasan.iptv_database.database.di.DatabaseComponent
+import de.itshasan.iptv_database.database.di.module.DatabaseModule
+import javax.inject.Inject
+import javax.inject.Singleton
 
-@Database(entities = [SeriesCategoriesItem::class, SeriesItem::class, WatchHistory::class], version = 7, exportSchema = false)
+private var component: DatabaseComponent? = null
+
+val iptvDatabase: IptvDatabase
+    get() = component!!.getDatabase()
+
+fun initDatabase(context: Context) {
+    if (component == null) {
+        component = DaggerDatabaseComponent.builder()
+            .databaseModule(DatabaseModule(context))
+            .build()
+    }
+}
+
+@Database(entities = [SeriesCategoriesItem::class, SeriesItem::class, WatchHistory::class],
+    version = 8,
+    exportSchema = false)
 abstract class IptvDatabase : RoomDatabase() {
-
     companion object {
 
         @Volatile

@@ -13,6 +13,7 @@ import de.itshasan.iptv_core.model.WatchHistory
 class ContinueWatchingViewHolder(
     val view: View,
     private val onItemClicked: ((WatchHistory) -> Unit),
+    private val onItemLongClicked: ((WatchHistory) -> Unit),
 ) : androidx.recyclerview.widget.RecyclerView.ViewHolder(view) {
 
     private val progress by lazy { view.findViewById<View>(R.id.progress) }
@@ -35,6 +36,11 @@ class ContinueWatchingViewHolder(
 
         item.setOnClickListener {
             onItemClicked(watchHistory)
+        }
+
+        item.setOnLongClickListener {
+            onItemLongClicked(watchHistory)
+            true
         }
     }
 

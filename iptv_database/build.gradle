@@ -43,9 +43,13 @@ dependencies {
     implementation project(':iptv_core')
 
     // room
-    def room_version = "2.3.0"
+    def room_version = "2.4.2"
     api "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
     api "androidx.room:room-ktx:$room_version"
     testImplementation "androidx.room:room-testing:$room_version"
+
+    def dagger_version = "2.35.1"
+    kapt "com.google.dagger:dagger-compiler:$dagger_version"
+    implementation "com.google.dagger:dagger:$dagger_version"
 }

@@ -13,7 +13,9 @@ import com.google.gson.Gson
 import de.itshasan.iptv_client.category.CategoryActivity
 import de.itshasan.iptv_client.continueWatching.adapter.ContinueWatchingAdapter
 import de.itshasan.iptv_client.overview.OverviewActivity
+import de.itshasan.iptv_client.overview.ui.buttomSheet.ModalBottomSheet
 import de.itshasan.iptv_core.model.Constant
+import de.itshasan.iptv_core.model.WatchHistory
 import de.itshasan.iptv_core.model.series.info.Episode
 import de.itshasan.iptv_core.model.series.info.SeriesInfo
 import de.itshasan.iptv_database.database.IptvDatabase
@@ -95,9 +97,12 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-
     override fun onResume() {
         super.onResume()
+        refreshContinueWatch()
+    }
+
+    private fun refreshContinueWatch() {
         GlobalScope.launch(Dispatchers.IO) {
             val history = database.watchHistoryDao().getContinueWatching()
             launch(Dispatchers.Main) {
@@ -155,10 +160,21 @@ class MainActivity : AppCompatActivity() {
                                 })
 
                         }
+                        onWatchHistoryLongClicked = {
+                            Log.d(TAG, "onResume: $it is long clicked")
+                            showBottomSheetDialog(it)
+                        }
                     }
                 }
             }
-
         }
+    }
+
+    private fun showBottomSheetDialog(watchHistory: WatchHistory) {
+        val bottomSheetDialog = ModalBottomSheet(watchHistory)
+        bottomSheetDialog.onItemRemovedCallback = {
+            refreshContinueWatch()
+        }
+        bottomSheetDialog.show(supportFragmentManager, bottomSheetDialog.tag)
     }
 }

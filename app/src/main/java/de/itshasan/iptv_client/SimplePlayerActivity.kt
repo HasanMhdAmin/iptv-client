@@ -124,6 +124,7 @@ class SimplePlayerActivity : AppCompatActivity() {
                         totalTime = totalTime!!,
                         coverUrl = coverUrl
                     ))
+                database.watchHistoryDao().updateContinueWatchStatus(seriesId, true)
             }
         }
 

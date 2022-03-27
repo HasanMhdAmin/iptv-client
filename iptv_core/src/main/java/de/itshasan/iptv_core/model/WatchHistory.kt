@@ -15,5 +15,6 @@ data class WatchHistory(
     val timestamp: Long,
     val currentTime: Long,
     val totalTime: Long,
-    val coverUrl: String
+    val coverUrl: String,
+    val showInContinueWatch: Boolean = true
 )
