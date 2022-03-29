@@ -1,12 +1,18 @@
 package de.itshasan.iptv_client.overview.ui
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import de.itshasan.iptv_core.model.WatchHistory
 import de.itshasan.iptv_core.model.series.info.Episode
 import de.itshasan.iptv_core.model.series.info.SeriesInfo
 import de.itshasan.iptv_core.model.series.info.season.Season
+import de.itshasan.iptv_database.database.iptvDatabase
 import de.itshasan.iptv_repository.network.IptvRepository
 import de.itshasan.iptv_repository.network.callback.SeriesInfoCallback
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 private val TAG = OverviewViewModel::class.java.simpleName
 
@@ -22,6 +28,7 @@ class OverviewViewModel(seriesId: Int) : ViewModel() {
     var allEpisodes = MutableLiveData<List<List<Episode>>>()
     var episodesToShow = MutableLiveData<List<Episode>>()
     var selectedSeason = MutableLiveData<Season>()
+    var currentEpisodeProgress = MutableLiveData<Pair<Episode, WatchHistory?>>()
 
     init {
         makeAPICall(seriesId)
@@ -50,6 +57,38 @@ class OverviewViewModel(seriesId: Int) : ViewModel() {
                 allEpisodes.value = backendResponse.episodes
                 episodesToShow.postValue(backendResponse.episodes[0])
                 setSelectedSeason(backendResponse.seasons[0])
+
+
+                //////
+                viewModelScope.launch(Dispatchers.IO) {
+                    val watchHistory =
+                        iptvDatabase.watchHistoryDao().getSeriesByParentIdOrderByTimestamp(seriesId.toString()).firstOrNull()
+                    if (watchHistory != null) {
+                        Log.d(TAG, "onSuccess: watchHistory != null")
+
+                        run breaking@{
+                            backendResponse.episodes.forEachIndexed { index, list ->
+                                val item = list.find { item -> item.id == watchHistory.contentId }
+                                if (item != null) {
+                                    Log.d(TAG, "onSuccess: item != null")
+                                    currentEpisodeProgress.postValue(Pair(item, watchHistory))
+                                } else {
+                                    Log.d(TAG, "onSuccess: item == null")
+                                    currentEpisodeProgress.postValue(Pair(backendResponse.episodes[0][0],
+                                        null))
+                                }
+
+                                setSelectedSeason(backendResponse.seasons[index])
+                                return@breaking
+                            }
+                        }
+                    } else {
+                        Log.d(TAG, "onSuccess: watchHistory == null")
+                        currentEpisodeProgress.postValue(Pair(backendResponse.episodes[0][0], null))
+                    }
+                }
+
+
             }
 
             override fun onError(status: Int, message: String) {

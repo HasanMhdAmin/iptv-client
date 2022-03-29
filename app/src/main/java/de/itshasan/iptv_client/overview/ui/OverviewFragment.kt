@@ -2,11 +2,13 @@ package de.itshasan.iptv_client.overview.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -19,7 +21,6 @@ import de.itshasan.iptv_client.SimplePlayerActivity
 import de.itshasan.iptv_client.overview.adapter.episodes.EpisodeAdapter
 import de.itshasan.iptv_client.overview.dialog.SeasonsDialog
 import de.itshasan.iptv_core.model.Constant
-
 
 private val TAG = OverviewFragment::class.java.simpleName
 
@@ -44,6 +45,9 @@ class OverviewFragment : Fragment() {
 
         val nameTextView = view.findViewById<TextView>(R.id.nameTextView)
         val releaseDateTextView = view.findViewById<TextView>(R.id.releaseDateTextView)
+        val seasonCount = view.findViewById<TextView>(R.id.seasonCount)
+        val titleTextView = view.findViewById<TextView>(R.id.title)
+        val progress = view.findViewById<ProgressBar>(R.id.progress)
         val plotTextView = view.findViewById<TextView>(R.id.plotTextView)
         val castTextView = view.findViewById<TextView>(R.id.castTextView)
         val directorTextView = view.findViewById<TextView>(R.id.directorTextView)
@@ -71,14 +75,24 @@ class OverviewFragment : Fragment() {
             if (it.isEmpty()) plotTextView.visibility = View.GONE
         }
         this.viewModel.cast.observe(requireActivity()) {
-            castTextView.text = it
+            castTextView.text = Html.fromHtml(resources.getString(R.string.cast_text_test, it),
+                Html.FROM_HTML_MODE_COMPACT)
             if (it.isEmpty()) castTextView.visibility = View.GONE
         }
         this.viewModel.director.observe(requireActivity()) {
-            directorTextView.text = it
+            directorTextView.text =
+                Html.fromHtml(resources.getString(R.string.director_text_test, it),
+                    Html.FROM_HTML_MODE_COMPACT)
             if (it.isEmpty()) directorTextView.visibility = View.GONE
         }
         this.viewModel.seasons.observe(requireActivity()) { seasonsList ->
+
+            seasonCount.text = if (seasonsList.size == 1 || seasonsList.isEmpty()) {
+                getString(R.string.one_season)
+            } else {
+                "${seasonsList.size} Seasons"
+            }
+
             seasons.setOnClickListener {
                 if (seasonsList != null) {
                     val seasonsDialog = SeasonsDialog.newInstance()
@@ -94,6 +108,14 @@ class OverviewFragment : Fragment() {
 
         this.viewModel.selectedSeason.observe(requireActivity()) {
             seasons.text = it.name
+        }
+
+        viewModel.currentEpisodeProgress.observe(requireActivity()) {
+            if (it.second != null) {
+                titleTextView.text = it.first.title
+                val progressValue = 100 * it.second!!.currentTime / it.second!!.totalTime
+                progress.setProgress(progressValue.toInt(), true)
+            }
         }
 
         this.viewModel.episodesToShow.observe(requireActivity()) { episodesList ->
