@@ -4,13 +4,16 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
+import android.view.View
 import android.view.WindowManager
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.ui.PlayerControlView
 import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.util.Util
 import com.google.gson.Gson
@@ -37,6 +40,9 @@ class SimplePlayerActivity : AppCompatActivity() {
     private val videoView by lazy {
         findViewById<PlayerView>(R.id.videoView)
     }
+    private val back by lazy {
+        findViewById<ImageView>(R.id.back)
+    }
 
     private var playWhenReady = true
     private var currentWindow = 0
@@ -46,7 +52,19 @@ class SimplePlayerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_simple_player)
-        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+
+        videoView.setControllerVisibilityListener { visibility ->
+            if (visibility == View.VISIBLE) {
+                back.visibility = View.VISIBLE
+            } else {
+                back.visibility = View.GONE
+            }
+        }
+
+        back.setOnClickListener {
+            onBackPressed()
+        }
     }
 
     public override fun onResume() {
