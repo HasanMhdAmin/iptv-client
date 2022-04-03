@@ -1,10 +1,12 @@
 package de.itshasan.iptv_client
 
+import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -52,10 +54,13 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        Log.d(TAG, "onResume: ")
         refreshContinueWatch()
     }
 
     private fun refreshContinueWatch() {
+        Log.d(TAG, "onResume - > refreshContinueWatch: ")
+        // TODO: Do i need to send the request in refresh? after exiting the view
         GlobalScope.launch(Dispatchers.IO) {
             val history = iptvDatabase.watchHistoryDao().getContinueWatching()
             launch(Dispatchers.Main) {
@@ -102,9 +107,9 @@ class MainActivity : AppCompatActivity() {
                                                 putExtra(Constant.COVER_URL, it.coverUrl)
                                                 putExtra(Constant.CURRENT_TIME, it.currentTime)
                                             }
-                                        startActivity(intent)
 
-
+                                        resultLauncher.launch(intent)
+//                                        startActivity(intent)
                                     }
 
                                     override fun onError(status: Int, message: String) {
@@ -114,7 +119,6 @@ class MainActivity : AppCompatActivity() {
 
                         }
                         onWatchHistoryLongClicked = {
-                            Log.d(TAG, "onResume: $it is long clicked")
                             showBottomSheetDialog(it)
                         }
                     }
@@ -122,6 +126,15 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+
+    var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            refreshContinueWatch()
+        }
+    }
+
+
 
     private fun showBottomSheetDialog(watchHistory: WatchHistory) {
         val bottomSheetDialog = ModalBottomSheet(watchHistory)

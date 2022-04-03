@@ -101,38 +101,51 @@ class SimplePlayerActivity : AppCompatActivity() {
             currentWindow = this.currentMediaItemIndex
             playWhenReady = this.playWhenReady
             release()
-        }
 
-        val progress = 100 * playbackPosition / player!!.contentDuration
-        val totalTime = player?.contentDuration
 
-        Log.d(TAG, "releasePlayer: seriesId : $seriesId")
+            val progress = 100 * playbackPosition / player!!.contentDuration
+            val totalTime = player?.contentDuration
 
-        if (playbackPosition > 0) {
+            Log.d(TAG, " (onResume) releasePlayer: seriesId : $seriesId")
 
-            GlobalScope.launch(Dispatchers.IO) {
-                iptvDatabase.watchHistoryDao().insert(
-                    WatchHistory(
-                        0,
-                        episode.id,
-                        parentId = seriesId,
-                        name = episode.title,
-                        "s",
-                        System.currentTimeMillis(),
-                        currentTime = playbackPosition,
-                        totalTime = totalTime!!,
-                        coverUrl = coverUrl
-                    ))
-                iptvDatabase.watchHistoryDao().updateContinueWatchStatus(seriesId, true)
+            if (totalTime != null && totalTime > 0) {
+                if (playbackPosition > 0) {
+
+                    GlobalScope.launch(Dispatchers.IO) {
+                        iptvDatabase.watchHistoryDao().insert(
+                            WatchHistory(
+                                0,
+                                episode.id,
+                                parentId = seriesId,
+                                name = episode.title,
+                                "s",
+                                System.currentTimeMillis(),
+                                currentTime = playbackPosition,
+                                totalTime = totalTime,
+                                coverUrl = coverUrl
+                            ))
+                        iptvDatabase.watchHistoryDao().updateContinueWatchStatus(seriesId, true)
+                    }
+                }
             }
-        }
 
-        Log.d(TAG, "releasePlayer: playbackPosition: $playbackPosition")
-        Log.d(TAG, "releasePlayer: contentDuration: ${player?.contentDuration}")
-        Log.d(TAG, "releasePlayer: currentWindow: $currentWindow")
-        Log.d(TAG, "releasePlayer: playWhenReady: $playWhenReady")
+            Log.d(TAG, "releasePlayer: playbackPosition: $playbackPosition")
+            Log.d(TAG, "releasePlayer: contentDuration: ${player?.contentDuration}")
+            Log.d(TAG, "releasePlayer: currentWindow: $currentWindow")
+            Log.d(TAG, "releasePlayer: playWhenReady: $playWhenReady")
+
+
+
+        }
 
         player = null
+        setResult(RESULT_OK, null)
+
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        releasePlayer()
     }
 
     private fun initializePlayer() {

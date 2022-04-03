@@ -23,11 +23,14 @@
         app:layout_constraintStart_toStartOf="@+id/thumbImageView"
         app:layout_constraintTop_toTopOf="@+id/thumbImageView" />
 
-    <include
-        android:id="@+id/progress"
-        layout="@layout/progress_bar_custom"
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="0dp"
         android:layout_height="@dimen/progress_bar_height"
+        android:max="100"
+        android:progress="0"
+        android:progressTint="@color/golden_yellow"
         app:layout_constraintBottom_toBottomOf="@+id/thumbImageView"
         app:layout_constraintEnd_toEndOf="@+id/thumbImageView"
         app:layout_constraintStart_toStartOf="@+id/thumbImageView" />

@@ -6,6 +6,10 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import de.itshasan.iptv_client.R
 import de.itshasan.iptv_core.model.series.info.Episode
+import de.itshasan.iptv_database.database.iptvDatabase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class EpisodeViewHolder(
     view: View,
@@ -20,10 +24,26 @@ class EpisodeViewHolder(
     fun onBind(episode: Episode, position: Int) {
         titleTextView.text = episode.title
         durationTextView.text = episode.info.duration
-
         thumbImageView.setOnClickListener {
             onEpisodeClicked(episode)
         }
+
+        GlobalScope.launch(Dispatchers.IO) {
+            val watchHistory =
+                iptvDatabase.watchHistoryDao().getSeriesItem(episode.id)
+            if (watchHistory != null) {
+                launch(Dispatchers.Main) {
+                    progressBar?.visibility = View.VISIBLE
+                    val progressValue = 100 * watchHistory.currentTime / watchHistory.totalTime
+                    progressBar?.setProgress(progressValue.toInt(), true)
+                }
+            } else {
+                launch(Dispatchers.Main) {
+                    progressBar?.visibility = View.GONE
+                }
+            }
+        }
+
     }
 
 }

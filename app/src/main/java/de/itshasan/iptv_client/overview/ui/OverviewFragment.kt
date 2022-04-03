@@ -3,6 +3,7 @@ package de.itshasan.iptv_client.overview.ui
 import android.content.Intent
 import android.os.Bundle
 import android.text.Html
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +21,7 @@ import de.itshasan.iptv_client.R
 import de.itshasan.iptv_client.SimplePlayerActivity
 import de.itshasan.iptv_client.overview.adapter.episodes.EpisodeAdapter
 import de.itshasan.iptv_client.overview.dialog.SeasonsDialog
+import de.itshasan.iptv_client.utils.navigator.Navigator
 import de.itshasan.iptv_core.model.Constant
 
 private val TAG = OverviewFragment::class.java.simpleName
@@ -47,6 +49,7 @@ class OverviewFragment : Fragment() {
         val releaseDateTextView = view.findViewById<TextView>(R.id.releaseDateTextView)
         val seasonCount = view.findViewById<TextView>(R.id.seasonCount)
         val titleTextView = view.findViewById<TextView>(R.id.title)
+        val play = view.findViewById<Button>(R.id.play)
         val progress = view.findViewById<ProgressBar>(R.id.progress)
         val plotTextView = view.findViewById<TextView>(R.id.plotTextView)
         val castTextView = view.findViewById<TextView>(R.id.castTextView)
@@ -111,10 +114,22 @@ class OverviewFragment : Fragment() {
         }
 
         viewModel.currentEpisodeProgress.observe(requireActivity()) {
+            var startTimestamp = 0L
             if (it.second != null) {
                 titleTextView.text = it.first.title
-                val progressValue = 100 * it.second!!.currentTime / it.second!!.totalTime
+                startTimestamp = it.second!!.currentTime
+                val progressValue = 100 * startTimestamp / it.second!!.totalTime
                 progress.setProgress(progressValue.toInt(), true)
+            }
+
+            play.setOnClickListener { _ ->
+                Navigator.goToSimplePlayer(
+                    activity = requireActivity(),
+                    episode = it.first,
+                    seriesId = seriesId.toString(),
+                    coverUrl = imageUrl,
+                    startTimestamp
+                )
             }
         }
 
@@ -124,8 +139,6 @@ class OverviewFragment : Fragment() {
                 layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
                 adapter = episodeAdapter.apply {
                     onEpisodeClicked = {
-
-                        val episodeUrl = "http://teslaiptv.com:8080/series/hasanxmhdxamin/569247364/${it.id}.${it.containerExtension}"
                         val intent =
                             Intent(context, SimplePlayerActivity::class.java).apply {
                                 val gson = Gson()
@@ -148,8 +161,12 @@ class OverviewFragment : Fragment() {
             .centerCrop()
             .diskCacheStrategy(DiskCacheStrategy.ALL)
             .into(coverImageView)
+    }
 
-
+    override fun onResume() {
+        super.onResume()
+        if (viewModel.allEpisodes.value != null)
+            viewModel.updateWatchHistory(seriesId)
     }
 
 }

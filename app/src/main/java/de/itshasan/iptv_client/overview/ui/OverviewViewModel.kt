@@ -40,6 +40,37 @@ class OverviewViewModel(seriesId: Int) : ViewModel() {
         episodesToShow.postValue(allEpisodes.value!![index])
     }
 
+
+    fun updateWatchHistory(seriesId: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val watchHistory =
+                iptvDatabase.watchHistoryDao().getSeriesByParentIdOrderByTimestamp(seriesId.toString()).firstOrNull()
+            if (watchHistory != null) {
+                Log.d(TAG, "onSuccess: watchHistory != null")
+
+                run breaking@{
+                    allEpisodes.value!!.forEachIndexed { index, list ->
+                        val item = list.find { item -> item.id == watchHistory.contentId }
+                        if (item != null) {
+                            Log.d(TAG, "onSuccess: item != null")
+                            currentEpisodeProgress.postValue(Pair(item, watchHistory))
+                        } else {
+                            Log.d(TAG, "onSuccess: item == null")
+                            currentEpisodeProgress.postValue(Pair(allEpisodes.value!![0][0],
+                                null))
+                        }
+
+                        setSelectedSeason(seasons.value!![index])
+                        return@breaking
+                    }
+                }
+            } else {
+                Log.d(TAG, "onSuccess: watchHistory == null")
+                currentEpisodeProgress.postValue(Pair(allEpisodes.value!![0][0], null))
+            }
+        }
+    }
+
     private fun makeAPICall(seriesId: Int) {
 
         IptvRepository.getSeriesInfoBySeriesId(seriesId.toString(), object : SeriesInfoCallback() {
@@ -60,33 +91,34 @@ class OverviewViewModel(seriesId: Int) : ViewModel() {
 
 
                 //////
-                viewModelScope.launch(Dispatchers.IO) {
-                    val watchHistory =
-                        iptvDatabase.watchHistoryDao().getSeriesByParentIdOrderByTimestamp(seriesId.toString()).firstOrNull()
-                    if (watchHistory != null) {
-                        Log.d(TAG, "onSuccess: watchHistory != null")
-
-                        run breaking@{
-                            backendResponse.episodes.forEachIndexed { index, list ->
-                                val item = list.find { item -> item.id == watchHistory.contentId }
-                                if (item != null) {
-                                    Log.d(TAG, "onSuccess: item != null")
-                                    currentEpisodeProgress.postValue(Pair(item, watchHistory))
-                                } else {
-                                    Log.d(TAG, "onSuccess: item == null")
-                                    currentEpisodeProgress.postValue(Pair(backendResponse.episodes[0][0],
-                                        null))
-                                }
-
-                                setSelectedSeason(backendResponse.seasons[index])
-                                return@breaking
-                            }
-                        }
-                    } else {
-                        Log.d(TAG, "onSuccess: watchHistory == null")
-                        currentEpisodeProgress.postValue(Pair(backendResponse.episodes[0][0], null))
-                    }
-                }
+                updateWatchHistory(seriesId)
+//                viewModelScope.launch(Dispatchers.IO) {
+//                    val watchHistory =
+//                        iptvDatabase.watchHistoryDao().getSeriesByParentIdOrderByTimestamp(seriesId.toString()).firstOrNull()
+//                    if (watchHistory != null) {
+//                        Log.d(TAG, "onSuccess: watchHistory != null")
+//
+//                        run breaking@{
+//                            backendResponse.episodes.forEachIndexed { index, list ->
+//                                val item = list.find { item -> item.id == watchHistory.contentId }
+//                                if (item != null) {
+//                                    Log.d(TAG, "onSuccess: item != null")
+//                                    currentEpisodeProgress.postValue(Pair(item, watchHistory))
+//                                } else {
+//                                    Log.d(TAG, "onSuccess: item == null")
+//                                    currentEpisodeProgress.postValue(Pair(backendResponse.episodes[0][0],
+//                                        null))
+//                                }
+//
+//                                setSelectedSeason(backendResponse.seasons[index])
+//                                return@breaking
+//                            }
+//                        }
+//                    } else {
+//                        Log.d(TAG, "onSuccess: watchHistory == null")
+//                        currentEpisodeProgress.postValue(Pair(backendResponse.episodes[0][0], null))
+//                    }
+//                }
 
 
             }
