@@ -16,9 +16,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.google.gson.Gson
 import de.itshasan.iptv_client.R
-import de.itshasan.iptv_client.SimplePlayerActivity
 import de.itshasan.iptv_client.overview.adapter.episodes.EpisodeAdapter
 import de.itshasan.iptv_client.overview.dialog.SeasonsDialog
 import de.itshasan.iptv_client.utils.navigator.Navigator
@@ -63,7 +61,7 @@ class OverviewFragment : Fragment() {
         val imageUrl = activity?.intent?.extras?.getString(Constant.COVER_URL)
         val title = activity?.intent?.extras?.getString(Constant.SERIES_TITLE)
 
-        val viewModel: OverviewViewModel by viewModels { OverviewViewModelFactory(seriesId!!) }
+        val viewModel: OverviewViewModel by viewModels { OverviewViewModelFactory(seriesId) }
         this.viewModel = viewModel
 
         this.viewModel.contentName.observe(requireActivity()) {
@@ -128,7 +126,7 @@ class OverviewFragment : Fragment() {
                     episode = it.first,
                     seriesId = seriesId.toString(),
                     coverUrl = imageUrl,
-                    startTimestamp
+                    allEpisodes = viewModel.seriesInfo.value!!.exportAllEpisodes()
                 )
             }
         }
@@ -139,15 +137,13 @@ class OverviewFragment : Fragment() {
                 layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
                 adapter = episodeAdapter.apply {
                     onEpisodeClicked = {
-                        val intent =
-                            Intent(context, SimplePlayerActivity::class.java).apply {
-                                val gson = Gson()
-                                val serializedEpisode = gson.toJson(it)
-                                putExtra(Constant.CONTENT, serializedEpisode)
-                                putExtra(Constant.SERIES_ID, seriesId.toString())
-                                putExtra(Constant.COVER_URL, imageUrl)
-                            }
-                        startActivity(intent)
+                        Navigator.goToSimplePlayer(
+                            activity = requireActivity(),
+                            episode = it,
+                            seriesId = seriesId.toString(),
+                            coverUrl = imageUrl,
+                            allEpisodes = viewModel.seriesInfo.value!!.exportAllEpisodes()
+                        )
                     }
                 }
             }

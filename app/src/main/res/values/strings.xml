@@ -5,4 +5,7 @@
     <string name="director_text_test"><![CDATA[<b>Director:</b>  %1$s]]></string>
     <string name="continue_watch">Continue Watch</string>
     <string name="one_season">1 Season</string>
+    <string name="open_details">Open Details</string>
+    <string name="download_file">Download File</string>
+    <string name="remove_from_continue_watch">Remove from Continue Watch</string>
 </resources>

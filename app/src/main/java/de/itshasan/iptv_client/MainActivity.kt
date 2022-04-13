@@ -16,6 +16,7 @@ import com.google.gson.Gson
 import de.itshasan.iptv_client.category.CategoryActivity
 import de.itshasan.iptv_client.continueWatching.adapter.ContinueWatchingAdapter
 import de.itshasan.iptv_client.overview.ui.buttomSheet.ModalBottomSheet
+import de.itshasan.iptv_client.utils.navigator.Navigator
 import de.itshasan.iptv_core.model.Constant
 import de.itshasan.iptv_core.model.WatchHistory
 import de.itshasan.iptv_core.model.series.info.Episode
@@ -97,18 +98,26 @@ class MainActivity : AppCompatActivity() {
 
                                         dialog.dismiss()
 
-                                        val intent =
-                                            Intent(context,
-                                                SimplePlayerActivity::class.java).apply {
-                                                val gson = Gson()
-                                                val serializedEpisode = gson.toJson(episode)
-                                                putExtra(Constant.CONTENT, serializedEpisode)
-                                                putExtra(Constant.SERIES_ID, it.parentId)
-                                                putExtra(Constant.COVER_URL, it.coverUrl)
-                                                putExtra(Constant.CURRENT_TIME, it.currentTime)
-                                            }
+                                        Navigator.goToSimplePlayer(
+                                            this@MainActivity,
+                                            episode = episode!!,
+                                            seriesId = it.parentId,
+                                            coverUrl = it.coverUrl,
+                                            backendResponse.exportAllEpisodes()
+                                        )
 
-                                        resultLauncher.launch(intent)
+//                                        val intent =
+//                                            Intent(context,
+//                                                SimplePlayerActivity::class.java).apply {
+//                                                val gson = Gson()
+//                                                val serializedEpisode = gson.toJson(episode)
+//                                                putExtra(Constant.CONTENT, serializedEpisode)
+//                                                putExtra(Constant.SERIES_ID, it.parentId)
+//                                                putExtra(Constant.COVER_URL, it.coverUrl)
+//                                                putExtra(Constant.CURRENT_TIME, it.currentTime)
+//                                            }
+//
+////                                        resultLauncher.launch(intent)
 //                                        startActivity(intent)
                                     }
 

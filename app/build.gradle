@@ -33,8 +33,9 @@ android {
     }
 
     buildFeatures {
-        viewBinding true
+        viewBinding = true
     }
+    namespace 'de.itshasan.iptv_client'
 }
 
 dependencies {

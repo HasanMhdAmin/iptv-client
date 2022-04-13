@@ -5,6 +5,28 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_margin="8dp"
+            android:src="@drawable/ic_info" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:padding="8dp"
+            android:text="@string/open_details" />
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/download"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -23,7 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:padding="8dp"
-            android:text="Download File" />
+            android:text="@string/download_file" />
     </LinearLayout>
 
     <LinearLayout
@@ -45,7 +67,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:padding="8dp"
-            android:text="Remove from Continue Watch" />
+            android:text="@string/remove_from_continue_watch" />
 
     </LinearLayout>
 

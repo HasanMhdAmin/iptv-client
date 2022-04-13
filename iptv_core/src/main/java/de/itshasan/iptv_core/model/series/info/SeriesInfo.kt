@@ -15,4 +15,16 @@ data class SeriesInfo(
 //    @SerializedName("episodes")
 //    val episodesMap: String,
     val episodes: MutableList<List<Episode>>
-)
+) {
+    fun exportAllEpisodes(): List<Episode> {
+        val exportedEpisodes = mutableListOf<Episode>()
+        episodes.forEach { season ->
+            exportedEpisodes.addAll(season)
+//            season.forEach { episode ->
+//                exportedEpisodes.add(episode)
+//            }
+        }
+        return exportedEpisodes
+    }
+
+}

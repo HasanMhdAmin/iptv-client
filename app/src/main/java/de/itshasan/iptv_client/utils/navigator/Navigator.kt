@@ -14,8 +14,9 @@ object Navigator {
         episode: Episode,
         seriesId: String,
         coverUrl: String?,
-        currentTime: Long?,
+        allEpisodes: List<Episode>
     ) {
+        SimplePlayerActivity.allEpisode = allEpisodes
         val intent =
             Intent(activity,
                 SimplePlayerActivity::class.java).apply {
@@ -24,7 +25,6 @@ object Navigator {
                 putExtra(Constant.CONTENT, serializedEpisode)
                 putExtra(Constant.SERIES_ID, seriesId)
                 putExtra(Constant.COVER_URL, coverUrl)
-                putExtra(Constant.CURRENT_TIME, currentTime)
             }
         activity.startActivity(intent)
     }

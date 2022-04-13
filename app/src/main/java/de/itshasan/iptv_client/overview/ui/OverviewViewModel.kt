@@ -18,6 +18,7 @@ private val TAG = OverviewViewModel::class.java.simpleName
 
 class OverviewViewModel(seriesId: Int) : ViewModel() {
 
+    var seriesInfo: MutableLiveData<SeriesInfo> = MutableLiveData<SeriesInfo>()
     var contentName: MutableLiveData<String> = MutableLiveData<String>()
     var releaseDate: MutableLiveData<String> = MutableLiveData<String>()
     var plot: MutableLiveData<String> = MutableLiveData<String>()
@@ -44,7 +45,8 @@ class OverviewViewModel(seriesId: Int) : ViewModel() {
     fun updateWatchHistory(seriesId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             val watchHistory =
-                iptvDatabase.watchHistoryDao().getSeriesByParentIdOrderByTimestamp(seriesId.toString()).firstOrNull()
+                iptvDatabase.watchHistoryDao()
+                    .getSeriesByParentIdOrderByTimestamp(seriesId.toString()).firstOrNull()
             if (watchHistory != null) {
                 Log.d(TAG, "onSuccess: watchHistory != null")
 
@@ -56,8 +58,12 @@ class OverviewViewModel(seriesId: Int) : ViewModel() {
                             currentEpisodeProgress.postValue(Pair(item, watchHistory))
                         } else {
                             Log.d(TAG, "onSuccess: item == null")
-                            currentEpisodeProgress.postValue(Pair(allEpisodes.value!![0][0],
-                                null))
+                            currentEpisodeProgress.postValue(
+                                Pair(
+                                    allEpisodes.value!![0][0],
+                                    null
+                                )
+                            )
                         }
 
                         setSelectedSeason(seasons.value!![index])
@@ -76,6 +82,7 @@ class OverviewViewModel(seriesId: Int) : ViewModel() {
         IptvRepository.getSeriesInfoBySeriesId(seriesId.toString(), object : SeriesInfoCallback() {
             override fun onSuccess(backendResponse: SeriesInfo) {
                 // TODO is postValue assign the value also?
+                seriesInfo.postValue(backendResponse)
                 contentName.postValue(backendResponse.info.name)
                 releaseDate.postValue(backendResponse.info.releaseDate)
                 plot.postValue(backendResponse.info.plot)
@@ -89,46 +96,12 @@ class OverviewViewModel(seriesId: Int) : ViewModel() {
                 episodesToShow.postValue(backendResponse.episodes[0])
                 setSelectedSeason(backendResponse.seasons[0])
 
-
-                //////
                 updateWatchHistory(seriesId)
-//                viewModelScope.launch(Dispatchers.IO) {
-//                    val watchHistory =
-//                        iptvDatabase.watchHistoryDao().getSeriesByParentIdOrderByTimestamp(seriesId.toString()).firstOrNull()
-//                    if (watchHistory != null) {
-//                        Log.d(TAG, "onSuccess: watchHistory != null")
-//
-//                        run breaking@{
-//                            backendResponse.episodes.forEachIndexed { index, list ->
-//                                val item = list.find { item -> item.id == watchHistory.contentId }
-//                                if (item != null) {
-//                                    Log.d(TAG, "onSuccess: item != null")
-//                                    currentEpisodeProgress.postValue(Pair(item, watchHistory))
-//                                } else {
-//                                    Log.d(TAG, "onSuccess: item == null")
-//                                    currentEpisodeProgress.postValue(Pair(backendResponse.episodes[0][0],
-//                                        null))
-//                                }
-//
-//                                setSelectedSeason(backendResponse.seasons[index])
-//                                return@breaking
-//                            }
-//                        }
-//                    } else {
-//                        Log.d(TAG, "onSuccess: watchHistory == null")
-//                        currentEpisodeProgress.postValue(Pair(backendResponse.episodes[0][0], null))
-//                    }
-//                }
-
-
             }
 
             override fun onError(status: Int, message: String) {
                 contentName.postValue("Hasan")
             }
         })
-
     }
-
-
 }

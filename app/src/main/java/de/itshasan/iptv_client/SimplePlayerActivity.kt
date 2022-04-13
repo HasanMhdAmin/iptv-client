@@ -7,13 +7,17 @@ import android.view.ScaleGestureDetector
 import android.view.View
 import android.view.WindowManager
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
-import com.google.android.exoplayer2.ui.PlayerControlView
+import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.Player.EVENT_TRACKS_CHANGED
+import com.google.android.exoplayer2.drm.ExoMediaDrm
+import com.google.android.exoplayer2.drm.ExoMediaDrm.OnEventListener
 import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.util.Util
 import com.google.gson.Gson
@@ -29,19 +33,27 @@ import kotlinx.coroutines.launch
 
 private val TAG = SimplePlayerActivity::class.java.simpleName
 
-class SimplePlayerActivity : AppCompatActivity() {
+class SimplePlayerActivity : AppCompatActivity(), Player.Listener {
+
+    companion object {
+        lateinit var allEpisode: List<Episode>
+    }
 
     private var player: ExoPlayer? = null
-    var url =
-        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
+
     private lateinit var episode: Episode
     private lateinit var seriesId: String
     private lateinit var coverUrl: String
+
+    // Views
     private val videoView by lazy {
         findViewById<PlayerView>(R.id.videoView)
     }
     private val back by lazy {
         findViewById<ImageView>(R.id.back)
+    }
+    private val titleTextView by lazy {
+        findViewById<TextView>(R.id.titleTextView)
     }
 
     private var playWhenReady = true
@@ -57,8 +69,10 @@ class SimplePlayerActivity : AppCompatActivity() {
         videoView.setControllerVisibilityListener { visibility ->
             if (visibility == View.VISIBLE) {
                 back.visibility = View.VISIBLE
+                titleTextView.visibility = View.VISIBLE
             } else {
                 back.visibility = View.GONE
+                titleTextView.visibility = View.GONE
             }
         }
 
@@ -73,15 +87,21 @@ class SimplePlayerActivity : AppCompatActivity() {
         if ((Util.SDK_INT < 24 || player == null)) {
             val gson = Gson()
             val serializedEpisode = intent?.extras?.getString(Constant.CONTENT).toString()
+
             episode = gson.fromJson(serializedEpisode, Episode::class.java)
             seriesId = intent?.extras?.getString(Constant.SERIES_ID).toString()
             coverUrl = intent?.extras?.getString(Constant.COVER_URL).toString()
-            playbackPosition = intent?.extras?.getLong(Constant.CURRENT_TIME, 0)!!
 
-            val episodeUrl = getEpisodeStreamUrl(episode.id, episode.containerExtension)
-            url = episodeUrl
+            GlobalScope.launch(Dispatchers.IO) {
 
-            initializePlayer()
+                val watchHistory =
+                    iptvDatabase.watchHistoryDao().getSeriesItem(episode.id)
+                playbackPosition = watchHistory?.currentTime ?: 0
+
+                launch(Dispatchers.Main) {
+                    initializePlayer()
+                }
+            }
         }
     }
 
@@ -98,6 +118,8 @@ class SimplePlayerActivity : AppCompatActivity() {
         if (Util.SDK_INT >= 24) {
             releasePlayer()
         }
+        // TODO; uncomment and test, if it works, leave it.
+//        allEpisode = emptyList()
     }
 
     private fun hideSystemUi() {
@@ -120,7 +142,6 @@ class SimplePlayerActivity : AppCompatActivity() {
             playWhenReady = this.playWhenReady
             release()
 
-
             val progress = 100 * playbackPosition / player!!.contentDuration
             val totalTime = player?.contentDuration
 
@@ -141,7 +162,8 @@ class SimplePlayerActivity : AppCompatActivity() {
                                 currentTime = playbackPosition,
                                 totalTime = totalTime,
                                 coverUrl = coverUrl
-                            ))
+                            )
+                        )
                         iptvDatabase.watchHistoryDao().updateContinueWatchStatus(seriesId, true)
                     }
                 }
@@ -151,7 +173,6 @@ class SimplePlayerActivity : AppCompatActivity() {
             Log.d(TAG, "releasePlayer: contentDuration: ${player?.contentDuration}")
             Log.d(TAG, "releasePlayer: currentWindow: $currentWindow")
             Log.d(TAG, "releasePlayer: playWhenReady: $playWhenReady")
-
 
 
         }
@@ -166,22 +187,33 @@ class SimplePlayerActivity : AppCompatActivity() {
         releasePlayer()
     }
 
+
     private fun initializePlayer() {
         player = ExoPlayer
             .Builder(this)
             .build()
             .also { exoPlayer ->
                 videoView.player = exoPlayer
-                val mediaItem = MediaItem.fromUri(url)
-                exoPlayer.setMediaItem(mediaItem)
+                allEpisode.forEachIndexed { index, episode ->
+                    val episodeUrl = getEpisodeStreamUrl(episode.id, episode.containerExtension)
+                    val mediaItem = MediaItem.Builder()
+                        .setMediaId(episode.id)
+                        .setTag(episode)
+                        .setUri(episodeUrl)
+                        .build()
+                    exoPlayer.addMediaItem(mediaItem)
+                    if (episode.id == this.episode.id)
+                        currentWindow = index
+                }
 
                 exoPlayer.playWhenReady = playWhenReady
                 exoPlayer.seekTo(currentWindow, playbackPosition)
                 exoPlayer.prepare()
 
-                scaleGestureDetector = ScaleGestureDetector(this, CustomOnScaleGestureListener(videoView))
-
+                scaleGestureDetector =
+                    ScaleGestureDetector(this, CustomOnScaleGestureListener(videoView))
             }
+        player?.addListener(this)
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
@@ -211,6 +243,19 @@ class SimplePlayerActivity : AppCompatActivity() {
         currentWindow = savedInstanceState.getInt("currentWindow")
         playbackPosition = savedInstanceState.getLong("playbackPosition")
 
+    }
+
+    override fun onEvents(player: Player, events: Player.Events) {
+        super.onEvents(player, events)
+//        for (e in 0 until events.size()) {
+//            Log.d(TAG, "onEvents: event: ${e}")
+//        }
+        if (events.contains(EVENT_TRACKS_CHANGED)) {
+            Log.d(TAG, "onEvents: mediaId : ${player.currentMediaItem?.mediaId}")
+            episode =
+                allEpisode.find { episode -> episode.id == player.currentMediaItem?.mediaId }!!
+            titleTextView.text = episode.title
+        }
     }
 
 }
