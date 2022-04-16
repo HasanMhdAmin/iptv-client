@@ -10,6 +10,7 @@ import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
@@ -21,6 +22,7 @@ import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.util.Util
 import com.google.gson.Gson
 import de.itshasan.iptv_client.player.listener.CustomOnScaleGestureListener
+import de.itshasan.iptv_client.utils.navigator.Navigator
 import de.itshasan.iptv_core.model.Constant
 import de.itshasan.iptv_core.model.WatchHistory
 import de.itshasan.iptv_core.model.series.info.Episode
@@ -57,6 +59,9 @@ class SimplePlayerActivity : AppCompatActivity(), Player.Listener {
     private val topGradient by lazy {
         findViewById<View>(R.id.topGradient)
     }
+    private val episodesButton by lazy {
+        findViewById<ConstraintLayout>(R.id.episodesButton)
+    }
 
     private var playWhenReady = true
     private var currentWindow = 0
@@ -73,10 +78,12 @@ class SimplePlayerActivity : AppCompatActivity(), Player.Listener {
                 back.visibility = View.VISIBLE
                 titleTextView.visibility = View.VISIBLE
                 topGradient.visibility = View.VISIBLE
+                episodesButton.visibility = View.VISIBLE
             } else {
                 back.visibility = View.GONE
                 titleTextView.visibility = View.GONE
                 topGradient.visibility = View.GONE
+                episodesButton.visibility = View.GONE
             }
         }
 
@@ -95,6 +102,15 @@ class SimplePlayerActivity : AppCompatActivity(), Player.Listener {
             episode = gson.fromJson(serializedEpisode, Episode::class.java)
             seriesId = intent?.extras?.getString(Constant.SERIES_ID).toString()
             coverUrl = intent?.extras?.getString(Constant.COVER_URL).toString()
+
+            episodesButton.setOnClickListener {
+                Navigator.goToEpisodesDialog(
+                    seriesId.toInt(),
+                    coverUrl,
+                    supportFragmentManager,
+                    TAG
+                )
+            }
 
             GlobalScope.launch(Dispatchers.IO) {
 

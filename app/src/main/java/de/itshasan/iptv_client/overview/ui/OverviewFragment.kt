@@ -96,6 +96,7 @@ class OverviewFragment : Fragment() {
 
             seasons.setOnClickListener {
                 if (seasonsList != null) {
+                    // TODO put it in navigator class
                     val seasonsDialog = SeasonsDialog.newInstance()
                     seasonsDialog.seasons = seasonsList
                     seasonsDialog.selectedSeason = viewModel.selectedSeason.value!!

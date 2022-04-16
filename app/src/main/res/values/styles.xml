@@ -47,10 +47,5 @@
         <item name="android:progressTint">@color/golden_yellow</item>
     </style>
 
-    <style name="AppTheme.FullScreenDialog" parent="Theme.MaterialComponents.Light.Dialog">
-        <item name="android:windowIsFloating">false</item>
-        <item name="android:windowBackground">#92000000</item>
-
-    </style>
 
 </resources>
