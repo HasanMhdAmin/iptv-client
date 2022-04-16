@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/HAM01/AndroidStudioProjects/flutter/iptv_client/app/src/main/res/drawable-v24/ic_fill_blue_200dp.xml" value="0.254" />
+        <entry key="..\:/Users/HAM01/AndroidStudioProjects/flutter/iptv_client/app/src/main/res/drawable/background_rounded_corner_gray.xml" value="0.346" />
         <entry key="..\:/Users/HAM01/AndroidStudioProjects/flutter/iptv_client/app/src/main/res/drawable/gradient_black.xml" value="0.254" />
         <entry key="..\:/Users/HAM01/AndroidStudioProjects/flutter/iptv_client/app/src/main/res/drawable/gradient_top.xml" value="0.346" />
         <entry key="..\:/Users/HAM01/AndroidStudioProjects/flutter/iptv_client/app/src/main/res/drawable/ic_back.xml" value="0.2375" />

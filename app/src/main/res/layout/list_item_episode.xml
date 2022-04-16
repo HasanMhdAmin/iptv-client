@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="@dimen/safe_area">
@@ -49,11 +50,50 @@
 
     <TextView
         android:id="@+id/durationTextView"
+        style="@style/TextViewRegular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/safe_area"
+        android:padding="@dimen/small_to_boarder"
+        app:layout_constraintBottom_toTopOf="@+id/releaseDateTextView"
+        app:layout_constraintStart_toEndOf="@+id/thumbImageView"
+        app:layout_constraintTop_toBottomOf="@+id/titleTextView"
+        tools:text="22 min" />
+
+    <TextView
+        android:id="@+id/releaseDateTextView"
+        style="@style/TextViewRegular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/safe_area"
+        android:padding="@dimen/small_to_boarder"
+        app:layout_constraintBottom_toTopOf="@+id/plotTextView"
+        app:layout_constraintStart_toEndOf="@+id/thumbImageView"
+        app:layout_constraintTop_toBottomOf="@+id/durationTextView"
+        tools:text="2022-01-18" />
+
+    <TextView
+        android:id="@+id/plotTextView"
+        style="@style/TextViewRegular"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="@dimen/safe_area"
-        android:text="22 min"
-        app:layout_constraintStart_toEndOf="@+id/thumbImageView"
-        app:layout_constraintTop_toBottomOf="@+id/titleTextView" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/progressBar"
+        tools:text="@string/lorem_ipsum" />
+
+    <TextView
+        android:id="@+id/ratingTextView"
+        style="@style/TextViewRegular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_rounded_corner_gray"
+        android:padding="@dimen/small_to_boarder"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/plotTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="7.7" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
