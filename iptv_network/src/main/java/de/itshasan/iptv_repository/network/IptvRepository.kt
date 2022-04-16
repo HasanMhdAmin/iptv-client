@@ -114,12 +114,6 @@ object IptvRepository : IptvRepositoryContract {
                 val info = gson.fromJson(allJson.getString("info"), Info::class.java)
                 val seasonType  = object : TypeToken<List<Season>>() {}.type
 
-                val seasonInfo = gson.fromJson<MutableList<Season>>(allJson.getString("seasons"), seasonType)
-                val toRemove = seasonInfo.firstOrNull { it.seasonNumber == 0 }
-                // remove not wanted entry. (tested on The Big Bang Theory)
-                toRemove?.let {
-                    seasonInfo.remove(it)
-                }
                 val type = object:TypeToken<Map<String, Object>>(){}.type
                 val seasonHashMap = gson.fromJson<Map<String, Object>>(allJson.getString("episodes"), type)
                 val episodesJsonObjectWrapper = JSONObject(allJson.getString("episodes"))
@@ -135,21 +129,30 @@ object IptvRepository : IptvRepositoryContract {
                         listType)
                     listOfSeason.add(listOfSeasonEpisodes)
                 }
-                if (seasonInfo.isEmpty()) {
+
+                var seasonInfo = gson.fromJson<MutableList<Season>>(allJson.getString("seasons"), seasonType)
+                // build season list if not available
+                if (seasonInfo == null || seasonInfo.isEmpty()) {
+                    seasonInfo = mutableListOf()
                     listOfSeason.forEachIndexed { index, episodes ->
-                        // build season list if not available
                         seasonInfo.add(Season(
-                            0,
-                            episodes.size,
-                            index + 1,
-                            "Season ${index + 1}",
-                            "",
-                            index + 1,
-                            "",
-                            ""
+                            airDate = "N/A",
+                            episodeCount = episodes.size,
+                            id = -1,
+                            name = "Season ${index + 1}",
+                            overview = "",
+                            seasonNumber = index + 1,
+                            cover = info.cover,
+                            coverBig = info.cover
                         ))
                     }
                 }
+                val toRemove = seasonInfo.firstOrNull { it.seasonNumber == 0 }
+                // remove not wanted entry. (tested on The Big Bang Theory)
+                toRemove?.let {
+                    seasonInfo.remove(it)
+                }
+
                 val seriesInfo = SeriesInfo(seasonInfo, info, listOfSeason)
 
                 callback.onSuccess(seriesInfo)
@@ -163,6 +166,6 @@ object IptvRepository : IptvRepositoryContract {
     }
 
     override fun getEpisodeStreamUrl(episodeId: String, episodeExtension: String) =
-        "http://teslaiptv.com:8080/series/hasanxmhdxamin/569247364/$episodeId.$episodeExtension"
+        "http://teslaiptv.com:8080/series/$username/$password/$episodeId.$episodeExtension"
 
 }

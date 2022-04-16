@@ -94,8 +94,8 @@ class OverviewViewModel(seriesId: Int) : ViewModel() {
                 allEpisodes.postValue(backendResponse.episodes)
                 allEpisodes.value = backendResponse.episodes
                 episodesToShow.postValue(backendResponse.episodes[0])
-                setSelectedSeason(backendResponse.seasons[0])
 
+                setSelectedSeason(backendResponse.seasons[0])
                 updateWatchHistory(seriesId)
             }
 
