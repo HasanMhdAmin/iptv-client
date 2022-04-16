@@ -17,6 +17,7 @@
     android:background="#CC000000"
     android:layoutDirection="ltr"
     android:orientation="vertical"
+    android:paddingBottom="@dimen/padding"
     tools:targetApi="28">
 
     <LinearLayout

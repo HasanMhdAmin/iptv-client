@@ -1,5 +1,6 @@
 package de.itshasan.iptv_client
 
+import android.app.PictureInPictureParams
 import android.os.Bundle
 import android.util.Log
 import android.view.MotionEvent
@@ -16,8 +17,6 @@ import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.Player.EVENT_TRACKS_CHANGED
-import com.google.android.exoplayer2.drm.ExoMediaDrm
-import com.google.android.exoplayer2.drm.ExoMediaDrm.OnEventListener
 import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.util.Util
 import com.google.gson.Gson
@@ -55,6 +54,9 @@ class SimplePlayerActivity : AppCompatActivity(), Player.Listener {
     private val titleTextView by lazy {
         findViewById<TextView>(R.id.titleTextView)
     }
+    private val topGradient by lazy {
+        findViewById<View>(R.id.topGradient)
+    }
 
     private var playWhenReady = true
     private var currentWindow = 0
@@ -70,9 +72,11 @@ class SimplePlayerActivity : AppCompatActivity(), Player.Listener {
             if (visibility == View.VISIBLE) {
                 back.visibility = View.VISIBLE
                 titleTextView.visibility = View.VISIBLE
+                topGradient.visibility = View.VISIBLE
             } else {
                 back.visibility = View.GONE
                 titleTextView.visibility = View.GONE
+                topGradient.visibility = View.GONE
             }
         }
 
@@ -115,9 +119,9 @@ class SimplePlayerActivity : AppCompatActivity(), Player.Listener {
 
     public override fun onStop() {
         super.onStop()
-        if (Util.SDK_INT >= 24) {
-            releasePlayer()
-        }
+        releasePlayer()
+        finishAndRemoveTask()
+
         // TODO; uncomment and test, if it works, leave it.
 //        allEpisode = emptyList()
     }
@@ -187,6 +191,13 @@ class SimplePlayerActivity : AppCompatActivity(), Player.Listener {
         releasePlayer()
     }
 
+    //Called when the user touches the Home or Recents button to leave the app.
+    override fun onUserLeaveHint() {
+        super.onUserLeaveHint()
+        val pictureParams = PictureInPictureParams.Builder()
+            .build()
+        enterPictureInPictureMode(pictureParams)
+    }
 
     private fun initializePlayer() {
         player = ExoPlayer
@@ -247,9 +258,6 @@ class SimplePlayerActivity : AppCompatActivity(), Player.Listener {
 
     override fun onEvents(player: Player, events: Player.Events) {
         super.onEvents(player, events)
-//        for (e in 0 until events.size()) {
-//            Log.d(TAG, "onEvents: event: ${e}")
-//        }
         if (events.contains(EVENT_TRACKS_CHANGED)) {
             Log.d(TAG, "onEvents: mediaId : ${player.currentMediaItem?.mediaId}")
             episode =
