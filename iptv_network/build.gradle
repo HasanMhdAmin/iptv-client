@@ -3,9 +3,6 @@ plugins {
     id 'org.jetbrains.kotlin.android'
 }
 
-def localProperties = new Properties()
-localProperties.load(new FileInputStream(rootProject.file("local.properties")))
-
 android {
     compileSdk 31
 
@@ -16,9 +13,6 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
 
-        buildConfigField "String", "IPTV_SERVER",localProperties['iptv.server']
-        buildConfigField "String", "IPTV_USERNAME",localProperties['iptv.username']
-        buildConfigField "String", "IPTV_PASSWORD",localProperties['iptv.password']
     }
 
     buildTypes {

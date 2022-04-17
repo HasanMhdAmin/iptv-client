@@ -29,9 +29,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 object IptvRepository : IptvRepositoryContract {
 
     private val TAG = IptvRepository::class.java.simpleName
-//    private const val baseUrl: String = BuildConfig.IPTV_SERVER
-//    private const val username: String = BuildConfig.IPTV_USERNAME
-//    private const val password: String = BuildConfig.IPTV_PASSWORD
 
     private var gson = GsonBuilder()
         .setLenient()
