@@ -56,18 +56,11 @@ class OverviewViewModel(seriesId: Int) : ViewModel() {
                         if (item != null) {
                             Log.d(TAG, "onSuccess: item != null")
                             currentEpisodeProgress.postValue(Pair(item, watchHistory))
+                            setSelectedSeason(seasons.value!![index])
+                            return@breaking
                         } else {
                             Log.d(TAG, "onSuccess: item == null")
-                            currentEpisodeProgress.postValue(
-                                Pair(
-                                    allEpisodes.value!![0][0],
-                                    null
-                                )
-                            )
                         }
-
-                        setSelectedSeason(seasons.value!![index])
-                        return@breaking
                     }
                 }
             } else {

@@ -8,6 +8,7 @@ import androidx.fragment.app.viewModels
 import de.itshasan.iptv_client.R
 import de.itshasan.iptv_client.databinding.DialogEpisodesBinding
 import de.itshasan.iptv_client.overview.adapter.episodes.EpisodeAdapter
+import de.itshasan.iptv_client.overview.dialog.SeasonsDialog
 import de.itshasan.iptv_client.overview.ui.OverviewViewModel
 import de.itshasan.iptv_client.overview.ui.OverviewViewModelFactory
 import de.itshasan.iptv_client.utils.navigator.Navigator
@@ -23,7 +24,8 @@ class EpisodesDialog(
 ) : CoreDialog<DialogEpisodesBinding>(R.layout.dialog_episodes) {
 
     companion object {
-        fun newInstance(episode: Episode, seriesId: Int, imageUrl: String) = EpisodesDialog(episode, seriesId, imageUrl)
+        fun newInstance(episode: Episode, seriesId: Int, imageUrl: String) =
+            EpisodesDialog(episode, seriesId, imageUrl)
     }
 
     private lateinit var viewModel: OverviewViewModel
@@ -60,7 +62,33 @@ class EpisodesDialog(
                         )
                     }
                 }
+                val currentPosition =
+                    if (episodesList.indexOf(episode) != -1) episodesList.indexOf(episode) else 0
+                scrollToPosition(currentPosition)
             }
         }
+
+        this.viewModel.seasons.observe(requireActivity()) { seasonsList ->
+            binding.seasons.setOnClickListener {
+                if (seasonsList != null) {
+                    // TODO put it in navigator class
+                    val seasonsDialog = SeasonsDialog.newInstance()
+                    seasonsDialog.seasons = seasonsList
+                    seasonsDialog.selectedSeason = viewModel.selectedSeason.value!!
+                    seasonsDialog.show(
+                        parentFragmentManager,
+                        TAG
+                    )
+                    seasonsDialog.onSeasonSelected = {
+                        viewModel.setSelectedSeason(it)
+                    }
+                }
+            }
+        }
+
+        this.viewModel.selectedSeason.observe(requireActivity()) {
+            binding.seasons.text = it.name
+        }
+
     }
 }
