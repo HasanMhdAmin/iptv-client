@@ -18,7 +18,7 @@ private val TAG = GalleryViewModel::class.java.simpleName
 class GalleryViewModel(categoryId: String, application: Application) :
     AndroidViewModel(application) {
 
-    var recyclerListData: MutableLiveData<SeriesList> = MutableLiveData<SeriesList>()
+    var recyclerListData: MutableLiveData<SeriesList?> = MutableLiveData<SeriesList?>()
     var musicRecyclerViewAdapter: GalleryAdapter = GalleryAdapter()
 
     init {
@@ -48,7 +48,7 @@ class GalleryViewModel(categoryId: String, application: Application) :
         musicRecyclerViewAdapter.notifyDataSetChanged()
     }
 
-    fun getRecyclerListDataObserver(): MutableLiveData<SeriesList> {
+    fun getRecyclerListDataObserver(): MutableLiveData<SeriesList?> {
         return recyclerListData
     }
 
