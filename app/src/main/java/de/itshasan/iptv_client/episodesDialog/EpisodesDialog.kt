@@ -37,6 +37,11 @@ class EpisodesDialog(
         val viewModel: OverviewViewModel by viewModels { OverviewViewModelFactory(seriesId) }
         this.viewModel = viewModel
 
+        this.viewModel.plot.observe(requireActivity()) {
+            binding.plotTextView.text = it
+            if (it.isEmpty()) binding.plotTextView.visibility = View.GONE
+        }
+
         this.viewModel.episodesToShow.observe(requireActivity()) { episodesList ->
             Log.d(TAG, "onViewCreated: episodesList : ${episodesList.size}")
             val episodeAdapter = EpisodeAdapter(episodes = episodesList)
