@@ -1,7 +1,6 @@
 package de.itshasan.iptv_client.episodesDialog
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import androidx.fragment.app.viewModels
@@ -37,6 +36,8 @@ class EpisodesDialog(
         super.onViewCreated(view, savedInstanceState)
 
         binding.back.setOnClickListener { dismiss() }
+        binding.seasons.visibility = View.GONE
+        binding.progressBar.visibility = View.VISIBLE
 
         val viewModel: OverviewViewModel by viewModels { OverviewViewModelFactory(seriesId) }
         this.viewModel = viewModel
@@ -47,7 +48,7 @@ class EpisodesDialog(
         }
 
         this.viewModel.episodesToShow.observe(requireActivity()) { episodesList ->
-            Log.d(TAG, "onViewCreated: episodesList : ${episodesList.size}")
+            binding.progressBar.visibility = View.GONE
             val episodeAdapter = EpisodeAdapter(episodes = episodesList, episode)
             binding.episodesRecyclerview.apply {
                 layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
@@ -87,6 +88,7 @@ class EpisodesDialog(
         }
 
         this.viewModel.selectedSeason.observe(requireActivity()) {
+            binding.seasons.visibility = View.VISIBLE
             binding.seasons.text = it.name
         }
 
