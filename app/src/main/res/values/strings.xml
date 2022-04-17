@@ -9,4 +9,8 @@
     <string name="download_file">Download File</string>
     <string name="remove_from_continue_watch">Remove from Continue Watch</string>
     <string name="lorem_ipsum">Lorem ipsum dolor sit amet. Vel nihil nesciunt non nemo quia ut galisum dolores quo nisi ducimus et culpa libero eum quod consequuntur ut nihil ipsa. Ut dolor rerum id dolor omnis aut Quis omnis. Est doloremque earum ad quam sapiente est quis animi 33 maiores placeat.</string>
+    <string name="sign_in">Sign In</string>
+    <string name="server_url">Server URL</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
 </resources>

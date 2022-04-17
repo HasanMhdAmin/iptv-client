@@ -5,6 +5,7 @@
     <dimen name="regular_button_text_size">16sp</dimen>
     <dimen name="small_to_boarder">2dp</dimen>
     <dimen name="safe_area">7dp</dimen>
+    <dimen name="safe_area_double">14dp</dimen>
     <dimen name="padding">20dp</dimen>
     <dimen name="padding_half">10dp</dimen>
     <dimen name="dialog_floating_button">20dp</dimen>

@@ -5,19 +5,16 @@ import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.exoplayer2.ExoPlayer
-import com.google.gson.Gson
 import de.itshasan.iptv_client.category.CategoryActivity
 import de.itshasan.iptv_client.continueWatching.adapter.ContinueWatchingAdapter
+import de.itshasan.iptv_client.login.LoginActivity
 import de.itshasan.iptv_client.overview.ui.buttomSheet.ModalBottomSheet
 import de.itshasan.iptv_client.utils.navigator.Navigator
-import de.itshasan.iptv_core.model.Constant
 import de.itshasan.iptv_core.model.WatchHistory
 import de.itshasan.iptv_core.model.series.info.Episode
 import de.itshasan.iptv_core.model.series.info.SeriesInfo
@@ -28,13 +25,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-
 private val TAG = MainActivity::class.java.simpleName
 
 class MainActivity : AppCompatActivity() {
 
     private val series by lazy {
         findViewById<CardView>(R.id.series)
+    }
+    private val live by lazy {
+        findViewById<CardView>(R.id.live)
     }
 
     private val continueWatchingRecyclerView by lazy {
@@ -48,6 +47,11 @@ class MainActivity : AppCompatActivity() {
 
         series.setOnClickListener {
             val intent = Intent(this, CategoryActivity::class.java)
+            startActivity(intent)
+        }
+
+        live.setOnClickListener {
+            val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
         }
 
@@ -68,19 +72,23 @@ class MainActivity : AppCompatActivity() {
                 val continueWatchingAdapter = ContinueWatchingAdapter(history)
                 continueWatchingRecyclerView.apply {
                     layoutManager =
-                        LinearLayoutManager(this@MainActivity,
+                        LinearLayoutManager(
+                            this@MainActivity,
                             LinearLayoutManager.HORIZONTAL,
-                            false)
+                            false
+                        )
                     adapter = continueWatchingAdapter.apply {
                         onWatchHistoryClicked = {
 
                             Log.d(TAG, "onResume: it: $it")
 
                             val dialog =
-                                ProgressDialog.show(context,
+                                ProgressDialog.show(
+                                    context,
                                     "Fetching content info",
                                     "preparing the content, Please wait...",
-                                    true)
+                                    true
+                                )
 
                             IptvRepository.getSeriesInfoBySeriesId(it.parentId,
                                 object : SeriesInfoCallback() {
@@ -137,12 +145,12 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            refreshContinueWatch()
+    var resultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                refreshContinueWatch()
+            }
         }
-    }
-
 
 
     private fun showBottomSheetDialog(watchHistory: WatchHistory) {

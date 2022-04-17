@@ -35,6 +35,12 @@
 
     <style name="ButtonPrimary" parent="ButtonPrimaryStyle" />
 
+    <style name="ButtonGoldStyle" parent="ButtonPrimaryStyle">
+        <item name="backgroundTint">@color/golden_yellow</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="iconTint">@color/black</item>
+    </style>
+
     <style name="ButtonRegular" parent="Widget.MaterialComponents.Button">
         <item name="backgroundTint">@color/light_gray</item>
         <item name="android:textColor">@color/white</item>
