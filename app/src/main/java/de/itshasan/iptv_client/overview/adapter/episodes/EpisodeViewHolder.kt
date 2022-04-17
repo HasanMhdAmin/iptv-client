@@ -1,15 +1,16 @@
 package de.itshasan.iptv_client.overview.adapter.episodes
 
 import android.view.View
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.appcompat.content.res.AppCompatResources
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import de.itshasan.iptv_client.R
 import de.itshasan.iptv_core.model.series.info.Episode
 import de.itshasan.iptv_database.database.iptvDatabase
-import de.itshasan.iptv_repository.network.IptvRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -19,6 +20,7 @@ class EpisodeViewHolder(
     private val onEpisodeClicked: ((Episode) -> Unit),
 ) : androidx.recyclerview.widget.RecyclerView.ViewHolder(view) {
 
+    private val imageContainer by lazy { view.findViewById<FrameLayout>(R.id.imageContainer) }
     private val thumbImageView by lazy { view.findViewById<ImageView>(R.id.thumbImageView) }
     private val progressBar by lazy { view.findViewById<ProgressBar>(R.id.progressBar) }
     private val titleTextView by lazy { view.findViewById<TextView>(R.id.titleTextView) }
@@ -27,7 +29,7 @@ class EpisodeViewHolder(
     private val releaseDateTextView by lazy { view.findViewById<TextView>(R.id.releaseDateTextView) }
     private val durationTextView by lazy { view.findViewById<TextView>(R.id.durationTextView) }
 
-    fun onBind(episode: Episode, position: Int) {
+    fun onBind(episode: Episode, position: Int, currentEpisode: Episode?) {
         titleTextView.text = episode.title
         plotTextView.text = episode.info.plot ?: ""
         if (plotTextView.text == "")
@@ -62,6 +64,15 @@ class EpisodeViewHolder(
             .placeholder(R.color.gray)
             .diskCacheStrategy(DiskCacheStrategy.ALL)
             .into(thumbImageView)
+
+        if (currentEpisode != null
+            && episode == currentEpisode
+        ) {
+            imageContainer.background =
+                AppCompatResources.getDrawable(view.context, R.drawable.current_episode_background)
+        } else {
+            imageContainer.background = null
+        }
 
         thumbImageView.setOnClickListener {
             onEpisodeClicked(episode)

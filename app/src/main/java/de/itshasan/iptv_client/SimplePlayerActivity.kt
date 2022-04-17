@@ -105,6 +105,7 @@ class SimplePlayerActivity : AppCompatActivity(), Player.Listener {
 
             episodesButton.setOnClickListener {
                 Navigator.goToEpisodesDialog(
+                    episode,
                     seriesId.toInt(),
                     coverUrl,
                     supportFragmentManager,

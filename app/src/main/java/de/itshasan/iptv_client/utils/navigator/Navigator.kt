@@ -34,12 +34,13 @@ object Navigator {
     }
 
     fun goToEpisodesDialog(
+        episode: Episode,
         seriesId: Int,
         imageUrl: String,
         fragmentManager: FragmentManager,
         tag: String
     ) {
-        val episodesDialog = EpisodesDialog.newInstance(seriesId, imageUrl)
+        val episodesDialog = EpisodesDialog.newInstance(episode, seriesId, imageUrl)
         episodesDialog.show(fragmentManager, tag)
     }
 }

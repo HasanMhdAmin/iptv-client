@@ -8,6 +8,7 @@ import de.itshasan.iptv_core.model.series.info.Episode
 
 class EpisodeAdapter(
     var episodes: List<Episode>,
+    var currentEpisode: Episode? = null,
 ) :
     RecyclerView.Adapter<EpisodeViewHolder>() {
 
@@ -21,7 +22,7 @@ class EpisodeAdapter(
 
     override fun onBindViewHolder(holder: EpisodeViewHolder, position: Int) {
         val episode = episodes[position]
-        holder.onBind(episode, position)
+        holder.onBind(episode, position, currentEpisode)
     }
 
     override fun getItemCount() = episodes.size

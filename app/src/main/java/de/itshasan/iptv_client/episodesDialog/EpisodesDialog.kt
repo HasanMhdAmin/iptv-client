@@ -12,16 +12,18 @@ import de.itshasan.iptv_client.overview.ui.OverviewViewModel
 import de.itshasan.iptv_client.overview.ui.OverviewViewModelFactory
 import de.itshasan.iptv_client.utils.navigator.Navigator
 import de.itshasan.iptv_core.CoreDialog
+import de.itshasan.iptv_core.model.series.info.Episode
 
 private const val TAG = "EpisodesDialog"
 
 class EpisodesDialog(
+    private val episode: Episode,
     private val seriesId: Int,
     private val imageUrl: String
 ) : CoreDialog<DialogEpisodesBinding>(R.layout.dialog_episodes) {
 
     companion object {
-        fun newInstance(seriesId: Int, imageUrl: String) = EpisodesDialog(seriesId, imageUrl)
+        fun newInstance(episode: Episode, seriesId: Int, imageUrl: String) = EpisodesDialog(episode, seriesId, imageUrl)
     }
 
     private lateinit var viewModel: OverviewViewModel
@@ -44,7 +46,7 @@ class EpisodesDialog(
 
         this.viewModel.episodesToShow.observe(requireActivity()) { episodesList ->
             Log.d(TAG, "onViewCreated: episodesList : ${episodesList.size}")
-            val episodeAdapter = EpisodeAdapter(episodes = episodesList)
+            val episodeAdapter = EpisodeAdapter(episodes = episodesList, episode)
             binding.episodesRecyclerview.apply {
                 layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
                 adapter = episodeAdapter.apply {

@@ -6,35 +6,49 @@
     android:layout_height="wrap_content"
     android:padding="@dimen/safe_area">
 
-    <ImageView
-        android:id="@+id/thumbImageView"
-        android:layout_width="160dp"
-        android:layout_height="90dp"
-        android:src="@color/gray"
+    <FrameLayout
+        android:id="@+id/imageContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/current_episode_background"
+        android:padding="@dimen/small_to_boarder"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:src="@drawable/ic_play_circle"
-        app:layout_constraintBottom_toBottomOf="@+id/thumbImageView"
-        app:layout_constraintEnd_toEndOf="@+id/thumbImageView"
-        app:layout_constraintStart_toStartOf="@+id/thumbImageView"
-        app:layout_constraintTop_toTopOf="@+id/thumbImageView" />
+        <ImageView
+            android:id="@+id/thumbImageView"
+            android:layout_width="160dp"
+            android:layout_height="90dp"
+            android:src="@color/gray"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/progress_bar_height"
-        android:max="100"
-        android:progress="0"
-        android:progressTint="@color/golden_yellow"
-        app:layout_constraintBottom_toBottomOf="@+id/thumbImageView"
-        app:layout_constraintEnd_toEndOf="@+id/thumbImageView"
-        app:layout_constraintStart_toStartOf="@+id/thumbImageView" />
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_play_circle"
+            app:layout_constraintBottom_toBottomOf="@+id/thumbImageView"
+            app:layout_constraintEnd_toEndOf="@+id/thumbImageView"
+            app:layout_constraintStart_toStartOf="@+id/thumbImageView"
+            app:layout_constraintTop_toTopOf="@+id/thumbImageView" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="160dp"
+            android:layout_height="@dimen/progress_bar_height"
+            android:layout_gravity="bottom"
+            android:max="100"
+            android:progress="0"
+            android:progressTint="@color/golden_yellow"
+            app:layout_constraintBottom_toBottomOf="@+id/thumbImageView"
+            app:layout_constraintEnd_toEndOf="@+id/thumbImageView"
+            app:layout_constraintStart_toStartOf="@+id/thumbImageView" />
+
+    </FrameLayout>
+
 
     <TextView
         android:id="@+id/titleTextView"
@@ -45,8 +59,8 @@
         android:text="This is title placeholder"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/thumbImageView"
-        app:layout_constraintTop_toTopOf="@+id/thumbImageView" />
+        app:layout_constraintStart_toEndOf="@+id/imageContainer"
+        app:layout_constraintTop_toTopOf="@+id/imageContainer" />
 
     <TextView
         android:id="@+id/durationTextView"
@@ -56,7 +70,7 @@
         android:layout_marginStart="@dimen/safe_area"
         android:padding="@dimen/small_to_boarder"
         app:layout_constraintBottom_toTopOf="@+id/releaseDateTextView"
-        app:layout_constraintStart_toEndOf="@+id/thumbImageView"
+        app:layout_constraintStart_toEndOf="@+id/imageContainer"
         app:layout_constraintTop_toBottomOf="@+id/titleTextView"
         tools:text="22 min" />
 
@@ -68,7 +82,7 @@
         android:layout_marginStart="@dimen/safe_area"
         android:padding="@dimen/small_to_boarder"
         app:layout_constraintBottom_toTopOf="@+id/plotTextView"
-        app:layout_constraintStart_toEndOf="@+id/thumbImageView"
+        app:layout_constraintStart_toEndOf="@+id/imageContainer"
         app:layout_constraintTop_toBottomOf="@+id/durationTextView"
         tools:text="2022-01-18" />
 
@@ -80,7 +94,7 @@
         android:padding="@dimen/safe_area"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/progressBar"
+        app:layout_constraintTop_toBottomOf="@+id/imageContainer"
         tools:text="@string/lorem_ipsum" />
 
     <TextView
