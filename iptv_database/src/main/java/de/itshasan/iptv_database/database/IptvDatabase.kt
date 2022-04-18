@@ -13,8 +13,6 @@ import de.itshasan.iptv_database.database.dao.WatchHistoryDao
 import de.itshasan.iptv_database.database.di.DaggerDatabaseComponent
 import de.itshasan.iptv_database.database.di.DatabaseComponent
 import de.itshasan.iptv_database.database.di.module.DatabaseModule
-import javax.inject.Inject
-import javax.inject.Singleton
 
 private var component: DatabaseComponent? = null
 
@@ -30,7 +28,7 @@ fun initDatabase(context: Context) {
 }
 
 @Database(entities = [SeriesCategoriesItem::class, SeriesItem::class, WatchHistory::class],
-    version = 8,
+    version = 14,
     exportSchema = false)
 abstract class IptvDatabase : RoomDatabase() {
     companion object {
@@ -55,5 +53,4 @@ abstract class IptvDatabase : RoomDatabase() {
     abstract fun seriesCategoryDao(): SeriesCategoryDao
     abstract fun seriesItemDao(): SeriesItemDao
     abstract fun watchHistoryDao(): WatchHistoryDao
-
 }

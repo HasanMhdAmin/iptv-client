@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "40816940195",
+    "project_id": "iptv-client-f112a",
+    "storage_bucket": "iptv-client-f112a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:40816940195:android:01e5855c20784394eadb16",
+        "android_client_info": {
+          "package_name": "de.itshasan.iptv_client"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "40816940195-ckuhkqb5p1ri99qeb8hvurqch5q9egqg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA0uOOC0jFGKRZhj4RQE4C-blOyshlhyts"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "40816940195-ckuhkqb5p1ri99qeb8hvurqch5q9egqg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

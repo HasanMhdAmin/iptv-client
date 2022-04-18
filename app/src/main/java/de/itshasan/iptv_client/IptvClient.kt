@@ -1,6 +1,7 @@
 package de.itshasan.iptv_client
 
 import android.app.Application
+import com.google.firebase.FirebaseApp
 import de.itshasan.iptv_database.database.initDatabase
 import de.itshasan.iptv_repository.storage.LocalStorage.initPreferences
 
@@ -10,5 +11,6 @@ class IptvClient : Application() {
         super.onCreate()
         initDatabase(this)
         initPreferences(this)
+        FirebaseApp.initializeApp(this)
     }
 }

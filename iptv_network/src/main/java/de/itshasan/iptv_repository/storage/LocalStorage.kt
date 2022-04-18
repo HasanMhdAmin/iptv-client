@@ -52,4 +52,16 @@ object LocalStorage {
     }
 
     fun getPassword() = localStorage.getString(PREF_PASSWORD, "")
+
+    fun getUniqueContentId(id: String, category: String) =
+        ("${getServerUrl()}.${getUsername()}.${getPassword()}.$category.$id")
+            .replace("https://", "")
+            .replace("http://", "")
+            .replace("/", ".")
+
+    fun getUniqueUserId() =
+        "${getServerUrl()}.${getUsername()}.${getPassword()}"
+            .replace("https://", "")
+            .replace("http://", "")
+            .replace("/", ".")
 }

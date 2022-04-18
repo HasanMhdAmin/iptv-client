@@ -14,6 +14,7 @@ class LoginActivity : AppCompatActivity() {
         supportActionBar?.hide()
 
         if (LocalStorage.getServerUrl()?.isNotBlank()!!) {
+            finish()
             Navigator.goToMainActivity(this)
         }
 

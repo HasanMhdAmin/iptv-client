@@ -33,11 +33,15 @@ object IptvRepository : IptvRepositoryContract {
     private var gson = GsonBuilder()
         .setLenient()
         .create()
-    private val retrofit: Retrofit = Retrofit.Builder()
-        .baseUrl(LocalStorage.getServerUrl()!!)
-        .addConverterFactory(GsonConverterFactory.create(gson))
-        .build()
-    private val seriesService: SeriesService = retrofit.create(SeriesService::class.java)
+    private val retrofit: Retrofit by lazy {
+        Retrofit.Builder()
+            .baseUrl(LocalStorage.getServerUrl())
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .build()
+    }
+    private val seriesService: SeriesService by lazy {
+        retrofit.create(SeriesService::class.java)
+    }
 
     private fun printURL(method: String, url: String) {
         Log.d(TAG, "$method: url: $url")

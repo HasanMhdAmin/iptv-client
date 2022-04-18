@@ -10,17 +10,22 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import de.itshasan.iptv_client.category.CategoryActivity
 import de.itshasan.iptv_client.continueWatching.adapter.ContinueWatchingAdapter
 import de.itshasan.iptv_client.login.LoginActivity
 import de.itshasan.iptv_client.overview.ui.buttomSheet.ModalBottomSheet
+import de.itshasan.iptv_client.utils.firebase.Firestore.firestore
 import de.itshasan.iptv_client.utils.navigator.Navigator
 import de.itshasan.iptv_core.model.WatchHistory
 import de.itshasan.iptv_core.model.series.info.Episode
 import de.itshasan.iptv_core.model.series.info.SeriesInfo
+import de.itshasan.iptv_core.utils.Serializer.appGson
 import de.itshasan.iptv_database.database.iptvDatabase
 import de.itshasan.iptv_repository.network.IptvRepository
 import de.itshasan.iptv_repository.network.callback.SeriesInfoCallback
+import de.itshasan.iptv_repository.storage.LocalStorage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -54,7 +59,6 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
         }
-
     }
 
     override fun onResume() {
@@ -67,80 +71,84 @@ class MainActivity : AppCompatActivity() {
         Log.d(TAG, "onResume - > refreshContinueWatch: ")
         // TODO: Do i need to send the request in refresh? after exiting the view
         GlobalScope.launch(Dispatchers.IO) {
-            val history = iptvDatabase.watchHistoryDao().getContinueWatching()
-            launch(Dispatchers.Main) {
-                val continueWatchingAdapter = ContinueWatchingAdapter(history)
-                continueWatchingRecyclerView.apply {
-                    layoutManager =
-                        LinearLayoutManager(
-                            this@MainActivity,
-                            LinearLayoutManager.HORIZONTAL,
-                            false
-                        )
-                    adapter = continueWatchingAdapter.apply {
-                        onWatchHistoryClicked = {
 
-                            Log.d(TAG, "onResume: it: $it")
+            // Pull db updates
+            firestore.collection("users_test").whereEqualTo("userId", LocalStorage.getUniqueUserId()).get()
+                .addOnSuccessListener { result ->
+                    for (document in result) {
+                        val jsonString = appGson.toJson(document.data)
+                        val watchHistory = appGson.fromJson(jsonString, WatchHistory::class.java)
+                        GlobalScope.launch(Dispatchers.IO) {
+                            iptvDatabase.watchHistoryDao().insert(watchHistory)
+                            val history = iptvDatabase.watchHistoryDao().getContinueWatching()
 
-                            val dialog =
-                                ProgressDialog.show(
-                                    context,
-                                    "Fetching content info",
-                                    "preparing the content, Please wait...",
-                                    true
-                                )
+                            // Push db updates
+                            history.forEachIndexed { index, it ->
+                                firestore.collection("users_test").document(it.uniqueId).set(it)
+                            }
 
-                            IptvRepository.getSeriesInfoBySeriesId(it.parentId,
-                                object : SeriesInfoCallback() {
-                                    override fun onSuccess(backendResponse: SeriesInfo) {
-                                        val episodes = backendResponse.episodes
-                                        var episode: Episode? = null
-                                        for (season in episodes) {
-                                            for (ep in season) {
-                                                if (ep.id == it.contentId) {
-                                                    episode = ep
-                                                    break
-                                                }
-                                            }
+                            launch(Dispatchers.Main) {
+                                val continueWatchingAdapter = ContinueWatchingAdapter(history)
+                                continueWatchingRecyclerView.apply {
+                                    layoutManager = LinearLayoutManager(
+                                        this@MainActivity, LinearLayoutManager.HORIZONTAL, false
+                                    )
+                                    adapter = continueWatchingAdapter.apply {
+                                        onWatchHistoryClicked = {
+
+                                            Log.d(TAG, "onResume: it: $it")
+
+                                            val dialog = ProgressDialog.show(
+                                                context,
+                                                "Fetching content info",
+                                                "preparing the content, Please wait...",
+                                                true
+                                            )
+
+                                            IptvRepository.getSeriesInfoBySeriesId(
+                                                it.parentId,
+                                                object : SeriesInfoCallback() {
+                                                    override fun onSuccess(backendResponse: SeriesInfo) {
+                                                        val episodes = backendResponse.episodes
+                                                        var episode: Episode? = null
+                                                        for (season in episodes) {
+                                                            for (ep in season) {
+                                                                if (ep.id == it.contentId) {
+                                                                    episode = ep
+                                                                    break
+                                                                }
+                                                            }
+                                                        }
+
+                                                        dialog.dismiss()
+
+                                                        Navigator.goToSimplePlayer(
+                                                            this@MainActivity,
+                                                            episode = episode!!,
+                                                            seriesId = it.parentId,
+                                                            coverUrl = it.coverUrl,
+                                                            backendResponse.exportAllEpisodes()
+                                                        )
+                                                    }
+
+                                                    override fun onError(
+                                                        status: Int, message: String
+                                                    ) {
+
+                                                    }
+                                                })
+
                                         }
-
-                                        dialog.dismiss()
-
-                                        Navigator.goToSimplePlayer(
-                                            this@MainActivity,
-                                            episode = episode!!,
-                                            seriesId = it.parentId,
-                                            coverUrl = it.coverUrl,
-                                            backendResponse.exportAllEpisodes()
-                                        )
-
-//                                        val intent =
-//                                            Intent(context,
-//                                                SimplePlayerActivity::class.java).apply {
-//                                                val gson = Gson()
-//                                                val serializedEpisode = gson.toJson(episode)
-//                                                putExtra(Constant.CONTENT, serializedEpisode)
-//                                                putExtra(Constant.SERIES_ID, it.parentId)
-//                                                putExtra(Constant.COVER_URL, it.coverUrl)
-//                                                putExtra(Constant.CURRENT_TIME, it.currentTime)
-//                                            }
-//
-////                                        resultLauncher.launch(intent)
-//                                        startActivity(intent)
+                                        onWatchHistoryLongClicked = {
+                                            showBottomSheetDialog(it)
+                                        }
                                     }
+                                }
+                            }
 
-                                    override fun onError(status: Int, message: String) {
-
-                                    }
-                                })
-
-                        }
-                        onWatchHistoryLongClicked = {
-                            showBottomSheetDialog(it)
                         }
                     }
                 }
-            }
         }
     }
 

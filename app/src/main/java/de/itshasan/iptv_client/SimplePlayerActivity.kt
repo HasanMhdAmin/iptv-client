@@ -22,12 +22,14 @@ import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.util.Util
 import com.google.gson.Gson
 import de.itshasan.iptv_client.player.listener.CustomOnScaleGestureListener
+import de.itshasan.iptv_client.utils.firebase.Firestore
 import de.itshasan.iptv_client.utils.navigator.Navigator
 import de.itshasan.iptv_core.model.Constant
 import de.itshasan.iptv_core.model.WatchHistory
 import de.itshasan.iptv_core.model.series.info.Episode
 import de.itshasan.iptv_database.database.iptvDatabase
 import de.itshasan.iptv_repository.network.IptvRepository.getEpisodeStreamUrl
+import de.itshasan.iptv_repository.storage.LocalStorage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -172,19 +174,29 @@ class SimplePlayerActivity : AppCompatActivity(), Player.Listener {
                 if (playbackPosition > 0) {
 
                     GlobalScope.launch(Dispatchers.IO) {
-                        iptvDatabase.watchHistoryDao().insert(
-                            WatchHistory(
-                                0,
+                        val watchHistory = WatchHistory(
+                            0,
+                            episode.id,
+                            parentId = seriesId,
+                            name = episode.title,
+                            "s",
+                            System.currentTimeMillis(),
+                            currentTime = playbackPosition,
+                            totalTime = totalTime,
+                            coverUrl = coverUrl,
+                            uniqueId = LocalStorage.getUniqueContentId(
                                 episode.id,
-                                parentId = seriesId,
-                                name = episode.title,
-                                "s",
-                                System.currentTimeMillis(),
-                                currentTime = playbackPosition,
-                                totalTime = totalTime,
-                                coverUrl = coverUrl
-                            )
+                                Constant.TYPE_SERIES
+                            ),
+                            userId = LocalStorage.getUniqueUserId()
                         )
+                        iptvDatabase.watchHistoryDao().insert(watchHistory)
+                        // Add to firestore
+                        Firestore.firestore
+                            .collection("users_test")
+                            .document(watchHistory.uniqueId)
+                            .set(watchHistory)
+
                         iptvDatabase.watchHistoryDao().updateContinueWatchStatus(seriesId, true)
                     }
                 }
