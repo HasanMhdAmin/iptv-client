@@ -10,12 +10,14 @@ import androidx.navigation.ui.setupWithNavController
 import de.itshasan.iptv_client.R
 import de.itshasan.iptv_client.databinding.ActivityButtomNavBinding
 
-class BottomNavActivity : AppCompatActivity() {
+class MainNavActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityButtomNavBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        supportActionBar?.hide()
+        window.navigationBarColor = getColor(R.color.dark_gray)
 
         binding = ActivityButtomNavBinding.inflate(layoutInflater)
         setContentView(binding.root)

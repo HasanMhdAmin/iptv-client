@@ -79,6 +79,8 @@ class MainActivity : AppCompatActivity() {
                         val watchHistory = appGson.fromJson(jsonString, WatchHistory::class.java)
                         GlobalScope.launch(Dispatchers.IO) {
                             iptvDatabase.watchHistoryDao().insert(watchHistory)
+
+                            //
                             val history = iptvDatabase.watchHistoryDao().getContinueWatching()
 
                             // Push db updates
@@ -88,61 +90,61 @@ class MainActivity : AppCompatActivity() {
 
                             launch(Dispatchers.Main) {
                                 val continueWatchingAdapter = ContinueWatchingAdapter(history)
-                                continueWatchingRecyclerView.apply {
-                                    layoutManager = LinearLayoutManager(
-                                        this@MainActivity, LinearLayoutManager.HORIZONTAL, false
-                                    )
-                                    adapter = continueWatchingAdapter.apply {
-                                        onWatchHistoryClicked = {
-
-                                            Log.d(TAG, "onResume: it: $it")
-
-                                            val dialog = ProgressDialog.show(
-                                                context,
-                                                "Fetching content info",
-                                                "preparing the content, Please wait...",
-                                                true
-                                            )
-
-                                            IptvRepository.getSeriesInfoBySeriesId(
-                                                it.parentId,
-                                                object : SeriesInfoCallback() {
-                                                    override fun onSuccess(backendResponse: SeriesInfo) {
-                                                        val episodes = backendResponse.episodes
-                                                        var episode: Episode? = null
-                                                        for (season in episodes) {
-                                                            for (ep in season) {
-                                                                if (ep.id == it.contentId) {
-                                                                    episode = ep
-                                                                    break
-                                                                }
-                                                            }
-                                                        }
-
-                                                        dialog.dismiss()
-
-                                                        Navigator.goToSimplePlayer(
-                                                            this@MainActivity,
-                                                            episode = episode!!,
-                                                            seriesId = it.parentId,
-                                                            coverUrl = it.coverUrl,
-                                                            backendResponse.exportAllEpisodes()
-                                                        )
-                                                    }
-
-                                                    override fun onError(
-                                                        status: Int, message: String
-                                                    ) {
-
-                                                    }
-                                                })
-
-                                        }
-                                        onWatchHistoryLongClicked = {
-                                            showBottomSheetDialog(it)
-                                        }
-                                    }
-                                }
+//                                continueWatchingRecyclerView.apply {
+//                                    layoutManager = LinearLayoutManager(
+//                                        this@MainActivity, LinearLayoutManager.HORIZONTAL, false
+//                                    )
+//                                    adapter = continueWatchingAdapter.apply {
+//                                        onWatchHistoryClicked = {
+//
+//                                            Log.d(TAG, "onResume: it: $it")
+//
+//                                            val dialog = ProgressDialog.show(
+//                                                context,
+//                                                "Fetching content info",
+//                                                "preparing the content, Please wait...",
+//                                                true
+//                                            )
+//
+//                                            IptvRepository.getSeriesInfoBySeriesId(
+//                                                it.parentId,
+//                                                object : SeriesInfoCallback() {
+//                                                    override fun onSuccess(backendResponse: SeriesInfo) {
+//                                                        val episodes = backendResponse.episodes
+//                                                        var episode: Episode? = null
+//                                                        for (season in episodes) {
+//                                                            for (ep in season) {
+//                                                                if (ep.id == it.contentId) {
+//                                                                    episode = ep
+//                                                                    break
+//                                                                }
+//                                                            }
+//                                                        }
+//
+//                                                        dialog.dismiss()
+//
+//                                                        Navigator.goToSimplePlayer(
+//                                                            this@MainActivity,
+//                                                            episode = episode!!,
+//                                                            seriesId = it.parentId,
+//                                                            coverUrl = it.coverUrl,
+//                                                            backendResponse.exportAllEpisodes()
+//                                                        )
+//                                                    }
+//
+//                                                    override fun onError(
+//                                                        status: Int, message: String
+//                                                    ) {
+//
+//                                                    }
+//                                                })
+//
+//                                        }
+//                                        onWatchHistoryLongClicked = {
+//                                            showBottomSheetDialog(it)
+//                                        }
+//                                    }
+//                                }
                             }
 
                         }
@@ -160,11 +162,11 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-    private fun showBottomSheetDialog(watchHistory: WatchHistory) {
-        val bottomSheetDialog = ModalBottomSheet(watchHistory)
-        bottomSheetDialog.onItemRemovedCallback = {
-            refreshContinueWatch()
-        }
-        bottomSheetDialog.show(supportFragmentManager, bottomSheetDialog.tag)
-    }
+//    private fun showBottomSheetDialog(watchHistory: WatchHistory) {
+//        val bottomSheetDialog = ModalBottomSheet(watchHistory)
+//        bottomSheetDialog.onItemRemovedCallback = {
+//            refreshContinueWatch()
+//        }
+//        bottomSheetDialog.show(supportFragmentManager, bottomSheetDialog.tag)
+//    }
 }
