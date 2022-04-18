@@ -7,6 +7,7 @@ import com.google.gson.Gson
 import de.itshasan.iptv_client.MainActivity
 import de.itshasan.iptv_client.SimplePlayerActivity
 import de.itshasan.iptv_client.episodesDialog.EpisodesDialog
+import de.itshasan.iptv_client.homeScreen.BottomNavActivity
 import de.itshasan.iptv_core.model.Constant
 import de.itshasan.iptv_core.model.series.info.Episode
 
@@ -49,7 +50,7 @@ object Navigator {
         val intent =
             Intent(
                 activity,
-                MainActivity::class.java
+                BottomNavActivity::class.java
             )
         activity.startActivity(intent)
     }

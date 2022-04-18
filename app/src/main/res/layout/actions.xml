@@ -29,7 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Download" />
+            android:text="@string/download" />
 
     </LinearLayout>
 
@@ -57,7 +57,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Share" />
+            android:text="@string/share" />
 
     </LinearLayout>
 
@@ -111,7 +111,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Favorite" />
+            android:text="@string/favorite" />
 
     </LinearLayout>
 

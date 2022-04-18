@@ -14,6 +14,10 @@
         android:theme="@style/Theme.IPTVClient"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".homeScreen.BottomNavActivity"
+            android:exported="false"
+            android:label="@string/title_activity_buttom_nav" />
+        <activity
             android:name=".login.LoginActivity"
             android:exported="true">
             <intent-filter>
@@ -22,7 +26,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".MainActivity"
             android:exported="false" />
@@ -48,7 +51,6 @@
         <meta-data
             android:name="com.google.android.gms.cast.framework.OPTIONS_PROVIDER_CLASS_NAME"
             android:value="com.google.android.exoplayer2.ext.cast.DefaultCastOptionsProvider" />
-
     </application>
 
 </manifest>

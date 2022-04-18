@@ -13,4 +13,9 @@
     <string name="server_url">Server URL</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
+    <string name="title_activity_buttom_nav">ButtomNavActivity</string>
+    <string name="title_home">Home</string>
+    <string name="download">Download</string>
+    <string name="favorite">Favorite</string>
+    <string name="share">Share</string>
 </resources>
