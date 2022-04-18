@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import de.itshasan.iptv_client.category.CategoryActivity
@@ -13,17 +14,16 @@ import de.itshasan.iptv_client.continueWatching.adapter.ContinueWatchingAdapter
 import de.itshasan.iptv_client.databinding.FragmentHomeBinding
 import de.itshasan.iptv_client.login.LoginActivity
 import de.itshasan.iptv_client.overview.ui.buttomSheet.ModalBottomSheet
+import de.itshasan.iptv_client.seriesList.ui.main.GalleryViewModel
+import de.itshasan.iptv_client.seriesList.ui.main.GalleryViewModelFactory
 import de.itshasan.iptv_client.utils.navigator.Navigator
 import de.itshasan.iptv_core.CoreFragment
+import de.itshasan.iptv_core.model.Constant
 import de.itshasan.iptv_core.model.WatchHistory
 
 private const val TAG = "HomeFragment"
 
 class HomeFragment : CoreFragment<FragmentHomeBinding, HomeViewModel>() {
-
-//    val dialog_s = ProgressDialog(
-//        requireActivity()
-//    )
 
     lateinit var dialog: ProgressDialog
 
@@ -48,17 +48,31 @@ class HomeFragment : CoreFragment<FragmentHomeBinding, HomeViewModel>() {
             startActivity(intent)
         }
 
+        binding.refreshLayout.setOnRefreshListener {
+
+            // Update continue watching
+            viewModel.getContinueWatch()
+
+            // Update series list
+            val viewModel: GalleryViewModel by viewModels {
+                GalleryViewModelFactory(Constant.ALL_SERIES, requireActivity().application)
+            }
+            viewModel.makeAPICall(Constant.ALL_SERIES)
+
+        }
+
         observers()
     }
 
     override fun onResume() {
         super.onResume()
-        viewMode.getContinueWatch()
+        viewModel.getContinueWatch()
     }
 
     private fun observers() {
 
-        viewMode.history.observe(requireActivity()) { history ->
+        viewModel.history.observe(requireActivity()) { history ->
+            binding.refreshLayout.isRefreshing = false
             val continueWatchingAdapter = ContinueWatchingAdapter(history)
 
             binding.continueWatchingRecyclerView.apply {
@@ -67,15 +81,13 @@ class HomeFragment : CoreFragment<FragmentHomeBinding, HomeViewModel>() {
                 )
                 adapter = continueWatchingAdapter.apply {
                     onWatchHistoryClicked = {
-
                         dialog = ProgressDialog.show(
                             context,
                             "Fetching content info",
                             "preparing the content, Please wait...",
                             true
                         )
-
-                        viewMode.getSeriesInfoBySeriesId(it)
+                        viewModel.getSeriesInfoBySeriesId(it)
 
                     }
                     onWatchHistoryLongClicked = {
@@ -85,7 +97,7 @@ class HomeFragment : CoreFragment<FragmentHomeBinding, HomeViewModel>() {
             }
         }
 
-        viewMode.episodeWatchHistory.observe(requireActivity()) {
+        viewModel.episodeWatchHistory.observe(requireActivity()) {
             if (it.episode != null) {
                 dialog.dismiss()
 
@@ -104,7 +116,7 @@ class HomeFragment : CoreFragment<FragmentHomeBinding, HomeViewModel>() {
     private fun showBottomSheetDialog(watchHistory: WatchHistory) {
         val bottomSheetDialog = ModalBottomSheet(watchHistory)
         bottomSheetDialog.onItemRemovedCallback = {
-            viewMode.getContinueWatch()
+            viewModel.getContinueWatch()
         }
         bottomSheetDialog.show(parentFragmentManager, bottomSheetDialog.tag)
     }

@@ -21,7 +21,7 @@ class DownloadFragment : CoreFragment<FragmentDownloadBinding, DownloadViewModel
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewMode.text.observe(viewLifecycleOwner) {
+        viewModel.text.observe(viewLifecycleOwner) {
             binding.textDashboard.text = it
         }
 

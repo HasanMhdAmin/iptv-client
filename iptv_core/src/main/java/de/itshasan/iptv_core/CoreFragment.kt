@@ -14,7 +14,7 @@ abstract class CoreFragment<B : ViewBinding, V : ViewModel>: Fragment() {
     protected val binding get() = _binding!!
 
     private var _viewModel: V? = null
-    protected val viewMode get() = _viewModel!!
+    protected val viewModel get() = _viewModel!!
 
     abstract fun provideBinding(layoutInflater: LayoutInflater, container: ViewGroup?): B
     abstract fun provideViewModel(): V

@@ -46,8 +46,6 @@ class HomeViewModel : ViewModel() {
                     }
 
                 }
-
-
         }
 
     }

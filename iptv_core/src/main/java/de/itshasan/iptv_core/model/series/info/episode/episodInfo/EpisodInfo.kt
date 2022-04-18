@@ -11,7 +11,7 @@ data class EpisodInfo(
     @SerializedName("releasedate")
     val releaseDate: String?,
     @SerializedName("rating")
-    val rating: Float?,
+    val rating: String?,
     @SerializedName("duration_secs")
     val durationSecs: Int,
     @SerializedName("duration")

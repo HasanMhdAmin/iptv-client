@@ -52,7 +52,7 @@ class GalleryViewModel(categoryId: String, application: Application) :
         return recyclerListData
     }
 
-    private fun makeAPICall(categoryId: String) {
+    fun makeAPICall(categoryId: String) {
 
         IptvRepository.getSeriesByCategoryId(categoryId, object : SeriesCallback() {
             override fun onSuccess(backendResponse: SeriesList) {

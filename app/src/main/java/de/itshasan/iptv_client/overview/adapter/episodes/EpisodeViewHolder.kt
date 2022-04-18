@@ -37,15 +37,12 @@ class EpisodeViewHolder(
         else
             plotTextView.visibility = View.VISIBLE
 
-        ratingTextView.text = episode.info.rating?.toString()
-        if (ratingTextView.text == "0.0"
-            || ratingTextView.text == "null"
-            || ratingTextView.text == ""
-        )
+        val floatRating = episode.info.rating?.toFloatOrNull()
+        if (floatRating == null || floatRating == 0.0f)
             ratingTextView.visibility = View.GONE
         else {
             ratingTextView.visibility = View.VISIBLE
-            val result = String.format("%.1f", episode.info.rating)
+            val result = String.format("%.1f", floatRating)
             ratingTextView.text = result
         }
         releaseDateTextView.text = episode.info.releaseDate ?: ""

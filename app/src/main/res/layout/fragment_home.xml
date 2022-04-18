@@ -1,135 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:layout_height="match_parent">
 
-
-    <!--    <TextView-->
-    <!--        android:id="@+id/appNameTextView"-->
-    <!--        style="@style/TextViewBoldColor"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:padding="@dimen/safe_area"-->
-    <!--        android:text="@string/app_name"-->
-    <!--        android:textColor="@color/golden_yellow"-->
-    <!--        android:textSize="@dimen/title_text_size"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toTopOf="parent" />-->
-
-
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_margin="@dimen/safe_area_double">
 
-        <TextView
-            android:id="@+id/continueWatchTitle"
-            style="@style/TextViewBoldColor"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/continue_watch"
-            android:textSize="@dimen/title_text_size"
-            app:layout_constraintBottom_toTopOf="@+id/continueWatchingRecyclerView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/continueWatchingRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/continueWatchTitle">
-
-        </androidx.recyclerview.widget.RecyclerView>
-
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/movies"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="@dimen/safe_area"
-            app:cardBackgroundColor="#abcdef"
-            app:cardCornerRadius="@dimen/padding_half"
-            app:layout_constraintBottom_toTopOf="@+id/series"
-            app:layout_constraintTop_toBottomOf="@+id/continueWatchingRecyclerView">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:src="@drawable/bg_movies_dark" />
+            android:layout_height="match_parent">
 
             <TextView
-                style="@style/TextViewBold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/movies"
-                android:textColor="@color/white"
-                android:textSize="40sp"
-                android:textStyle="bold" />
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/series"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="@dimen/safe_area"
-            app:cardCornerRadius="@dimen/padding_half"
-            app:layout_constraintBottom_toTopOf="@+id/live"
-            app:layout_constraintTop_toBottomOf="@+id/movies">
-
-            <ImageView
+                android:id="@+id/appNameTextView"
+                style="@style/TextViewBoldColor"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:src="@drawable/bd_dark" />
+                android:layout_height="wrap_content"
+                android:text="@string/app_name"
+                android:textColor="@color/golden_yellow"
+                android:textSize="@dimen/title_text_size"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
 
             <TextView
-                style="@style/TextViewBold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/series"
-                android:textColor="@color/white"
-                android:textSize="40sp"
-                android:textStyle="bold" />
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/live"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="@dimen/safe_area"
-            app:cardBackgroundColor="#777"
-            app:cardCornerRadius="@dimen/padding_half"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/series">
-
-            <ImageView
+                android:id="@+id/continueWatchTitle"
+                style="@style/TextViewBoldColor"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:src="@drawable/bg_live_one" />
-
-            <TextView
-                style="@style/TextViewBold"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/live"
-                android:textColor="@color/white"
-                android:textSize="40sp"
-                android:textStyle="bold" />
-        </androidx.cardview.widget.CardView>
+                android:text="@string/continue_watch"
+                android:textSize="@dimen/selected_season_textview_size"
+                app:layout_constraintBottom_toTopOf="@+id/continueWatchingRecyclerView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/appNameTextView" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/continueWatchingRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/continueWatchTitle">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/movies"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="@dimen/safe_area"
+                app:cardBackgroundColor="#abcdef"
+                app:cardCornerRadius="@dimen/padding_half"
+                app:layout_constraintBottom_toTopOf="@+id/series"
+                app:layout_constraintTop_toBottomOf="@+id/continueWatchingRecyclerView">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/bg_movies_dark" />
+
+                <TextView
+                    style="@style/TextViewRegular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/movies"
+                    android:textColor="@color/white"
+                    android:textSize="40sp"
+                    android:textStyle="bold" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/series"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="@dimen/safe_area"
+                app:cardCornerRadius="@dimen/padding_half"
+                app:layout_constraintBottom_toTopOf="@+id/live"
+                app:layout_constraintTop_toBottomOf="@+id/movies">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/bd_dark" />
+
+                <TextView
+                    style="@style/TextViewBold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/series"
+                    android:textColor="@color/white"
+                    android:textSize="40sp"
+                    android:textStyle="bold" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/live"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="@dimen/safe_area"
+                app:cardBackgroundColor="#777"
+                app:cardCornerRadius="@dimen/padding_half"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/series">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/bg_live_one" />
+
+                <TextView
+                    style="@style/TextViewBold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/live"
+                    android:textColor="@color/white"
+                    android:textSize="40sp"
+                    android:textStyle="bold" />
+            </androidx.cardview.widget.CardView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
