@@ -93,6 +93,7 @@ class GalleryFragment : Fragment(), SearchView.OnQueryTextListener {
             val categoriesDialog = CategoriesDialog.newInstance<SeriesCategoriesItem>(null) {
                 Log.d(TAG, it.getTitle())
                 viewModel.setCategory(it.categoryId)
+                categoryTextView.text = it.categoryName
             }
             categoriesDialog.show(parentFragmentManager, TAG)
         }
