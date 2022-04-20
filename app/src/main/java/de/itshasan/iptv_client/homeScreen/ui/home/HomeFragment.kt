@@ -6,10 +6,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import de.itshasan.iptv_client.category.CategoryActivity
+import de.itshasan.iptv_client.R
 import de.itshasan.iptv_client.continueWatching.adapter.ContinueWatchingAdapter
 import de.itshasan.iptv_client.databinding.FragmentHomeBinding
 import de.itshasan.iptv_client.login.LoginActivity
@@ -39,8 +41,12 @@ class HomeFragment : CoreFragment<FragmentHomeBinding, HomeViewModel>() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.series.setOnClickListener {
-            val intent = Intent(requireActivity(), CategoryActivity::class.java)
-            startActivity(intent)
+            val categoryId = Constant.ALL_SERIES
+            val bundle = bundleOf(Constant.CATEGORY_ID to categoryId)
+            findNavController().navigate(
+                R.id.action_navigation_home_to_navigation_gallery,
+                bundle
+            )
         }
 
         binding.live.setOnClickListener {

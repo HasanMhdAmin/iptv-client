@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import de.itshasan.iptv_client.R
 import de.itshasan.iptv_client.category.adapter.CategoryAdapter
 import de.itshasan.iptv_client.seriesList.GalleryActivity
+import de.itshasan.iptv_client.utils.navigator.Navigator
 import de.itshasan.iptv_core.model.Constant.ALL_SERIES
 import de.itshasan.iptv_core.model.Constant.CATEGORY_ID
 import de.itshasan.iptv_core.model.series.category.SeriesCategories
@@ -59,11 +60,7 @@ class CategoryActivity : AppCompatActivity() {
             layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
             adapter = categoryAdapter.apply {
                 onCategoryClicked = {
-                    val intent =
-                        Intent(this@CategoryActivity, GalleryActivity::class.java).apply {
-                            putExtra(CATEGORY_ID, it.categoryId)
-                        }
-                    startActivity(intent)
+                    Navigator.goToSeriesList(this@CategoryActivity, it.categoryId)
                 }
             }
         }

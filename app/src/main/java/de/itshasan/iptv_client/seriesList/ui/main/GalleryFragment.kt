@@ -13,6 +13,7 @@ import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import de.itshasan.iptv_client.R
 import de.itshasan.iptv_client.overview.OverviewActivity
@@ -42,11 +43,14 @@ class GalleryFragment : Fragment(), SearchView.OnQueryTextListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        arguments?.getString("amount")
+
         val categoriesRecyclerView = view.findViewById<RecyclerView>(R.id.categoriesRecyclerView)
         val searchView = view.findViewById<SearchView>(R.id.search_view)
         searchView.setOnQueryTextListener(this)
 
-        val categoryId = activity?.intent?.extras?.getString(Constant.CATEGORY_ID)
+//        val categoryId = activity?.intent?.extras?.getString(Constant.CATEGORY_ID)
+        val categoryId = arguments?.getString(Constant.CATEGORY_ID)
         val viewModel: GalleryViewModel by viewModels { GalleryViewModelFactory(categoryId!!, requireActivity().application) }
         this.viewModel = viewModel
         categoriesRecyclerView.apply {

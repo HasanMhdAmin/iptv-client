@@ -7,6 +7,7 @@ import com.google.gson.Gson
 import de.itshasan.iptv_client.SimplePlayerActivity
 import de.itshasan.iptv_client.episodesDialog.EpisodesDialog
 import de.itshasan.iptv_client.homeScreen.MainNavActivity
+import de.itshasan.iptv_client.seriesList.GalleryActivity
 import de.itshasan.iptv_core.model.Constant
 import de.itshasan.iptv_core.model.series.info.Episode
 
@@ -51,6 +52,14 @@ object Navigator {
                 activity,
                 MainNavActivity::class.java
             )
+        activity.startActivity(intent)
+    }
+
+    fun goToSeriesList(activity: Activity, category: String = Constant.ALL_SERIES) {
+        val intent =
+            Intent(activity, GalleryActivity::class.java).apply {
+                putExtra(Constant.CATEGORY_ID, category)
+            }
         activity.startActivity(intent)
     }
 }
