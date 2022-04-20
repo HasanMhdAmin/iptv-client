@@ -63,7 +63,7 @@ class HomeFragment : CoreFragment<FragmentHomeBinding, HomeViewModel>() {
             val viewModel: GalleryViewModel by viewModels {
                 GalleryViewModelFactory(Constant.ALL_SERIES, requireActivity().application)
             }
-            viewModel.makeAPICall(Constant.ALL_SERIES)
+            viewModel.getSeries(Constant.ALL_SERIES)
 
         }
 

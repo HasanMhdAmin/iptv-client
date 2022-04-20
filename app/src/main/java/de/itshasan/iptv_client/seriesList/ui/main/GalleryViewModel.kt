@@ -29,7 +29,7 @@ class GalleryViewModel(categoryId: String, application: Application) :
             else
                 iptvDatabase.seriesItemDao().getSeriesByCategoryId(categoryId)
             if (series.isEmpty()) {
-                makeAPICall(categoryId)
+                getSeries(categoryId)
             } else {
                 val seriesList = SeriesList()
                 seriesList.addAll(series)
@@ -52,7 +52,7 @@ class GalleryViewModel(categoryId: String, application: Application) :
         return recyclerListData
     }
 
-    fun makeAPICall(categoryId: String) {
+    fun getSeries(categoryId: String) {
 
         IptvRepository.getSeriesByCategoryId(categoryId, object : SeriesCallback() {
             override fun onSuccess(backendResponse: SeriesList) {
