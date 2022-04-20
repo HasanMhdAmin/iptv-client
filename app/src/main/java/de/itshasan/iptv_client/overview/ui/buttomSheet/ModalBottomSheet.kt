@@ -1,15 +1,15 @@
 package de.itshasan.iptv_client.overview.ui.buttomSheet
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.core.os.bundleOf
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import de.itshasan.iptv_client.R
-import de.itshasan.iptv_client.overview.OverviewActivity
 import de.itshasan.iptv_core.model.Constant
 import de.itshasan.iptv_core.model.WatchHistory
 import de.itshasan.iptv_database.database.iptvDatabase
@@ -36,13 +36,13 @@ class ModalBottomSheet(private val watchHistory: WatchHistory) : BottomSheetDial
 
         details.setOnClickListener {
             Log.d(TAG, "onViewCreated: details:  ${watchHistory.parentId}")
-            val intent =
-                Intent(context, OverviewActivity::class.java).apply {
-                    putExtra(Constant.SERIES_ID, watchHistory.parentId.toInt())
-                    putExtra(Constant.COVER_URL, watchHistory.coverUrl)
-                    putExtra(Constant.SERIES_TITLE, watchHistory.name)
-                }
-            startActivity(intent)
+            dismiss()
+            val bundle = bundleOf(
+                Constant.SERIES_ID to watchHistory.parentId.toInt(),
+                Constant.COVER_URL to watchHistory.coverUrl,
+                Constant.SERIES_TITLE to watchHistory.name
+            )
+            findNavController().navigate(R.id.action_navigation_home_to_navigation_details, bundle)
         }
 
         removeFromRow.setOnClickListener {

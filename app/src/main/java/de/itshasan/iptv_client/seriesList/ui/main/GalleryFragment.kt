@@ -8,20 +8,20 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.SearchView
 import android.widget.TextView
-import androidx.core.app.ActivityOptionsCompat
 import androidx.core.os.bundleOf
-import androidx.core.util.Pair
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavOptions
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import de.itshasan.iptv_client.R
-import de.itshasan.iptv_client.overview.OverviewActivity
 import de.itshasan.iptv_core.model.Constant
 import de.itshasan.iptv_core.model.Constant.COVER_URL
 import de.itshasan.iptv_core.model.Constant.SERIES_ID
 import de.itshasan.iptv_core.model.Constant.SERIES_TITLE
 import de.itshasan.iptv_core.model.series.SeriesItem
+
 
 private val TAG = GalleryFragment::class.java.simpleName
 
@@ -43,8 +43,6 @@ class GalleryFragment : Fragment(), SearchView.OnQueryTextListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        arguments?.getString("amount")
-
         val categoriesRecyclerView = view.findViewById<RecyclerView>(R.id.categoriesRecyclerView)
         val searchView = view.findViewById<SearchView>(R.id.search_view)
         searchView.setOnQueryTextListener(this)
@@ -65,33 +63,23 @@ class GalleryFragment : Fragment(), SearchView.OnQueryTextListener {
                     { seriesItem: SeriesItem, imageView: ImageView, textview: TextView ->
                         Log.d(TAG, "onViewCreated: seriesId: ${seriesItem.seriesId}")
 
-                        val categoryId = Constant.ALL_SERIES
+                        val extras = FragmentNavigatorExtras(
+                            imageView to seriesItem.cover,
+                            textview to seriesItem.name
+                        )
+
                         val bundle = bundleOf(
                             SERIES_ID to seriesItem.seriesId,
                             COVER_URL to seriesItem.cover,
                             SERIES_TITLE to seriesItem.name
                         )
+
                         findNavController().navigate(
                             R.id.action_navigation_gallery_to_navigation_details,
-                            bundle
+                            bundle,
+                            null,
+                            extras
                         )
-
-//                        val intent =
-//                            Intent(context, OverviewActivity::class.java).apply {
-//                                putExtra(SERIES_ID, seriesItem.seriesId)
-//                                putExtra(COVER_URL, seriesItem.cover)
-//                                putExtra(SERIES_TITLE, seriesItem.name)
-//                            }
-//
-//                        val pair1 = Pair.create<View, String>(imageView, "cover_transition")
-//                        val pair2 = Pair.create<View, String>(textview, "title_transition")
-//                        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-//                            requireActivity(),
-//                            pair1,
-//                            pair2
-//                        )
-//
-//                        startActivity(intent, options.toBundle())
                     }
             }
         }

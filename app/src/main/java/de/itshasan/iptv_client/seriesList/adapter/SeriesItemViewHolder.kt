@@ -22,19 +22,24 @@ class SeriesItemViewHolder(
     fun onBind(seriesItem: SeriesItem, position: Int) {
 
         itemName.apply {
+            transitionName = seriesItem.name
             text = seriesItem.name
         }
 
         item.setOnClickListener {
             onItemClicked?.let { it1 -> it1(seriesItem, cover, itemName) }
         }
+        cover.apply {
+            transitionName = seriesItem.cover
+            Glide
+                .with(view.context)
+                .load(seriesItem.cover)
+                .centerCrop()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(this)
 
-        Glide
-            .with(view.context)
-            .load(seriesItem.cover)
-            .centerCrop()
-            .diskCacheStrategy(DiskCacheStrategy.ALL)
-            .into(cover)
+        }
+
 
         imdbRating.apply {
             visibility =

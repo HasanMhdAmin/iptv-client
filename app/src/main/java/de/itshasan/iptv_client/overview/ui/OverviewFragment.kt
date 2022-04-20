@@ -12,6 +12,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
+import androidx.transition.TransitionInflater
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import de.itshasan.iptv_client.R
@@ -30,6 +31,13 @@ class OverviewFragment : Fragment() {
 
     private lateinit var viewModel: OverviewViewModel
     private var seriesId: Int = 0
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        sharedElementEnterTransition = TransitionInflater.from(requireActivity())
+            .inflateTransition(android.R.transition.move)
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -151,14 +159,21 @@ class OverviewFragment : Fragment() {
             }
         }
 
-        nameTextView.text = title
+        nameTextView.apply {
+            transitionName = title
+            text = title
+        }
 
-        Glide
-            .with(view.context)
-            .load(imageUrl)
-            .centerCrop()
-            .diskCacheStrategy(DiskCacheStrategy.ALL)
-            .into(coverImageView)
+        coverImageView.apply {
+            transitionName = imageUrl
+            Glide
+                .with(view.context)
+                .load(imageUrl)
+                .centerCrop()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(coverImageView)
+        }
+
     }
 
     override fun onResume() {

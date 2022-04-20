@@ -17,6 +17,13 @@
             app:exitAnim="@anim/zoom_out_app"
             app:popEnterAnim="@anim/zoom_in_app"
             app:popExitAnim="@anim/right_out_app" />
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_details"
+            app:destination="@id/navigation_details"
+            app:enterAnim="@anim/right_in_app"
+            app:exitAnim="@anim/zoom_out_app"
+            app:popEnterAnim="@anim/zoom_in_app"
+            app:popExitAnim="@anim/right_out_app"/>
     </fragment>
 
     <fragment
