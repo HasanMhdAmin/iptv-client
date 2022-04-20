@@ -3,8 +3,9 @@ package de.itshasan.iptv_client.seriesList.ui.main
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import de.itshasan.iptv_client.seriesList.adapter.GalleryAdapter
+import de.itshasan.iptv_client.seriesList.adapter.gallery.GalleryAdapter
 import de.itshasan.iptv_core.model.Constant
 import de.itshasan.iptv_core.model.series.SeriesList
 import de.itshasan.iptv_database.database.iptvDatabase
@@ -21,23 +22,6 @@ class GalleryViewModel(categoryId: String, application: Application) :
     var recyclerListData: MutableLiveData<SeriesList?> = MutableLiveData<SeriesList?>()
     var musicRecyclerViewAdapter: GalleryAdapter = GalleryAdapter()
 
-    init {
-        viewModelScope.launch(Dispatchers.IO) {
-
-            val series = if (categoryId == Constant.ALL_SERIES)
-                iptvDatabase.seriesItemDao().getAll()
-            else
-                iptvDatabase.seriesItemDao().getSeriesByCategoryId(categoryId)
-            if (series.isEmpty()) {
-                getSeries(categoryId)
-            } else {
-                val seriesList = SeriesList()
-                seriesList.addAll(series)
-                recyclerListData.postValue(seriesList)
-            }
-
-        }
-    }
 
     fun getAdapter(): GalleryAdapter {
         return musicRecyclerViewAdapter
@@ -69,6 +53,24 @@ class GalleryViewModel(categoryId: String, application: Application) :
             }
         })
 
+    }
+
+    fun setCategory(categoryId: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+
+            val series = if (categoryId == Constant.ALL_SERIES)
+                iptvDatabase.seriesItemDao().getAll()
+            else
+                iptvDatabase.seriesItemDao().getSeriesByCategoryId(categoryId)
+            if (series.isEmpty()) {
+                getSeries(categoryId)
+            } else {
+                val seriesList = SeriesList()
+                seriesList.addAll(series)
+                recyclerListData.postValue(seriesList)
+            }
+
+        }
     }
 
 

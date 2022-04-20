@@ -15,11 +15,14 @@ import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import de.itshasan.iptv_client.R
+import de.itshasan.iptv_client.seriesList.dialog.CategoriesDialog
 import de.itshasan.iptv_core.model.Constant
+import de.itshasan.iptv_core.model.Constant.ALL_SERIES
 import de.itshasan.iptv_core.model.Constant.COVER_URL
 import de.itshasan.iptv_core.model.Constant.SERIES_ID
 import de.itshasan.iptv_core.model.Constant.SERIES_TITLE
 import de.itshasan.iptv_core.model.series.SeriesItem
+import de.itshasan.iptv_core.model.series.category.SeriesCategoriesItem
 
 
 private val TAG = GalleryFragment::class.java.simpleName
@@ -43,22 +46,25 @@ class GalleryFragment : Fragment(), SearchView.OnQueryTextListener {
         super.onViewCreated(view, savedInstanceState)
 
         val categoriesRecyclerView = view.findViewById<RecyclerView>(R.id.categoriesRecyclerView)
+        val categoryTextView = view.findViewById<TextView>(R.id.categoryTextView)
         val searchView = view.findViewById<SearchView>(R.id.search_view)
         searchView.setOnQueryTextListener(this)
 
-        val categoryId = arguments?.getString(Constant.CATEGORY_ID)
+        val categoryId = arguments?.getString(Constant.CATEGORY_ID, ALL_SERIES)!!
         val viewModel: GalleryViewModel by viewModels {
             GalleryViewModelFactory(
-                categoryId!!,
+                categoryId,
                 requireActivity().application
             )
         }
+
         this.viewModel = viewModel
+        viewModel.setCategory(categoryId)
         categoriesRecyclerView.apply {
             layoutManager = androidx.recyclerview.widget.GridLayoutManager(context, 3)
             adapter = viewModel.getAdapter().apply {
 
-                onCategoryClicked =
+                onItemClicked =
                     { seriesItem: SeriesItem, imageView: ImageView, textview: TextView ->
                         Log.d(TAG, "onViewCreated: seriesId: ${seriesItem.seriesId}")
 
@@ -83,6 +89,13 @@ class GalleryFragment : Fragment(), SearchView.OnQueryTextListener {
             }
         }
 
+        categoryTextView.setOnClickListener {
+            val categoriesDialog = CategoriesDialog.newInstance<SeriesCategoriesItem>(null) {
+                Log.d(TAG, it.getTitle())
+                viewModel.setCategory(it.categoryId)
+            }
+            categoriesDialog.show(parentFragmentManager, TAG)
+        }
 
         viewModel.getRecyclerListDataObserver()
             .observe(requireActivity()) {

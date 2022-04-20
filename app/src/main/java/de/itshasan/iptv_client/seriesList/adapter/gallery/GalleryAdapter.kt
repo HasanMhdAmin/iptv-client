@@ -1,4 +1,4 @@
-package de.itshasan.iptv_client.seriesList.adapter
+package de.itshasan.iptv_client.seriesList.adapter.gallery
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -15,7 +15,7 @@ class GalleryAdapter : RecyclerView.Adapter<SeriesItemViewHolder>(), Filterable 
     private var categories: MutableList<SeriesItem> = mutableListOf()
     private var categoriesFiltered: MutableList<SeriesItem> = mutableListOf()
 
-    var onCategoryClicked: ((SeriesItem, ImageView, TextView) -> Unit)? = null
+    var onItemClicked: ((SeriesItem, ImageView, TextView) -> Unit)? = null
 
     fun setDataList(data: ArrayList<SeriesItem>) {
         this.categories = data
@@ -26,7 +26,7 @@ class GalleryAdapter : RecyclerView.Adapter<SeriesItemViewHolder>(), Filterable 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SeriesItemViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.list_item_series, parent, false)
-        return SeriesItemViewHolder(view, onCategoryClicked)
+        return SeriesItemViewHolder(view, onItemClicked)
     }
 
     override fun onBindViewHolder(holder: SeriesItemViewHolder, position: Int) {

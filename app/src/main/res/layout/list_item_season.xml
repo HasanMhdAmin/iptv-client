@@ -5,12 +5,13 @@
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/seasonName"
+        android:id="@+id/itemName"
         style="@style/TextViewRegular"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="10dp"
+        android:padding="@dimen/safe_area_double"
         android:text="Seaseon 01"
+        android:gravity="center"
         android:textColor="#B3FFFFFF"
         android:textSize="@dimen/not_selected_season_textview_size"
         app:layout_constraintBottom_toBottomOf="parent"

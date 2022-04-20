@@ -1,29 +1,29 @@
-package de.itshasan.iptv_client.overview.adapter.seasons
+package de.itshasan.iptv_client.seriesList.adapter.selectionDialog
 
 import android.util.TypedValue
 import android.view.View
 import android.widget.TextView
 import androidx.core.widget.TextViewCompat
 import de.itshasan.iptv_client.R
-import de.itshasan.iptv_core.model.series.info.season.Season
+import de.itshasan.iptv_core.model.Selectable
 
-class SeasonsViewHolder(
+class SelectionViewHolder<S : Selectable>(
     view: View,
-    private val onSeasonClicked: ((Season) -> Unit),
+    private val onItemClicked: ((S) -> Unit),
 ) : androidx.recyclerview.widget.RecyclerView.ViewHolder(view) {
 
-    private val seasonName by lazy { view.findViewById<TextView>(R.id.itemName) }
+    private val itemName by lazy { view.findViewById<TextView>(R.id.itemName) }
 
-    fun onBind(season: Season, position: Int, isSelected: Boolean) {
+    fun onBind(item: S, position: Int, isSelected: Boolean) {
 
-        seasonName.apply {
-            text = season.name
+        itemName.apply {
+            text = item.getTitle()
             if (isSelected) {
                 TextViewCompat.setTextAppearance(this, R.style.TextViewBoldColor)
                 setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.selected_season_textview_size))
             }
             setOnClickListener {
-                onSeasonClicked(season)
+                onItemClicked(item)
             }
         }
 

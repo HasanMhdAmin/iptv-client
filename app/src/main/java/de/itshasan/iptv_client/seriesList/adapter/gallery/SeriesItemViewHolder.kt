@@ -1,4 +1,4 @@
-package de.itshasan.iptv_client.seriesList.adapter
+package de.itshasan.iptv_client.seriesList.adapter.gallery
 
 import android.view.View
 import android.widget.ImageView

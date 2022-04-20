@@ -22,4 +22,5 @@
     <string name="movies">Movies</string>
     <string name="live">Live</string>
     <string name="gallery">Gallery</string>
+    <string name="categories">Categories</string>
 </resources>
