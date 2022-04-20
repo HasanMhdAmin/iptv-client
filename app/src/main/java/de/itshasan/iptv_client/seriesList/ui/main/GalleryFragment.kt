@@ -1,6 +1,5 @@
 package de.itshasan.iptv_client.seriesList.ui.main
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,10 +9,11 @@ import android.widget.ImageView
 import android.widget.SearchView
 import android.widget.TextView
 import androidx.core.app.ActivityOptionsCompat
+import androidx.core.os.bundleOf
 import androidx.core.util.Pair
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.navArgs
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import de.itshasan.iptv_client.R
 import de.itshasan.iptv_client.overview.OverviewActivity
@@ -49,30 +49,50 @@ class GalleryFragment : Fragment(), SearchView.OnQueryTextListener {
         val searchView = view.findViewById<SearchView>(R.id.search_view)
         searchView.setOnQueryTextListener(this)
 
-//        val categoryId = activity?.intent?.extras?.getString(Constant.CATEGORY_ID)
         val categoryId = arguments?.getString(Constant.CATEGORY_ID)
-        val viewModel: GalleryViewModel by viewModels { GalleryViewModelFactory(categoryId!!, requireActivity().application) }
+        val viewModel: GalleryViewModel by viewModels {
+            GalleryViewModelFactory(
+                categoryId!!,
+                requireActivity().application
+            )
+        }
         this.viewModel = viewModel
         categoriesRecyclerView.apply {
             layoutManager = androidx.recyclerview.widget.GridLayoutManager(context, 3)
             adapter = viewModel.getAdapter().apply {
 
-                onCategoryClicked = { seriesItem: SeriesItem, imageView: ImageView, textview: TextView ->
-                    Log.d(TAG, "onViewCreated: seriesId: ${seriesItem.seriesId}")
+                onCategoryClicked =
+                    { seriesItem: SeriesItem, imageView: ImageView, textview: TextView ->
+                        Log.d(TAG, "onViewCreated: seriesId: ${seriesItem.seriesId}")
 
-                    val intent =
-                        Intent(context, OverviewActivity::class.java).apply {
-                            putExtra(SERIES_ID, seriesItem.seriesId)
-                            putExtra(COVER_URL, seriesItem.cover)
-                            putExtra(SERIES_TITLE, seriesItem.name)
-                        }
+                        val categoryId = Constant.ALL_SERIES
+                        val bundle = bundleOf(
+                            SERIES_ID to seriesItem.seriesId,
+                            COVER_URL to seriesItem.cover,
+                            SERIES_TITLE to seriesItem.name
+                        )
+                        findNavController().navigate(
+                            R.id.action_navigation_gallery_to_navigation_details,
+                            bundle
+                        )
 
-                    val pair1 = Pair.create<View, String>(imageView, "cover_transition")
-                    val pair2 = Pair.create<View, String>(textview, "title_transition")
-                    val options = ActivityOptionsCompat.makeSceneTransitionAnimation(requireActivity(), pair1, pair2)
-
-                    startActivity(intent, options.toBundle())
-                }
+//                        val intent =
+//                            Intent(context, OverviewActivity::class.java).apply {
+//                                putExtra(SERIES_ID, seriesItem.seriesId)
+//                                putExtra(COVER_URL, seriesItem.cover)
+//                                putExtra(SERIES_TITLE, seriesItem.name)
+//                            }
+//
+//                        val pair1 = Pair.create<View, String>(imageView, "cover_transition")
+//                        val pair2 = Pair.create<View, String>(textview, "title_transition")
+//                        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+//                            requireActivity(),
+//                            pair1,
+//                            pair2
+//                        )
+//
+//                        startActivity(intent, options.toBundle())
+                    }
             }
         }
 

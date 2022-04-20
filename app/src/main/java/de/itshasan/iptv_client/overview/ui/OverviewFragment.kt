@@ -54,10 +54,13 @@ class OverviewFragment : Fragment() {
         val seasons = view.findViewById<Button>(R.id.seasons)
         val episodesRecyclerview = view.findViewById<RecyclerView>(R.id.episodesRecyclerview)
 
-        seriesId = activity?.intent?.extras?.getInt(Constant.SERIES_ID, 0)!!
+//        seriesId = activity?.intent?.extras?.getInt(Constant.SERIES_ID, 0)!!
+//        val imageUrl = activity?.intent?.extras?.getString(Constant.COVER_URL)
+//        val title = activity?.intent?.extras?.getString(Constant.SERIES_TITLE)
 
-        val imageUrl = activity?.intent?.extras?.getString(Constant.COVER_URL)
-        val title = activity?.intent?.extras?.getString(Constant.SERIES_TITLE)
+        seriesId = arguments?.getInt(Constant.SERIES_ID, 0)!!
+        val imageUrl = arguments?.getString(Constant.COVER_URL)
+        val title = arguments?.getString(Constant.SERIES_TITLE)
 
         val viewModel: OverviewViewModel by viewModels { OverviewViewModelFactory(seriesId) }
         this.viewModel = viewModel

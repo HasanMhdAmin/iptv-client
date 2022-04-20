@@ -12,19 +12,30 @@
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_navigation_home_to_navigation_gallery"
-            app:destination="@id/navigation_gallery">
-
-            <argument
-                android:name="de.itshasan.iptv_core.CATEGORY_ID"
-                android:defaultValue="de.itshasan.iptv_core.ALL_SERIES"
-                app:argType="string" />
-
-        </action>
+            app:destination="@id/navigation_gallery"
+            app:enterAnim="@anim/right_in_app"
+            app:exitAnim="@anim/zoom_out_app"
+            app:popEnterAnim="@anim/zoom_in_app"
+            app:popExitAnim="@anim/right_out_app" />
     </fragment>
 
     <fragment
         android:id="@+id/navigation_gallery"
         android:name="de.itshasan.iptv_client.seriesList.ui.main.GalleryFragment"
+        android:label="@string/gallery"
+        tools:layout="@layout/gallery_fragment">
+        <action
+            android:id="@+id/action_navigation_gallery_to_navigation_details"
+            app:destination="@id/navigation_details"
+            app:enterAnim="@anim/right_in_app"
+            app:exitAnim="@anim/zoom_out_app"
+            app:popEnterAnim="@anim/zoom_in_app"
+            app:popExitAnim="@anim/right_out_app" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_details"
+        android:name="de.itshasan.iptv_client.overview.ui.OverviewFragment"
         android:label="@string/gallery"
         tools:layout="@layout/gallery_fragment" />
 

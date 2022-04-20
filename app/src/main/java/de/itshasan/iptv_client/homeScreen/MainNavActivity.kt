@@ -14,6 +14,7 @@ import de.itshasan.iptv_client.databinding.ActivityButtomNavBinding
 
 
 private const val TAG = "MainNavActivity"
+
 class MainNavActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityButtomNavBinding
@@ -45,7 +46,7 @@ class MainNavActivity : AppCompatActivity() {
 
         // TODO test later
         navView.setOnItemReselectedListener {
-            when(it.itemId) {
+            when (it.itemId) {
                 R.id.home -> navController.navigateUp()
                 R.id.favorite -> navController.navigateUp()
                 R.id.download -> navController.navigateUp()
