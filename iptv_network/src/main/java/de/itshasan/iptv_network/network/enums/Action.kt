@@ -1,4 +1,4 @@
-package de.itshasan.iptv_repository.network.enums
+package de.itshasan.iptv_network.network.enums
 
 enum class Action(val value: String) {
     GET_SERIES_CATEGORIES("get_series_categories"),

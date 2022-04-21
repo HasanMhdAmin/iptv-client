@@ -28,8 +28,8 @@ import de.itshasan.iptv_core.model.Constant
 import de.itshasan.iptv_core.model.WatchHistory
 import de.itshasan.iptv_core.model.series.info.Episode
 import de.itshasan.iptv_database.database.iptvDatabase
-import de.itshasan.iptv_repository.network.IptvRepository.getEpisodeStreamUrl
-import de.itshasan.iptv_repository.storage.LocalStorage
+import de.itshasan.iptv_network.network.IptvNetwork.getEpisodeStreamUrl
+import de.itshasan.iptv_network.storage.LocalStorage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch

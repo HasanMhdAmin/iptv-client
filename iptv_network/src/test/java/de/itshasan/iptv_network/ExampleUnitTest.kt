@@ -1,4 +1,4 @@
-package de.itshasan.iptv_repository
+package de.itshasan.iptv_network
 
 import org.junit.Test
 

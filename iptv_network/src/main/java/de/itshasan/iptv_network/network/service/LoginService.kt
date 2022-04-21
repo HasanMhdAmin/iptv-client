@@ -1,4 +1,4 @@
-package de.itshasan.iptv_repository.network.service
+package de.itshasan.iptv_network.network.service
 
 import de.itshasan.iptv_core.model.user.User
 import retrofit2.Call

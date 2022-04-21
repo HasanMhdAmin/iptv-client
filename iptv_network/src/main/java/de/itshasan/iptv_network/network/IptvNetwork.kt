@@ -1,4 +1,4 @@
-package de.itshasan.iptv_repository.network
+package de.itshasan.iptv_network.network
 
 import android.util.Log
 import com.google.gson.GsonBuilder
@@ -10,14 +10,14 @@ import de.itshasan.iptv_core.model.series.info.SeriesInfo
 import de.itshasan.iptv_core.model.series.info.info.Info
 import de.itshasan.iptv_core.model.series.info.season.Season
 import de.itshasan.iptv_core.model.user.User
-import de.itshasan.iptv_repository.network.callback.LoginCallback
-import de.itshasan.iptv_repository.network.callback.SeriesCallback
-import de.itshasan.iptv_repository.network.callback.SeriesCategoriesCallback
-import de.itshasan.iptv_repository.network.callback.SeriesInfoCallback
-import de.itshasan.iptv_repository.network.enums.Action
-import de.itshasan.iptv_repository.network.service.LoginService
-import de.itshasan.iptv_repository.network.service.SeriesService
-import de.itshasan.iptv_repository.storage.LocalStorage
+import de.itshasan.iptv_network.network.callback.LoginCallback
+import de.itshasan.iptv_network.network.callback.SeriesCallback
+import de.itshasan.iptv_network.network.callback.SeriesCategoriesCallback
+import de.itshasan.iptv_network.network.callback.SeriesInfoCallback
+import de.itshasan.iptv_network.network.enums.Action
+import de.itshasan.iptv_network.network.service.LoginService
+import de.itshasan.iptv_network.network.service.SeriesService
+import de.itshasan.iptv_network.storage.LocalStorage
 import okhttp3.ResponseBody
 import org.json.JSONObject
 import retrofit2.Call
@@ -26,9 +26,9 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-object IptvRepository : IptvRepositoryContract {
+object IptvNetwork : IptvNetworkContract {
 
-    private val TAG = IptvRepository::class.java.simpleName
+    private val TAG = IptvNetwork::class.java.simpleName
 
     private var gson = GsonBuilder()
         .setLenient()

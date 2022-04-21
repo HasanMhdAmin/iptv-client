@@ -1,21 +1,18 @@
 package de.itshasan.iptv_client.category
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import de.itshasan.iptv_client.R
 import de.itshasan.iptv_client.category.adapter.CategoryAdapter
-import de.itshasan.iptv_client.seriesList.GalleryActivity
 import de.itshasan.iptv_client.utils.navigator.Navigator
 import de.itshasan.iptv_core.model.Constant.ALL_SERIES
-import de.itshasan.iptv_core.model.Constant.CATEGORY_ID
 import de.itshasan.iptv_core.model.series.category.SeriesCategories
 import de.itshasan.iptv_core.model.series.category.SeriesCategoriesItem
 import de.itshasan.iptv_database.database.iptvDatabase
-import de.itshasan.iptv_repository.network.IptvRepository
-import de.itshasan.iptv_repository.network.callback.SeriesCategoriesCallback
+import de.itshasan.iptv_network.network.IptvNetwork
+import de.itshasan.iptv_network.network.callback.SeriesCategoriesCallback
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -67,7 +64,7 @@ class CategoryActivity : AppCompatActivity() {
     }
 
     private fun loadSeriesCategories() {
-        IptvRepository.getSeriesCategories(object : SeriesCategoriesCallback() {
+        IptvNetwork.getSeriesCategories(object : SeriesCategoriesCallback() {
             override fun onSuccess(backendResponse: SeriesCategories) {
                 Log.d(TAG,
                     "onSuccess: getSeriesCategories seriesCategoriesCount: ${backendResponse.size}")

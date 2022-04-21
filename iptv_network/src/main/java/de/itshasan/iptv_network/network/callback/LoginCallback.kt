@@ -1,4 +1,4 @@
-package de.itshasan.iptv_repository.network.callback
+package de.itshasan.iptv_network.network.callback
 
 import de.itshasan.iptv_core.model.user.User
 

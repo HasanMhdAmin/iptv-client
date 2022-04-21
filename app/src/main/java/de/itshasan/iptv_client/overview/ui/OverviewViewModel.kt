@@ -9,8 +9,8 @@ import de.itshasan.iptv_core.model.series.info.Episode
 import de.itshasan.iptv_core.model.series.info.SeriesInfo
 import de.itshasan.iptv_core.model.series.info.season.Season
 import de.itshasan.iptv_database.database.iptvDatabase
-import de.itshasan.iptv_repository.network.IptvRepository
-import de.itshasan.iptv_repository.network.callback.SeriesInfoCallback
+import de.itshasan.iptv_network.network.IptvNetwork
+import de.itshasan.iptv_network.network.callback.SeriesInfoCallback
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -72,7 +72,7 @@ class OverviewViewModel(seriesId: Int) : ViewModel() {
 
     private fun makeAPICall(seriesId: Int) {
 
-        IptvRepository.getSeriesInfoBySeriesId(seriesId.toString(), object : SeriesInfoCallback() {
+        IptvNetwork.getSeriesInfoBySeriesId(seriesId.toString(), object : SeriesInfoCallback() {
             override fun onSuccess(backendResponse: SeriesInfo) {
                 // TODO is postValue assign the value also?
                 seriesInfo.postValue(backendResponse)

@@ -3,14 +3,13 @@ package de.itshasan.iptv_client.seriesList.ui.main
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import de.itshasan.iptv_client.seriesList.adapter.gallery.GalleryAdapter
 import de.itshasan.iptv_core.model.Constant
 import de.itshasan.iptv_core.model.series.SeriesList
 import de.itshasan.iptv_database.database.iptvDatabase
-import de.itshasan.iptv_repository.network.IptvRepository
-import de.itshasan.iptv_repository.network.callback.SeriesCallback
+import de.itshasan.iptv_network.network.IptvNetwork
+import de.itshasan.iptv_network.network.callback.SeriesCallback
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -38,7 +37,7 @@ class GalleryViewModel(categoryId: String, application: Application) :
 
     fun getSeries(categoryId: String) {
 
-        IptvRepository.getSeriesByCategoryId(categoryId, object : SeriesCallback() {
+        IptvNetwork.getSeriesByCategoryId(categoryId, object : SeriesCallback() {
             override fun onSuccess(backendResponse: SeriesList) {
                 recyclerListData.postValue(backendResponse)
 

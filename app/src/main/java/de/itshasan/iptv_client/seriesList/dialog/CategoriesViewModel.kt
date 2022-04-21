@@ -7,8 +7,8 @@ import de.itshasan.iptv_core.model.Constant
 import de.itshasan.iptv_core.model.series.category.SeriesCategories
 import de.itshasan.iptv_core.model.series.category.SeriesCategoriesItem
 import de.itshasan.iptv_database.database.iptvDatabase
-import de.itshasan.iptv_repository.network.IptvRepository
-import de.itshasan.iptv_repository.network.callback.SeriesCategoriesCallback
+import de.itshasan.iptv_network.network.IptvNetwork
+import de.itshasan.iptv_network.network.callback.SeriesCategoriesCallback
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -18,7 +18,7 @@ class CategoriesViewModel : ViewModel() {
     var seriesCategories: MutableLiveData<SeriesCategories> = MutableLiveData<SeriesCategories>()
 
     private fun loadSeriesCategories() {
-        IptvRepository.getSeriesCategories(object : SeriesCategoriesCallback() {
+        IptvNetwork.getSeriesCategories(object : SeriesCategoriesCallback() {
             override fun onSuccess(backendResponse: SeriesCategories) {
 
                 // ALL_SERIES is id to get all the series.

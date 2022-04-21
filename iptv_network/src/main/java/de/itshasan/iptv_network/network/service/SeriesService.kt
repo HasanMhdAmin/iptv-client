@@ -1,8 +1,7 @@
-package de.itshasan.iptv_repository.network.service
+package de.itshasan.iptv_network.network.service
 
 import de.itshasan.iptv_core.model.series.SeriesList
 import de.itshasan.iptv_core.model.series.category.SeriesCategories
-import de.itshasan.iptv_core.model.series.info.SeriesInfo
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.GET

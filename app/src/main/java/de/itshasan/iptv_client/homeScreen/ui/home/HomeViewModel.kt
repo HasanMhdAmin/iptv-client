@@ -9,9 +9,9 @@ import de.itshasan.iptv_core.model.series.info.Episode
 import de.itshasan.iptv_core.model.series.info.SeriesInfo
 import de.itshasan.iptv_core.utils.Serializer
 import de.itshasan.iptv_database.database.iptvDatabase
-import de.itshasan.iptv_repository.network.IptvRepository
-import de.itshasan.iptv_repository.network.callback.SeriesInfoCallback
-import de.itshasan.iptv_repository.storage.LocalStorage
+import de.itshasan.iptv_network.network.IptvNetwork
+import de.itshasan.iptv_network.network.callback.SeriesInfoCallback
+import de.itshasan.iptv_network.storage.LocalStorage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -51,7 +51,7 @@ class HomeViewModel : ViewModel() {
     }
 
     fun getSeriesInfoBySeriesId(watchHistory: WatchHistory) {
-        IptvRepository.getSeriesInfoBySeriesId(
+        IptvNetwork.getSeriesInfoBySeriesId(
             watchHistory.parentId,
             object : SeriesInfoCallback() {
                 override fun onSuccess(backendResponse: SeriesInfo) {

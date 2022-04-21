@@ -4,9 +4,9 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import de.itshasan.iptv_core.model.user.User
-import de.itshasan.iptv_repository.network.IptvRepository
-import de.itshasan.iptv_repository.network.callback.LoginCallback
-import de.itshasan.iptv_repository.storage.LocalStorage
+import de.itshasan.iptv_network.network.IptvNetwork
+import de.itshasan.iptv_network.network.callback.LoginCallback
+import de.itshasan.iptv_network.storage.LocalStorage
 
 private const val TAG = "LoginViewModel"
 
@@ -19,7 +19,7 @@ class LoginViewModel : ViewModel() {
     private lateinit var password: String
 
     fun requestLoginUser(serverUrl: String, username: String, password: String) {
-        IptvRepository.login(serverUrl, username, password, object : LoginCallback() {
+        IptvNetwork.login(serverUrl, username, password, object : LoginCallback() {
             override fun onSuccess(backendResponse: User) {
                 Log.d(TAG, "onSuccess: ")
                 this@LoginViewModel.serverUrl = serverUrl
