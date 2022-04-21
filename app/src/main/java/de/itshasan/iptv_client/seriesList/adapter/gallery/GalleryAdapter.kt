@@ -8,28 +8,28 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import de.itshasan.iptv_client.R
-import de.itshasan.iptv_core.model.series.SeriesItem
+import de.itshasan.iptv_core.model.Posterable
 
-class GalleryAdapter : RecyclerView.Adapter<SeriesItemViewHolder>(), Filterable {
+class GalleryAdapter<P : Posterable> : RecyclerView.Adapter<PosterViewHolder<P>>(), Filterable {
 
-    private var categories: MutableList<SeriesItem> = mutableListOf()
-    private var categoriesFiltered: MutableList<SeriesItem> = mutableListOf()
+    private var categories: MutableList<P> = mutableListOf()
+    private var categoriesFiltered: MutableList<P> = mutableListOf()
 
-    var onItemClicked: ((SeriesItem, ImageView, TextView) -> Unit)? = null
+    var onItemClicked: ((P, ImageView, TextView) -> Unit)? = null
 
-    fun setDataList(data: ArrayList<SeriesItem>) {
+    fun setDataList(data: ArrayList<P>) {
         this.categories = data
         this.categoriesFiltered = this.categories
         notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SeriesItemViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PosterViewHolder<P> {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.list_item_series, parent, false)
-        return SeriesItemViewHolder(view, onItemClicked)
+        return PosterViewHolder(view, onItemClicked)
     }
 
-    override fun onBindViewHolder(holder: SeriesItemViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: PosterViewHolder<P>, position: Int) {
         val cat = categoriesFiltered[position]
         holder.onBind(cat, position)
     }
@@ -42,12 +42,10 @@ class GalleryAdapter : RecyclerView.Adapter<SeriesItemViewHolder>(), Filterable 
             override fun performFiltering(constraint: CharSequence?): FilterResults {
                 val charString = constraint?.toString() ?: ""
                 if (charString.isEmpty()) categoriesFiltered = categories else {
-                    val filteredList = ArrayList<SeriesItem>()
+                    val filteredList = ArrayList<P>()
                     categories
                         .filter {
-                            (it.name.contains(constraint!!, ignoreCase = true)) or
-                                (it.genre.contains(constraint, ignoreCase = true))
-
+                            (it.getTitle().contains(constraint!!, ignoreCase = true))
                         }
                         .forEach { filteredList.add(it) }
                     categoriesFiltered = filteredList
@@ -61,7 +59,7 @@ class GalleryAdapter : RecyclerView.Adapter<SeriesItemViewHolder>(), Filterable 
                 categoriesFiltered = if (results?.values == null)
                     ArrayList()
                 else
-                    results.values as ArrayList<SeriesItem>
+                    results.values as ArrayList<P>
                 notifyDataSetChanged()
             }
         }

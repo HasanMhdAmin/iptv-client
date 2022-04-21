@@ -7,11 +7,11 @@ import androidx.cardview.widget.CardView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import de.itshasan.iptv_client.R
-import de.itshasan.iptv_core.model.series.SeriesItem
+import de.itshasan.iptv_core.model.Posterable
 
-class SeriesItemViewHolder(
+class PosterViewHolder<P : Posterable>(
     private val view: View,
-    private val onItemClicked: ((SeriesItem, ImageView, TextView) -> Unit)? = null,
+    private val onItemClicked: ((P, ImageView, TextView) -> Unit)? = null,
 ) : androidx.recyclerview.widget.RecyclerView.ViewHolder(view) {
 
     private val item by lazy { view.findViewById<CardView>(R.id.item) }
@@ -19,21 +19,21 @@ class SeriesItemViewHolder(
     private val cover by lazy { view.findViewById<ImageView>(R.id.cover) }
     private val imdbRating by lazy { view.findViewById<TextView>(R.id.imdbRating) }
 
-    fun onBind(seriesItem: SeriesItem, position: Int) {
+    fun onBind(posterable: P, position: Int) {
 
         itemName.apply {
-            transitionName = seriesItem.name
-            text = seriesItem.name
+            transitionName = posterable.getTitle()
+            text = posterable.getTitle()
         }
 
         item.setOnClickListener {
-            onItemClicked?.let { it1 -> it1(seriesItem, cover, itemName) }
+            onItemClicked?.let { it1 -> it1(posterable, cover, itemName) }
         }
         cover.apply {
-            transitionName = seriesItem.cover
+            transitionName = posterable.getPosterUrl()
             Glide
                 .with(view.context)
-                .load(seriesItem.cover)
+                .load(posterable.getPosterUrl())
                 .centerCrop()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(this)
@@ -43,11 +43,11 @@ class SeriesItemViewHolder(
 
         imdbRating.apply {
             visibility =
-                if (seriesItem.rating.isBlank()
-                    || seriesItem.rating == ""
-                    || seriesItem.rating == "0"
+                if (posterable.getImdbRating().isBlank()
+                    || posterable.getImdbRating() == ""
+                    || posterable.getImdbRating() == "0"
                 ) View.GONE else View.VISIBLE
-            text = seriesItem.rating
+            text = posterable.getImdbRating()
         }
 
     }

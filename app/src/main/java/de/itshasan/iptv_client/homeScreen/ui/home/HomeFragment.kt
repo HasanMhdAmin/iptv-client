@@ -40,9 +40,23 @@ class HomeFragment : CoreFragment<FragmentHomeBinding, HomeViewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.movies.setOnClickListener {
+            val bundle = bundleOf(
+                Constant.TARGET to Constant.TYPE_MOVIES,
+                Constant.CATEGORY_ID to Constant.ALL_MOVIES,
+                )
+            findNavController().navigate(
+                R.id.action_navigation_home_to_navigation_gallery,
+                bundle
+            )
+        }
+
         binding.series.setOnClickListener {
             val categoryId = Constant.ALL_SERIES
-            val bundle = bundleOf(Constant.CATEGORY_ID to categoryId)
+            val bundle = bundleOf(
+                Constant.TARGET to Constant.TYPE_SERIES,
+                Constant.CATEGORY_ID to categoryId,
+            )
             findNavController().navigate(
                 R.id.action_navigation_home_to_navigation_gallery,
                 bundle

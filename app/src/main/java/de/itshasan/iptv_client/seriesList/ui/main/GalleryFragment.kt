@@ -21,6 +21,8 @@ import de.itshasan.iptv_core.model.Constant.ALL_SERIES
 import de.itshasan.iptv_core.model.Constant.COVER_URL
 import de.itshasan.iptv_core.model.Constant.SERIES_ID
 import de.itshasan.iptv_core.model.Constant.SERIES_TITLE
+import de.itshasan.iptv_core.model.Constant.TYPE_MOVIES
+import de.itshasan.iptv_core.model.Posterable
 import de.itshasan.iptv_core.model.series.SeriesItem
 import de.itshasan.iptv_core.model.series.category.SeriesCategoriesItem
 
@@ -50,6 +52,7 @@ class GalleryFragment : Fragment(), SearchView.OnQueryTextListener {
         val searchView = view.findViewById<SearchView>(R.id.search_view)
         searchView.setOnQueryTextListener(this)
 
+        val target = arguments?.getString(Constant.TARGET, TYPE_MOVIES)!!
         val categoryId = arguments?.getString(Constant.CATEGORY_ID, ALL_SERIES)!!
         val viewModel: GalleryViewModel by viewModels {
             GalleryViewModelFactory(
@@ -59,24 +62,24 @@ class GalleryFragment : Fragment(), SearchView.OnQueryTextListener {
         }
 
         this.viewModel = viewModel
-        viewModel.setCategory(categoryId)
+        viewModel.setCategory(target, categoryId)
+
         categoriesRecyclerView.apply {
             layoutManager = androidx.recyclerview.widget.GridLayoutManager(context, 3)
             adapter = viewModel.getAdapter().apply {
 
                 onItemClicked =
-                    { seriesItem: SeriesItem, imageView: ImageView, textview: TextView ->
-                        Log.d(TAG, "onViewCreated: seriesId: ${seriesItem.seriesId}")
+                    { posterable: Posterable, imageView: ImageView, textview: TextView ->
 
                         val extras = FragmentNavigatorExtras(
-                            imageView to seriesItem.cover,
-                            textview to seriesItem.name
+                            imageView to posterable.getPosterUrl(),
+                            textview to posterable.getTitle()
                         )
 
                         val bundle = bundleOf(
-                            SERIES_ID to seriesItem.seriesId,
-                            COVER_URL to seriesItem.cover,
-                            SERIES_TITLE to seriesItem.name
+                            SERIES_ID to posterable.getId(),
+                            COVER_URL to posterable.getPosterUrl(),
+                            SERIES_TITLE to posterable.getTitle()
                         )
 
                         findNavController().navigate(
@@ -92,7 +95,7 @@ class GalleryFragment : Fragment(), SearchView.OnQueryTextListener {
         categoryTextView.setOnClickListener {
             val categoriesDialog = CategoriesDialog.newInstance<SeriesCategoriesItem>(null) {
                 Log.d(TAG, it.getTitle())
-                viewModel.setCategory(it.categoryId)
+                viewModel.setCategory(target, it.categoryId)
                 categoryTextView.text = it.categoryName
             }
             categoriesDialog.show(parentFragmentManager, TAG)

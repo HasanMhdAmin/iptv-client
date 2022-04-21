@@ -5,6 +5,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
+import de.itshasan.iptv_core.model.Posterable
 
 @Entity
 data class SeriesItem(
@@ -40,4 +41,9 @@ data class SeriesItem(
     @SerializedName("category_id")
     @ColumnInfo(defaultValue = "-1")
     val categoryId: String
-)
+) : Posterable {
+    override fun getId() = seriesId
+    override fun getTitle() = name
+    override fun getPosterUrl() = cover
+    override fun getImdbRating() = rating
+}

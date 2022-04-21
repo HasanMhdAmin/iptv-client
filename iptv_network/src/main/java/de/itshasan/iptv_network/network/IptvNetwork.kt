@@ -3,6 +3,7 @@ package de.itshasan.iptv_network.network
 import android.util.Log
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
+import de.itshasan.iptv_core.model.movie.Movie
 import de.itshasan.iptv_core.model.series.SeriesList
 import de.itshasan.iptv_core.model.series.category.SeriesCategories
 import de.itshasan.iptv_core.model.series.info.Episode
@@ -10,12 +11,10 @@ import de.itshasan.iptv_core.model.series.info.SeriesInfo
 import de.itshasan.iptv_core.model.series.info.info.Info
 import de.itshasan.iptv_core.model.series.info.season.Season
 import de.itshasan.iptv_core.model.user.User
-import de.itshasan.iptv_network.network.callback.LoginCallback
-import de.itshasan.iptv_network.network.callback.SeriesCallback
-import de.itshasan.iptv_network.network.callback.SeriesCategoriesCallback
-import de.itshasan.iptv_network.network.callback.SeriesInfoCallback
+import de.itshasan.iptv_network.network.callback.*
 import de.itshasan.iptv_network.network.enums.Action
 import de.itshasan.iptv_network.network.service.LoginService
+import de.itshasan.iptv_network.network.service.MoviesService
 import de.itshasan.iptv_network.network.service.SeriesService
 import de.itshasan.iptv_network.storage.LocalStorage
 import okhttp3.ResponseBody
@@ -41,6 +40,9 @@ object IptvNetwork : IptvNetworkContract {
     }
     private val seriesService: SeriesService by lazy {
         retrofit.create(SeriesService::class.java)
+    }
+    private val moviesService: MoviesService by lazy {
+        retrofit.create(MoviesService::class.java)
     }
 
     private fun printURL(method: String, url: String) {
@@ -216,5 +218,30 @@ object IptvNetwork : IptvNetworkContract {
 
     override fun getEpisodeStreamUrl(episodeId: String, episodeExtension: String) =
         "${LocalStorage.getServerUrl()}/series/${LocalStorage.getUsername()}/${LocalStorage.getPassword()}/$episodeId.$episodeExtension"
+
+    override fun getMovieStreamUrl(movieId: String, movieExtension: String) =
+        "${LocalStorage.getServerUrl()}/movie/${LocalStorage.getUsername()}/${LocalStorage.getPassword()}/$movieId.$movieExtension"
+
+    override fun getMovies(callback: MoviesCallback) {
+        val call: Call<ArrayList<Movie>> = moviesService.getMovies(
+            LocalStorage.getUsername()!!, LocalStorage.getPassword()!!,
+            Action.GET_MOVIES.value
+        )
+
+        val url = call.request().url().toString()
+        printURL("getMovies", url)
+
+        call.enqueue(object : Callback<ArrayList<Movie>> {
+            override fun onResponse(call: Call<ArrayList<Movie>>, response: Response<ArrayList<Movie>>) {
+                callback.onSuccess(response.body()!!)
+            }
+
+            override fun onFailure(call: Call<ArrayList<Movie>>, t: Throwable) {
+                t.printStackTrace()
+                Log.e(TAG, "onFailure: ${t.printStackTrace()}")
+            }
+
+        })
+    }
 
 }
