@@ -17,4 +17,5 @@ interface IptvNetworkContract {
     fun getMovieStreamUrl(movieId: String, movieExtension: String): String
 
     fun getMovies(callback: MoviesCallback)
+    fun getMovieInfo(movieId: String, callback: MovieInfoCallback)
 }

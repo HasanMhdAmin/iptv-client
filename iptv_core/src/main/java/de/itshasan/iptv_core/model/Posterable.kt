@@ -1,6 +1,6 @@
 package de.itshasan.iptv_core.model
 
-interface Posterable {
+public interface Posterable : Streamable {
     fun getId(): Int
     fun getTitle(): String
     fun getPosterUrl(): String

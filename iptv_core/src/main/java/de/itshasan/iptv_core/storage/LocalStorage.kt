@@ -1,4 +1,4 @@
-package de.itshasan.iptv_network.storage
+package de.itshasan.iptv_core.storage
 
 import android.content.Context
 import android.content.SharedPreferences

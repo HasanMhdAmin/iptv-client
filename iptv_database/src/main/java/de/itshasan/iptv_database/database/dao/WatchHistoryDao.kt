@@ -6,7 +6,7 @@ import de.itshasan.iptv_core.model.WatchHistory
 @Dao
 interface WatchHistoryDao {
     @Query("SELECT * FROM WatchHistory WHERE contentId == :contentId")
-    fun getSeriesItem(contentId: String): WatchHistory?
+    fun getContentItem(contentId: String): WatchHistory?
 
     @Query("SELECT * FROM WatchHistory WHERE parentId == :parentId")
     fun getSeriesByParentId(parentId: String): List<WatchHistory>

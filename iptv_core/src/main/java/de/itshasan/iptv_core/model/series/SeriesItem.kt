@@ -46,4 +46,5 @@ data class SeriesItem(
     override fun getTitle() = name
     override fun getPosterUrl() = cover
     override fun getImdbRating() = rating
+    override fun getStreamUrl() = ""
 }

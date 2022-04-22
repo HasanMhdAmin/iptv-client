@@ -4,6 +4,7 @@ import android.util.Log
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import de.itshasan.iptv_core.model.movie.Movie
+import de.itshasan.iptv_core.model.movie.MovieInfo
 import de.itshasan.iptv_core.model.series.SeriesList
 import de.itshasan.iptv_core.model.series.category.SeriesCategories
 import de.itshasan.iptv_core.model.series.info.Episode
@@ -16,7 +17,7 @@ import de.itshasan.iptv_network.network.enums.Action
 import de.itshasan.iptv_network.network.service.LoginService
 import de.itshasan.iptv_network.network.service.MoviesService
 import de.itshasan.iptv_network.network.service.SeriesService
-import de.itshasan.iptv_network.storage.LocalStorage
+import de.itshasan.iptv_core.storage.LocalStorage
 import okhttp3.ResponseBody
 import org.json.JSONObject
 import retrofit2.Call
@@ -232,7 +233,10 @@ object IptvNetwork : IptvNetworkContract {
         printURL("getMovies", url)
 
         call.enqueue(object : Callback<ArrayList<Movie>> {
-            override fun onResponse(call: Call<ArrayList<Movie>>, response: Response<ArrayList<Movie>>) {
+            override fun onResponse(
+                call: Call<ArrayList<Movie>>,
+                response: Response<ArrayList<Movie>>
+            ) {
                 callback.onSuccess(response.body()!!)
             }
 
@@ -242,6 +246,32 @@ object IptvNetwork : IptvNetworkContract {
             }
 
         })
+    }
+
+    override fun getMovieInfo(movieId: String, callback: MovieInfoCallback) {
+        val call: Call<MovieInfo> = moviesService.getMovieInfo(
+            LocalStorage.getUsername()!!, LocalStorage.getPassword()!!,
+            Action.GET_MOVIES_INFO.value, movieId
+        )
+
+        val url = call.request().url().toString()
+        printURL("getMovieInfo", url)
+
+        call.enqueue(object : Callback<MovieInfo> {
+            override fun onResponse(
+                call: Call<MovieInfo>,
+                response: Response<MovieInfo>
+            ) {
+                callback.onSuccess(response.body()!!)
+            }
+
+            override fun onFailure(call: Call<MovieInfo>, t: Throwable) {
+                t.printStackTrace()
+                Log.e(TAG, "onFailure: ${t.printStackTrace()}")
+            }
+
+        })
+
     }
 
 }
