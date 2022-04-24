@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import de.itshasan.iptv_client.R
-import de.itshasan.iptv_core.model.series.category.Category
+import de.itshasan.iptv_core.model.category.Category
 
 class CategoryAdapter : RecyclerView.Adapter<CategoryViewHolder>() {
 

@@ -3,13 +3,15 @@ package de.itshasan.iptv_client.legacy.category
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.RecyclerView
 import de.itshasan.iptv_client.R
 import de.itshasan.iptv_client.legacy.category.adapter.CategoryAdapter
 import de.itshasan.iptv_client.utils.navigator.Navigator
+import de.itshasan.iptv_core.model.Constant
 import de.itshasan.iptv_core.model.Constant.ALL_SERIES
-import de.itshasan.iptv_core.model.series.category.SeriesCategories
-import de.itshasan.iptv_core.model.series.category.Category
+import de.itshasan.iptv_core.model.category.SeriesCategories
+import de.itshasan.iptv_core.model.category.Category
 import de.itshasan.iptv_database.database.iptvDatabase
 import de.itshasan.iptv_network.network.IptvNetwork
 import de.itshasan.iptv_network.network.callback.SeriesCategoriesCallback
@@ -36,7 +38,7 @@ class CategoryActivity : AppCompatActivity() {
 
         ////
         GlobalScope.launch(Dispatchers.IO) {
-            val categories = iptvDatabase.seriesCategoryDao().getAll()
+            val categories = iptvDatabase.categoryDao().getAll()
             if (categories.isEmpty()) {
                 loadSeriesCategories()
             } else {
@@ -73,11 +75,12 @@ class CategoryActivity : AppCompatActivity() {
                 val allSeries =
                     Category(categoryId = ALL_SERIES,
                         categoryName = "All",
-                        parentId = 0)
+                        parentId = 0,
+                        Constant.TYPE_SERIES)
                 backendResponse.add(0, allSeries)
                 GlobalScope.launch(Dispatchers.IO) {
                     backendResponse.forEach {
-                        iptvDatabase.seriesCategoryDao().insert(it)
+                        iptvDatabase.categoryDao().insert(it)
                     }
                 }
                 bindData(backendResponse)

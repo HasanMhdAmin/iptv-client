@@ -1,4 +1,4 @@
-package de.itshasan.iptv_core.model.series.category
+package de.itshasan.iptv_core.model.category
 
 
 import androidx.room.Entity
@@ -14,7 +14,8 @@ data class Category(
     @SerializedName("category_name")
     val categoryName: String,
     @SerializedName("parent_id")
-    val parentId: Int
+    val parentId: Int,
+    var type: String,
 ) : Selectable {
     override fun getTitle(): String {
         return categoryName

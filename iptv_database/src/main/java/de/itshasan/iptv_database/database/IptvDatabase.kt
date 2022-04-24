@@ -7,9 +7,9 @@ import androidx.room.RoomDatabase
 import de.itshasan.iptv_core.model.WatchHistory
 import de.itshasan.iptv_core.model.movie.Movie
 import de.itshasan.iptv_core.model.series.SeriesItem
-import de.itshasan.iptv_core.model.series.category.Category
+import de.itshasan.iptv_core.model.category.Category
 import de.itshasan.iptv_database.database.dao.MoviesDao
-import de.itshasan.iptv_database.database.dao.SeriesCategoryDao
+import de.itshasan.iptv_database.database.dao.CategoryDao
 import de.itshasan.iptv_database.database.dao.SeriesItemDao
 import de.itshasan.iptv_database.database.dao.WatchHistoryDao
 import de.itshasan.iptv_database.database.di.DaggerDatabaseComponent
@@ -30,7 +30,7 @@ fun initDatabase(context: Context) {
 }
 
 @Database(entities = [Category::class, SeriesItem::class, WatchHistory::class, Movie::class],
-    version = 3,
+    version = 5,
     exportSchema = false)
 abstract class IptvDatabase : RoomDatabase() {
     companion object {
@@ -52,7 +52,7 @@ abstract class IptvDatabase : RoomDatabase() {
                 .build()
     }
 
-    abstract fun seriesCategoryDao(): SeriesCategoryDao
+    abstract fun categoryDao(): CategoryDao // TODO: RENAME TO CategoriesDao
     abstract fun moviesDao(): MoviesDao
     abstract fun seriesItemDao(): SeriesItemDao
     abstract fun watchHistoryDao(): WatchHistoryDao

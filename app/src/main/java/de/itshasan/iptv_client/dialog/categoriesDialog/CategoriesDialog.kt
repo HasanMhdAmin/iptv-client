@@ -1,4 +1,4 @@
-package de.itshasan.iptv_client.controller.gallery.dialog
+package de.itshasan.iptv_client.dialog.categoriesDialog
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,17 +9,18 @@ import de.itshasan.iptv_client.databinding.DialogCategoriesBinding
 import de.itshasan.iptv_client.controller.gallery.adapter.selectionDialog.SelectionAdapter
 import de.itshasan.iptv_core.CoreDialog
 import de.itshasan.iptv_core.model.Selectable
-import de.itshasan.iptv_core.model.series.category.Category
+import de.itshasan.iptv_core.model.category.Category
 
 class CategoriesDialog<S: Selectable>(
+    private val target: String,
     private val selectedItem: S?,
     var onItemSelected: ((S) -> Unit)
 ) :
     CoreDialog<DialogCategoriesBinding>(R.layout.dialog_categories) {
 
     companion object {
-        fun <S: Selectable> newInstance(selectedItem: S?, onItemSelected: ((S) -> Unit)) =
-            CategoriesDialog(selectedItem, onItemSelected)
+        fun <S: Selectable> newInstance(target: String, selectedItem: S?, onItemSelected: ((S) -> Unit)) =
+            CategoriesDialog(target, selectedItem, onItemSelected)
     }
 
 
@@ -36,9 +37,9 @@ class CategoriesDialog<S: Selectable>(
     private fun setupView(view: View) {
         val viewModel = ViewModelProvider(this)[CategoriesViewModel::class.java]
 
-        viewModel.getSeriesCategories()
+        viewModel.getCategories(target)
 
-        viewModel.seriesCategories.observe(requireActivity()) {
+        viewModel.categories.observe(requireActivity()) {
             val selectionAdapter =
                 SelectionAdapter(
                     items = it,

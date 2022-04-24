@@ -6,18 +6,19 @@ import com.google.gson.reflect.TypeToken
 import de.itshasan.iptv_core.model.movie.Movie
 import de.itshasan.iptv_core.model.movie.MovieInfo
 import de.itshasan.iptv_core.model.series.SeriesList
-import de.itshasan.iptv_core.model.series.category.SeriesCategories
+import de.itshasan.iptv_core.model.category.Category
+import de.itshasan.iptv_core.model.category.SeriesCategories
 import de.itshasan.iptv_core.model.series.info.Episode
 import de.itshasan.iptv_core.model.series.info.SeriesInfo
 import de.itshasan.iptv_core.model.series.info.info.Info
 import de.itshasan.iptv_core.model.series.info.season.Season
 import de.itshasan.iptv_core.model.user.User
+import de.itshasan.iptv_core.storage.LocalStorage
 import de.itshasan.iptv_network.network.callback.*
 import de.itshasan.iptv_network.network.enums.Action
 import de.itshasan.iptv_network.network.service.LoginService
 import de.itshasan.iptv_network.network.service.MoviesService
 import de.itshasan.iptv_network.network.service.SeriesService
-import de.itshasan.iptv_core.storage.LocalStorage
 import okhttp3.ResponseBody
 import org.json.JSONObject
 import retrofit2.Call
@@ -266,6 +267,32 @@ object IptvNetwork : IptvNetworkContract {
             }
 
             override fun onFailure(call: Call<MovieInfo>, t: Throwable) {
+                t.printStackTrace()
+                Log.e(TAG, "onFailure: ${t.printStackTrace()}")
+            }
+
+        })
+
+    }
+
+    override fun getMoviesCategories(callback: CategoriesCallback) {
+        val call: Call<ArrayList<Category>> = moviesService.getMoviesCategories(
+            LocalStorage.getUsername()!!, LocalStorage.getPassword()!!,
+            Action.GET_MOVIES_CATEGORIES.value
+        )
+
+        val url = call.request().url().toString()
+        printURL("getMoviesCategories", url)
+
+        call.enqueue(object : Callback<ArrayList<Category>> {
+            override fun onResponse(
+                call: Call<ArrayList<Category>>,
+                response: Response<ArrayList<Category>>
+            ) {
+                callback.onSuccess(response.body()!!)
+            }
+
+            override fun onFailure(call: Call<ArrayList<Category>>, t: Throwable) {
                 t.printStackTrace()
                 Log.e(TAG, "onFailure: ${t.printStackTrace()}")
             }

@@ -4,7 +4,7 @@ import android.view.View
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import de.itshasan.iptv_client.R
-import de.itshasan.iptv_core.model.series.category.Category
+import de.itshasan.iptv_core.model.category.Category
 
 class CategoryViewHolder(
     view: View,

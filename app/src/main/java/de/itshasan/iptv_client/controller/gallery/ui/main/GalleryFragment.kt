@@ -13,7 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import de.itshasan.iptv_client.R
-import de.itshasan.iptv_client.controller.gallery.dialog.CategoriesDialog
+import de.itshasan.iptv_client.dialog.categoriesDialog.CategoriesDialog
 import de.itshasan.iptv_client.databinding.GalleryFragmentBinding
 import de.itshasan.iptv_core.CoreFragment
 import de.itshasan.iptv_core.model.Constant
@@ -24,7 +24,7 @@ import de.itshasan.iptv_core.model.Constant.SERIES_TITLE
 import de.itshasan.iptv_core.model.Constant.TARGET
 import de.itshasan.iptv_core.model.Constant.TYPE_MOVIES
 import de.itshasan.iptv_core.model.Posterable
-import de.itshasan.iptv_core.model.series.category.Category
+import de.itshasan.iptv_core.model.category.Category
 
 
 private val TAG = GalleryFragment::class.java.simpleName
@@ -83,7 +83,7 @@ class GalleryFragment : CoreFragment<GalleryFragmentBinding, GalleryViewModel>()
         }
 
         binding.categoryTextView.setOnClickListener {
-            val categoriesDialog = CategoriesDialog.newInstance<Category>(null) {
+            val categoriesDialog = CategoriesDialog.newInstance<Category>(target, null) {
                 Log.d(TAG, it.getTitle())
                 viewModel.setCategory(target, it.categoryId)
                 binding.categoryTextView.text = it.categoryName
