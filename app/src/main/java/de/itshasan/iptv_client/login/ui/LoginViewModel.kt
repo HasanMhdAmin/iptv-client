@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import de.itshasan.iptv_core.model.user.User
 import de.itshasan.iptv_network.network.IptvNetwork
 import de.itshasan.iptv_network.network.callback.LoginCallback
-import de.itshasan.iptv_network.storage.LocalStorage
+import de.itshasan.iptv_core.storage.LocalStorage
 
 private const val TAG = "LoginViewModel"
 

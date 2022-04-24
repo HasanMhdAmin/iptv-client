@@ -15,7 +15,7 @@ import de.itshasan.iptv_client.utils.firebase.Firestore.firestore
 import de.itshasan.iptv_core.model.WatchHistory
 import de.itshasan.iptv_core.utils.Serializer.appGson
 import de.itshasan.iptv_database.database.iptvDatabase
-import de.itshasan.iptv_network.storage.LocalStorage
+import de.itshasan.iptv_core.storage.LocalStorage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -63,7 +63,7 @@ class MainActivity : AppCompatActivity() {
         GlobalScope.launch(Dispatchers.IO) {
 
             // Pull db updates
-            firestore.collection("users_test").whereEqualTo("userId", LocalStorage.getUniqueUserId()).get()
+            firestore.collection("watch_history").whereEqualTo("userId", LocalStorage.getUniqueUserId()).get()
                 .addOnSuccessListener { result ->
                     for (document in result) {
                         val jsonString = appGson.toJson(document.data)
@@ -76,7 +76,7 @@ class MainActivity : AppCompatActivity() {
 
                             // Push db updates
                             history.forEachIndexed { index, it ->
-                                firestore.collection("users_test").document(it.uniqueId).set(it)
+                                firestore.collection("watch_history").document(it.uniqueId).set(it)
                             }
 
                             launch(Dispatchers.Main) {

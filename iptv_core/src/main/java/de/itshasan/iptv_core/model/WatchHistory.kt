@@ -16,7 +16,7 @@ data class WatchHistory(
     val currentTime: Long,
     val totalTime: Long,
     val coverUrl: String,
-    val showInContinueWatch: Boolean = true,
+    var showInContinueWatch: Boolean = true,
     val uniqueId: String,
     val userId: String
 )

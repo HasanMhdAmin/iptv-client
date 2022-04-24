@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import de.itshasan.iptv_client.R
 import de.itshasan.iptv_client.login.ui.LoginFragment
 import de.itshasan.iptv_client.utils.navigator.Navigator
-import de.itshasan.iptv_network.storage.LocalStorage
+import de.itshasan.iptv_core.storage.LocalStorage
 
 class LoginActivity : AppCompatActivity() {
 

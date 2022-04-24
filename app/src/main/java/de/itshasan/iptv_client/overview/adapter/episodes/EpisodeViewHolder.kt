@@ -30,7 +30,7 @@ class EpisodeViewHolder(
     private val durationTextView by lazy { view.findViewById<TextView>(R.id.durationTextView) }
 
     fun onBind(episode: Episode, position: Int, currentEpisode: Episode?) {
-        titleTextView.text = episode.title
+        titleTextView.text = episode.name
         plotTextView.text = episode.info.plot ?: ""
         if (plotTextView.text == "")
             plotTextView.visibility = View.GONE
@@ -77,7 +77,7 @@ class EpisodeViewHolder(
 
         GlobalScope.launch(Dispatchers.IO) {
             val watchHistory =
-                iptvDatabase.watchHistoryDao().getSeriesItem(episode.id)
+                iptvDatabase.watchHistoryDao().getContentItem(episode.id)
             if (watchHistory != null) {
                 launch(Dispatchers.Main) {
                     progressBar?.visibility = View.VISIBLE

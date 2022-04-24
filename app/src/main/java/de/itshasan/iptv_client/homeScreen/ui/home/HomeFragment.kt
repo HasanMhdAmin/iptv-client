@@ -107,7 +107,10 @@ class HomeFragment : CoreFragment<FragmentHomeBinding, HomeViewModel>() {
                             "preparing the content, Please wait...",
                             true
                         )
-                        viewModel.getSeriesInfoBySeriesId(it)
+                        if (it.contentType == Constant.TYPE_SERIES)
+                            viewModel.getSeriesInfoBySeriesId(it)
+                        else if (it.contentType == Constant.TYPE_MOVIES)
+                            viewModel.getMovieInfo(it)
 
                     }
                     onWatchHistoryLongClicked = {
@@ -118,15 +121,16 @@ class HomeFragment : CoreFragment<FragmentHomeBinding, HomeViewModel>() {
         }
 
         viewModel.episodeWatchHistory.observe(requireActivity()) {
-            if (it.episode != null) {
+            if (it.content != null) {
                 dialog.dismiss()
 
                 Navigator.goToSimplePlayer(
                     requireActivity(),
-                    episode = it.episode,
+                    target = it.watchHistory.contentType,
+                    content = it.content,
                     seriesId = it.watchHistory.parentId,
                     coverUrl = it.watchHistory.coverUrl,
-                    it.episodeList
+                    it.episodeList.toMutableList()
                 )
             }
         }
@@ -134,8 +138,10 @@ class HomeFragment : CoreFragment<FragmentHomeBinding, HomeViewModel>() {
     }
 
     private fun showBottomSheetDialog(watchHistory: WatchHistory) {
-        val bottomSheetDialog = ModalBottomSheet(watchHistory)
+        val bottomSheetDialog = ModalBottomSheet(viewModel, watchHistory)
         bottomSheetDialog.onItemRemovedCallback = {
+
+            /// TODO
             viewModel.getContinueWatch()
         }
         bottomSheetDialog.show(parentFragmentManager, bottomSheetDialog.tag)

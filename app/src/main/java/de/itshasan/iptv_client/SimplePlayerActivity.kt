@@ -25,11 +25,12 @@ import de.itshasan.iptv_client.player.listener.CustomOnScaleGestureListener
 import de.itshasan.iptv_client.utils.firebase.Firestore
 import de.itshasan.iptv_client.utils.navigator.Navigator
 import de.itshasan.iptv_core.model.Constant
+import de.itshasan.iptv_core.model.Posterable
 import de.itshasan.iptv_core.model.WatchHistory
+import de.itshasan.iptv_core.model.movie.Movie
 import de.itshasan.iptv_core.model.series.info.Episode
+import de.itshasan.iptv_core.storage.LocalStorage
 import de.itshasan.iptv_database.database.iptvDatabase
-import de.itshasan.iptv_network.network.IptvNetwork.getEpisodeStreamUrl
-import de.itshasan.iptv_network.storage.LocalStorage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -39,12 +40,13 @@ private val TAG = SimplePlayerActivity::class.java.simpleName
 class SimplePlayerActivity : AppCompatActivity(), Player.Listener {
 
     companion object {
-        lateinit var allEpisode: List<Episode>
+        lateinit var allEpisode: List<Posterable>
     }
 
     private var player: ExoPlayer? = null
 
-    private lateinit var episode: Episode
+    private lateinit var type: String
+    private lateinit var content: Posterable
     private lateinit var seriesId: String
     private lateinit var coverUrl: String
 
@@ -73,6 +75,8 @@ class SimplePlayerActivity : AppCompatActivity(), Player.Listener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_simple_player)
+
+        Log.d(TAG, "onCreate: ")
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
         videoView.setControllerVisibilityListener { visibility ->
@@ -101,13 +105,19 @@ class SimplePlayerActivity : AppCompatActivity(), Player.Listener {
             val gson = Gson()
             val serializedEpisode = intent?.extras?.getString(Constant.CONTENT).toString()
 
-            episode = gson.fromJson(serializedEpisode, Episode::class.java)
-            seriesId = intent?.extras?.getString(Constant.SERIES_ID).toString()
+            type = intent?.extras?.getString(Constant.TARGET).toString()
+
+            if (type == Constant.TYPE_MOVIES)
+                content = gson.fromJson(serializedEpisode, Movie::class.java)
+            if (type == Constant.TYPE_SERIES)
+                content = gson.fromJson(serializedEpisode, Episode::class.java)
+
+            seriesId = intent?.extras?.getString(Constant.CONTENT_ID).toString()
             coverUrl = intent?.extras?.getString(Constant.COVER_URL).toString()
 
             episodesButton.setOnClickListener {
                 Navigator.goToEpisodesDialog(
-                    episode,
+                    content as Episode,
                     seriesId.toInt(),
                     coverUrl,
                     supportFragmentManager,
@@ -117,8 +127,10 @@ class SimplePlayerActivity : AppCompatActivity(), Player.Listener {
 
             GlobalScope.launch(Dispatchers.IO) {
 
-                val watchHistory =
-                    iptvDatabase.watchHistoryDao().getSeriesItem(episode.id)
+                val watchHistory = iptvDatabase.watchHistoryDao()
+                    .getContentItem(
+                        (content).getId().toString()
+                    )
                 playbackPosition = watchHistory?.currentTime ?: 0
 
                 launch(Dispatchers.Main) {
@@ -172,33 +184,8 @@ class SimplePlayerActivity : AppCompatActivity(), Player.Listener {
 
             if (totalTime != null && totalTime > 0) {
                 if (playbackPosition > 0) {
-
-                    GlobalScope.launch(Dispatchers.IO) {
-                        val watchHistory = WatchHistory(
-                            0,
-                            episode.id,
-                            parentId = seriesId,
-                            name = episode.title,
-                            "s",
-                            System.currentTimeMillis(),
-                            currentTime = playbackPosition,
-                            totalTime = totalTime,
-                            coverUrl = coverUrl,
-                            uniqueId = LocalStorage.getUniqueContentId(
-                                episode.id,
-                                Constant.TYPE_SERIES
-                            ),
-                            userId = LocalStorage.getUniqueUserId()
-                        )
-                        iptvDatabase.watchHistoryDao().insert(watchHistory)
-                        // Add to firestore
-                        Firestore.firestore
-                            .collection("users_test")
-                            .document(watchHistory.uniqueId)
-                            .set(watchHistory)
-
-                        iptvDatabase.watchHistoryDao().updateContinueWatchStatus(seriesId, true)
-                    }
+                    // Update WatchHistory
+                    updateWatchHistory(totalTime)
                 }
             }
 
@@ -212,6 +199,36 @@ class SimplePlayerActivity : AppCompatActivity(), Player.Listener {
 
         player = null
         setResult(RESULT_OK, null)
+
+    }
+
+    private fun updateWatchHistory(totalTime: Long) {
+        GlobalScope.launch(Dispatchers.IO) {
+            val watchHistory = WatchHistory(
+                0,
+                content.getId().toString(),
+                parentId = seriesId,
+                name = content.getTitle(),
+                type,
+                System.currentTimeMillis(),
+                currentTime = playbackPosition,
+                totalTime = totalTime,
+                coverUrl = coverUrl,
+                uniqueId = LocalStorage.getUniqueContentId(
+                    content.getId().toString(),
+                    type
+                ),
+                userId = LocalStorage.getUniqueUserId()
+            )
+            iptvDatabase.watchHistoryDao().insert(watchHistory)
+            // Add to firestore
+            Firestore.firestore
+                .collection("watch_history")
+                .document(watchHistory.uniqueId)
+                .set(watchHistory)
+
+            iptvDatabase.watchHistoryDao().updateContinueWatchStatus(seriesId, true)
+        }
 
     }
 
@@ -234,15 +251,17 @@ class SimplePlayerActivity : AppCompatActivity(), Player.Listener {
             .build()
             .also { exoPlayer ->
                 videoView.player = exoPlayer
-                allEpisode.forEachIndexed { index, episode ->
-                    val episodeUrl = getEpisodeStreamUrl(episode.id, episode.containerExtension)
+                allEpisode.forEachIndexed { index, content ->
+                    val episodeUrl = content.getStreamUrl()
                     val mediaItem = MediaItem.Builder()
-                        .setMediaId(episode.id)
-                        .setTag(episode)
+                        .setMediaId(content.getId().toString())
+                        .setTag(content)
                         .setUri(episodeUrl)
                         .build()
                     exoPlayer.addMediaItem(mediaItem)
-                    if (episode.id == this.episode.id)
+                    Log.d(TAG, "initializePlayer: content: ${content.getId().toString()}")
+                    Log.d(TAG, "initializePlayer: this.content: ${this.content.getId()}")
+                    if (content.getId().toString() == this.content.getId().toString())
                         currentWindow = index
                 }
 
@@ -287,11 +306,15 @@ class SimplePlayerActivity : AppCompatActivity(), Player.Listener {
 
     override fun onEvents(player: Player, events: Player.Events) {
         super.onEvents(player, events)
+        val totalTime = player.contentDuration
+        updateWatchHistory(totalTime)
         if (events.contains(EVENT_TRACKS_CHANGED)) {
             Log.d(TAG, "onEvents: mediaId : ${player.currentMediaItem?.mediaId}")
-            episode =
-                allEpisode.find { episode -> episode.id == player.currentMediaItem?.mediaId }!!
-            titleTextView.text = episode.title
+            content =
+                allEpisode.find { episode ->
+                    episode.getId().toString() == player.currentMediaItem?.mediaId
+                }!!
+            titleTextView.text = content.getTitle()
         }
     }
 

@@ -19,11 +19,11 @@ import de.itshasan.iptv_client.seriesList.dialog.CategoriesDialog
 import de.itshasan.iptv_core.model.Constant
 import de.itshasan.iptv_core.model.Constant.ALL_SERIES
 import de.itshasan.iptv_core.model.Constant.COVER_URL
-import de.itshasan.iptv_core.model.Constant.SERIES_ID
+import de.itshasan.iptv_core.model.Constant.CONTENT_ID
 import de.itshasan.iptv_core.model.Constant.SERIES_TITLE
+import de.itshasan.iptv_core.model.Constant.TARGET
 import de.itshasan.iptv_core.model.Constant.TYPE_MOVIES
 import de.itshasan.iptv_core.model.Posterable
-import de.itshasan.iptv_core.model.series.SeriesItem
 import de.itshasan.iptv_core.model.series.category.SeriesCategoriesItem
 
 
@@ -77,7 +77,8 @@ class GalleryFragment : Fragment(), SearchView.OnQueryTextListener {
                         )
 
                         val bundle = bundleOf(
-                            SERIES_ID to posterable.getId(),
+                            TARGET to target,
+                            CONTENT_ID to posterable.getId(),
                             COVER_URL to posterable.getPosterUrl(),
                             SERIES_TITLE to posterable.getTitle()
                         )

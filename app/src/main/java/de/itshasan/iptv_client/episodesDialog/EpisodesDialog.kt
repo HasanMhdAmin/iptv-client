@@ -12,7 +12,9 @@ import de.itshasan.iptv_client.overview.ui.OverviewViewModel
 import de.itshasan.iptv_client.overview.ui.OverviewViewModelFactory
 import de.itshasan.iptv_client.utils.navigator.Navigator
 import de.itshasan.iptv_core.CoreDialog
+import de.itshasan.iptv_core.model.Constant
 import de.itshasan.iptv_core.model.series.info.Episode
+import de.itshasan.iptv_core.model.series.info.SeriesInfo
 
 private const val TAG = "EpisodesDialog"
 
@@ -39,7 +41,7 @@ class EpisodesDialog(
         binding.seasons.visibility = View.GONE
         binding.progressBar.visibility = View.VISIBLE
 
-        val viewModel: OverviewViewModel by viewModels { OverviewViewModelFactory(seriesId) }
+        val viewModel: OverviewViewModel by viewModels { OverviewViewModelFactory(Constant.TYPE_SERIES, seriesId) }
         this.viewModel = viewModel
 
         this.viewModel.plot.observe(requireActivity()) {
@@ -56,10 +58,12 @@ class EpisodesDialog(
                     onEpisodeClicked = {
                         Navigator.goToSimplePlayer(
                             activity = requireActivity(),
-                            episode = it,
+                            target = Constant.TYPE_SERIES,
+                            content = it,
                             seriesId = seriesId.toString(),
                             coverUrl = imageUrl,
-                            allEpisodes = viewModel.seriesInfo.value!!.exportAllEpisodes()
+                            allEpisodes = (viewModel.seriesInfo.value!! as SeriesInfo).exportAllEpisodes()
+                                .toMutableList()
                         )
                     }
                 }
