@@ -6,5 +6,6 @@ enum class Action(val value: String) {
     GET_SERIES_INFO("get_series_info"),
 
     GET_MOVIES("get_vod_streams"),
-    GET_MOVIES_INFO("get_vod_info")
+    GET_MOVIES_INFO("get_vod_info"),
+    GET_VOD_CATEGORIES("get_vod_categories")
 }

@@ -16,7 +16,7 @@ import de.itshasan.iptv_client.R
 import de.itshasan.iptv_client.controller.contentInfo.ui.buttomSheet.ModalBottomSheet
 import de.itshasan.iptv_client.controller.continueWatching.adapter.ContinueWatchingAdapter
 import de.itshasan.iptv_client.controller.gallery.ui.main.GalleryViewModel
-import de.itshasan.iptv_client.controller.gallery.ui.main.GalleryViewModelFactory
+//import de.itshasan.iptv_client.controller.gallery.ui.main.GalleryViewModelFactory
 import de.itshasan.iptv_client.controller.login.LoginActivity
 import de.itshasan.iptv_client.databinding.FragmentHomeBinding
 import de.itshasan.iptv_client.utils.navigator.Navigator
@@ -75,10 +75,8 @@ class HomeFragment : CoreFragment<FragmentHomeBinding, HomeViewModel>() {
             viewModel.getContinueWatch()
 
             // Update series list
-            val viewModel: GalleryViewModel by viewModels {
-                GalleryViewModelFactory(Constant.ALL_SERIES, requireActivity().application)
-            }
-            viewModel.getSeries(Constant.ALL_SERIES)
+            val galleryViewModel = ViewModelProvider(this)[GalleryViewModel::class.java]
+            galleryViewModel.getSeries(Constant.ALL_SERIES)
 
         }
 

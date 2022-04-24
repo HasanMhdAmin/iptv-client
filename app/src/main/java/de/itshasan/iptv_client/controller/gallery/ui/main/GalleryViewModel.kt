@@ -1,15 +1,13 @@
 package de.itshasan.iptv_client.controller.gallery.ui.main
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import de.itshasan.iptv_client.controller.gallery.adapter.gallery.GalleryAdapter
 import de.itshasan.iptv_core.model.Constant
 import de.itshasan.iptv_core.model.Posterable
 import de.itshasan.iptv_core.model.movie.Movie
 import de.itshasan.iptv_core.model.series.SeriesList
-//import de.itshasan.iptv_core.model.series.SeriesList
 import de.itshasan.iptv_database.database.iptvDatabase
 import de.itshasan.iptv_network.network.IptvNetwork
 import de.itshasan.iptv_network.network.callback.MoviesCallback
@@ -19,8 +17,7 @@ import kotlinx.coroutines.launch
 
 private val TAG = GalleryViewModel::class.java.simpleName
 
-class GalleryViewModel(categoryId: String, application: Application) :
-    AndroidViewModel(application) {
+class GalleryViewModel : ViewModel() {
 
     var recyclerListData: MutableLiveData<ArrayList<Posterable>?> =
         MutableLiveData<ArrayList<Posterable>?>()

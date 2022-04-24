@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName
 import de.itshasan.iptv_core.model.Selectable
 
 @Entity
-data class SeriesCategoriesItem(
+data class Category(
     @PrimaryKey
     @SerializedName("category_id")
     val categoryId: String,

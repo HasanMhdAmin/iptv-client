@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import de.itshasan.iptv_core.model.WatchHistory
 import de.itshasan.iptv_core.model.movie.Movie
 import de.itshasan.iptv_core.model.series.SeriesItem
-import de.itshasan.iptv_core.model.series.category.SeriesCategoriesItem
+import de.itshasan.iptv_core.model.series.category.Category
 import de.itshasan.iptv_database.database.dao.MoviesDao
 import de.itshasan.iptv_database.database.dao.SeriesCategoryDao
 import de.itshasan.iptv_database.database.dao.SeriesItemDao
@@ -29,8 +29,8 @@ fun initDatabase(context: Context) {
     }
 }
 
-@Database(entities = [SeriesCategoriesItem::class, SeriesItem::class, WatchHistory::class, Movie::class],
-    version = 2,
+@Database(entities = [Category::class, SeriesItem::class, WatchHistory::class, Movie::class],
+    version = 3,
     exportSchema = false)
 abstract class IptvDatabase : RoomDatabase() {
     companion object {

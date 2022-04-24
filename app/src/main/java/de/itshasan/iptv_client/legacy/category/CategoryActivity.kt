@@ -9,7 +9,7 @@ import de.itshasan.iptv_client.legacy.category.adapter.CategoryAdapter
 import de.itshasan.iptv_client.utils.navigator.Navigator
 import de.itshasan.iptv_core.model.Constant.ALL_SERIES
 import de.itshasan.iptv_core.model.series.category.SeriesCategories
-import de.itshasan.iptv_core.model.series.category.SeriesCategoriesItem
+import de.itshasan.iptv_core.model.series.category.Category
 import de.itshasan.iptv_database.database.iptvDatabase
 import de.itshasan.iptv_network.network.IptvNetwork
 import de.itshasan.iptv_network.network.callback.SeriesCategoriesCallback
@@ -71,7 +71,7 @@ class CategoryActivity : AppCompatActivity() {
                     "onSuccess: getSeriesCategories seriesCategoriesCount: ${backendResponse.size}")
                 // ALL_SERIES is id to get all the series.
                 val allSeries =
-                    SeriesCategoriesItem(categoryId = ALL_SERIES,
+                    Category(categoryId = ALL_SERIES,
                         categoryName = "All",
                         parentId = 0)
                 backendResponse.add(0, allSeries)

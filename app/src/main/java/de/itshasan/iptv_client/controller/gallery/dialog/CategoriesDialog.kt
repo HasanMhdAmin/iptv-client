@@ -9,7 +9,7 @@ import de.itshasan.iptv_client.databinding.DialogCategoriesBinding
 import de.itshasan.iptv_client.controller.gallery.adapter.selectionDialog.SelectionAdapter
 import de.itshasan.iptv_core.CoreDialog
 import de.itshasan.iptv_core.model.Selectable
-import de.itshasan.iptv_core.model.series.category.SeriesCategoriesItem
+import de.itshasan.iptv_core.model.series.category.Category
 
 class CategoriesDialog<S: Selectable>(
     private val selectedItem: S?,
@@ -42,7 +42,7 @@ class CategoriesDialog<S: Selectable>(
             val selectionAdapter =
                 SelectionAdapter(
                     items = it,
-                    selectedItem = selectedItem as SeriesCategoriesItem?
+                    selectedItem = selectedItem as Category?
                 )
 
             binding.categoriesRecyclerView.apply {

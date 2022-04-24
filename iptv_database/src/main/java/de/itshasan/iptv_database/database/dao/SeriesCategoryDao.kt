@@ -4,22 +4,22 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
-import de.itshasan.iptv_core.model.series.category.SeriesCategoriesItem
+import de.itshasan.iptv_core.model.series.category.Category
 
 @Dao
 interface SeriesCategoryDao {
-    @Query("SELECT * FROM SeriesCategoriesItem WHERE categoryId == :categoryId")
-    fun getSeriesCategory(categoryId: String): SeriesCategoriesItem
+    @Query("SELECT * FROM Category WHERE categoryId == :categoryId")
+    fun getSeriesCategory(categoryId: String): Category
 
     @Insert
-    fun insert(seriesCategoriesItem: SeriesCategoriesItem)
+    fun insert(category: Category)
 
-    @Query("SELECT * FROM SeriesCategoriesItem")
-    fun getAll(): List<SeriesCategoriesItem>
+    @Query("SELECT * FROM Category")
+    fun getAll(): List<Category>
 
     @Delete
-    fun delete(seriesCategoriesItem: SeriesCategoriesItem)
+    fun delete(category: Category)
 
-    @Query("DELETE FROM SeriesCategoriesItem")
+    @Query("DELETE FROM Category")
     fun deleteAll()
 }

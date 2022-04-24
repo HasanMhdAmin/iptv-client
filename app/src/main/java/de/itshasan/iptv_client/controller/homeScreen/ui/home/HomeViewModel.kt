@@ -34,9 +34,6 @@ class HomeViewModel : ViewModel() {
                 .addOnSuccessListener { result ->
                     viewModelScope.launch(Dispatchers.IO) {
 
-//                        // delete local
-//                        iptvDatabase.watchHistoryDao().deleteAll()
-
                         for (document in result) {
                             val jsonString = Serializer.appGson.toJson(document.data)
                             val watchHistory =

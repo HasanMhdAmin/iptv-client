@@ -9,62 +9,51 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.SearchView
 import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.RecyclerView
 import de.itshasan.iptv_client.R
 import de.itshasan.iptv_client.controller.gallery.dialog.CategoriesDialog
+import de.itshasan.iptv_client.databinding.GalleryFragmentBinding
+import de.itshasan.iptv_core.CoreFragment
 import de.itshasan.iptv_core.model.Constant
 import de.itshasan.iptv_core.model.Constant.ALL_SERIES
-import de.itshasan.iptv_core.model.Constant.COVER_URL
 import de.itshasan.iptv_core.model.Constant.CONTENT_ID
+import de.itshasan.iptv_core.model.Constant.COVER_URL
 import de.itshasan.iptv_core.model.Constant.SERIES_TITLE
 import de.itshasan.iptv_core.model.Constant.TARGET
 import de.itshasan.iptv_core.model.Constant.TYPE_MOVIES
 import de.itshasan.iptv_core.model.Posterable
-import de.itshasan.iptv_core.model.series.category.SeriesCategoriesItem
+import de.itshasan.iptv_core.model.series.category.Category
 
 
 private val TAG = GalleryFragment::class.java.simpleName
 
-class GalleryFragment : Fragment(), SearchView.OnQueryTextListener {
+class GalleryFragment : CoreFragment<GalleryFragmentBinding, GalleryViewModel>(),
+    SearchView.OnQueryTextListener {
 
     companion object {
         fun newInstance() = GalleryFragment()
     }
 
-    lateinit var viewModel: GalleryViewModel
+    override fun provideBinding(
+        layoutInflater: LayoutInflater,
+        container: ViewGroup?
+    ) = GalleryFragmentBinding.inflate(layoutInflater, container, false)
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View {
-        return inflater.inflate(R.layout.gallery_fragment, container, false)
-    }
+    override fun provideViewModel() =
+        ViewModelProvider(this)[GalleryViewModel::class.java]
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val categoriesRecyclerView = view.findViewById<RecyclerView>(R.id.categoriesRecyclerView)
-        val categoryTextView = view.findViewById<TextView>(R.id.categoryTextView)
-        val searchView = view.findViewById<SearchView>(R.id.search_view)
-        searchView.setOnQueryTextListener(this)
+        binding.searchLayout.searchView.setOnQueryTextListener(this)
 
         val target = arguments?.getString(Constant.TARGET, TYPE_MOVIES)!!
         val categoryId = arguments?.getString(Constant.CATEGORY_ID, ALL_SERIES)!!
-        val viewModel: GalleryViewModel by viewModels {
-            GalleryViewModelFactory(
-                categoryId,
-                requireActivity().application
-            )
-        }
 
-        this.viewModel = viewModel
         viewModel.setCategory(target, categoryId)
 
-        categoriesRecyclerView.apply {
+        binding.categoriesRecyclerView.apply {
             layoutManager = androidx.recyclerview.widget.GridLayoutManager(context, 3)
             adapter = viewModel.getAdapter().apply {
 
@@ -93,11 +82,11 @@ class GalleryFragment : Fragment(), SearchView.OnQueryTextListener {
             }
         }
 
-        categoryTextView.setOnClickListener {
-            val categoriesDialog = CategoriesDialog.newInstance<SeriesCategoriesItem>(null) {
+        binding.categoryTextView.setOnClickListener {
+            val categoriesDialog = CategoriesDialog.newInstance<Category>(null) {
                 Log.d(TAG, it.getTitle())
                 viewModel.setCategory(target, it.categoryId)
-                categoryTextView.text = it.categoryName
+                binding.categoryTextView.text = it.categoryName
             }
             categoriesDialog.show(parentFragmentManager, TAG)
         }

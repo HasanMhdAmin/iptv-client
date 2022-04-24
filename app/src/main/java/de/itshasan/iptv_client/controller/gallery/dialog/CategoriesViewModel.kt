@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import de.itshasan.iptv_core.model.Constant
 import de.itshasan.iptv_core.model.series.category.SeriesCategories
-import de.itshasan.iptv_core.model.series.category.SeriesCategoriesItem
+import de.itshasan.iptv_core.model.series.category.Category
 import de.itshasan.iptv_database.database.iptvDatabase
 import de.itshasan.iptv_network.network.IptvNetwork
 import de.itshasan.iptv_network.network.callback.SeriesCategoriesCallback
@@ -23,7 +23,7 @@ class CategoriesViewModel : ViewModel() {
 
                 // ALL_SERIES is id to get all the series.
                 val allSeries =
-                    SeriesCategoriesItem(
+                    Category(
                         categoryId = Constant.ALL_SERIES,
                         categoryName = "All",
                         parentId = 0
