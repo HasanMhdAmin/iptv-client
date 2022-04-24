@@ -3,14 +3,12 @@ package de.itshasan.iptv_client.legacy.category
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.RecyclerView
 import de.itshasan.iptv_client.R
 import de.itshasan.iptv_client.legacy.category.adapter.CategoryAdapter
 import de.itshasan.iptv_client.utils.navigator.Navigator
 import de.itshasan.iptv_core.model.Constant
 import de.itshasan.iptv_core.model.Constant.ALL_SERIES
-import de.itshasan.iptv_core.model.category.SeriesCategories
 import de.itshasan.iptv_core.model.category.Category
 import de.itshasan.iptv_database.database.iptvDatabase
 import de.itshasan.iptv_network.network.IptvNetwork
@@ -42,7 +40,7 @@ class CategoryActivity : AppCompatActivity() {
             if (categories.isEmpty()) {
                 loadSeriesCategories()
             } else {
-                val seriesCategories = SeriesCategories()
+                val seriesCategories = ArrayList<Category>()
                 seriesCategories.addAll(categories)
                 bindData(seriesCategories)
             }
@@ -50,7 +48,7 @@ class CategoryActivity : AppCompatActivity() {
         }
     }
 
-    private fun bindData(seriesCategories: SeriesCategories) {
+    private fun bindData(seriesCategories: ArrayList<Category>) {
         val categoryAdapter = CategoryAdapter()
 
         categoryAdapter.setDataList(seriesCategories)
@@ -67,7 +65,7 @@ class CategoryActivity : AppCompatActivity() {
 
     private fun loadSeriesCategories() {
         IptvNetwork.getSeriesCategories(object : SeriesCategoriesCallback() {
-            override fun onSuccess(backendResponse: SeriesCategories) {
+            override fun onSuccess(backendResponse: ArrayList<Category>) {
                 Log.d(
                     TAG,
                     "onSuccess: getSeriesCategories seriesCategoriesCount: ${backendResponse.size}")

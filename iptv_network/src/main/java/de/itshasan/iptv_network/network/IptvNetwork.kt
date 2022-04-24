@@ -7,7 +7,6 @@ import de.itshasan.iptv_core.model.movie.Movie
 import de.itshasan.iptv_core.model.movie.MovieInfo
 import de.itshasan.iptv_core.model.series.SeriesList
 import de.itshasan.iptv_core.model.category.Category
-import de.itshasan.iptv_core.model.category.SeriesCategories
 import de.itshasan.iptv_core.model.series.info.Episode
 import de.itshasan.iptv_core.model.series.info.SeriesInfo
 import de.itshasan.iptv_core.model.series.info.info.Info
@@ -91,7 +90,7 @@ object IptvNetwork : IptvNetworkContract {
 
     override fun getSeriesCategories(callback: SeriesCategoriesCallback) {
 
-        val call: Call<SeriesCategories> = seriesService.getSeriesCategories(
+        val call: Call<ArrayList<Category>> = seriesService.getSeriesCategories(
             LocalStorage.getUsername()!!, LocalStorage.getPassword()!!,
             Action.GET_SERIES_CATEGORIES.value
         )
@@ -99,15 +98,15 @@ object IptvNetwork : IptvNetworkContract {
         val url = call.request().url().toString()
         printURL("getSeriesCategories", url)
 
-        call.enqueue(object : Callback<SeriesCategories> {
+        call.enqueue(object : Callback<ArrayList<Category>> {
             override fun onResponse(
-                call: Call<SeriesCategories>,
-                response: Response<SeriesCategories>,
+                call: Call<ArrayList<Category>>,
+                response: Response<ArrayList<Category>>,
             ) {
                 callback.onSuccess(response.body()!!)
             }
 
-            override fun onFailure(call: Call<SeriesCategories>, t: Throwable) {
+            override fun onFailure(call: Call<ArrayList<Category>>, t: Throwable) {
                 t.printStackTrace()
                 Log.e(TAG, "onFailure: ${t.printStackTrace()}")
             }

@@ -1,7 +1,7 @@
 package de.itshasan.iptv_network.network.service
 
+import de.itshasan.iptv_core.model.category.Category
 import de.itshasan.iptv_core.model.series.SeriesList
-import de.itshasan.iptv_core.model.category.SeriesCategories
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.GET
@@ -13,7 +13,7 @@ interface SeriesService {
         @Query("username") username: String,
         @Query("password") password: String,
         @Query("action") action: String,
-    ): Call<SeriesCategories>
+    ): Call<ArrayList<Category>>
 
     @GET("player_api.php")
     fun getSeriesByCategoryId(

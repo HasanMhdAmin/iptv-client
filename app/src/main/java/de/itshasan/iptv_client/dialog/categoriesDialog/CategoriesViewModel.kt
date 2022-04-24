@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import de.itshasan.iptv_core.model.Constant
 import de.itshasan.iptv_core.model.category.Category
-import de.itshasan.iptv_core.model.category.SeriesCategories
 import de.itshasan.iptv_database.database.iptvDatabase
 import de.itshasan.iptv_network.network.IptvNetwork
 import de.itshasan.iptv_network.network.callback.CategoriesCallback
@@ -20,7 +19,7 @@ class CategoriesViewModel : ViewModel() {
 
     private fun loadSeriesCategories() {
         IptvNetwork.getSeriesCategories(object : SeriesCategoriesCallback() {
-            override fun onSuccess(backendResponse: SeriesCategories) {
+            override fun onSuccess(backendResponse: ArrayList<Category>) {
 
                 // ALL_SERIES is id to get all the series.
                 val allSeries =
@@ -51,9 +50,7 @@ class CategoriesViewModel : ViewModel() {
             if (categories.isEmpty()) {
                 loadSeriesCategories()
             } else {
-                val seriesCategoriesContainer = SeriesCategories()
-                seriesCategoriesContainer.addAll(categories)
-                this@CategoriesViewModel.categories.postValue(seriesCategoriesContainer)
+                this@CategoriesViewModel.categories.postValue(categories as ArrayList<Category>)
             }
         }
     }
@@ -92,7 +89,7 @@ class CategoriesViewModel : ViewModel() {
             if (categories.isEmpty()) {
                 loadMoviesCategories()
             } else {
-                this@CategoriesViewModel.categories.postValue(categories as ArrayList<Category>?)
+                this@CategoriesViewModel.categories.postValue(categories as ArrayList<Category>)
             }
         }
     }
