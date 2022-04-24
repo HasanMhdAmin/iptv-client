@@ -22,6 +22,7 @@ abstract class CoreFragment<B : ViewBinding, V : ViewModel>: Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        _viewModel = null
     }
 
     override fun onCreateView(

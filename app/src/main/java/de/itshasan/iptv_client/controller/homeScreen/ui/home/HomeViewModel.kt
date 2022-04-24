@@ -4,7 +4,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import de.itshasan.iptv_client.utils.firebase.Firestore
-import de.itshasan.iptv_core.model.ContentInfo
 import de.itshasan.iptv_core.model.Posterable
 import de.itshasan.iptv_core.model.WatchHistory
 import de.itshasan.iptv_core.model.movie.MovieInfo
@@ -19,10 +18,12 @@ import de.itshasan.iptv_network.network.callback.SeriesInfoCallback
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+private const val TAG = "HomeViewModel"
+
 class HomeViewModel : ViewModel() {
 
     var history: MutableLiveData<List<WatchHistory>> = MutableLiveData<List<WatchHistory>>()
-    var episodeWatchHistory: MutableLiveData<Item> = MutableLiveData<Item>()
+    var contentWatchHistory: MutableLiveData<Item> = MutableLiveData<Item>()
 
     fun getContinueWatch() {
 
@@ -50,7 +51,8 @@ class HomeViewModel : ViewModel() {
 
                     // Push db updates
                     history.value?.forEachIndexed { index, it ->
-                        Firestore.firestore.collection("watch_history").document(it.uniqueId).set(it)
+                        Firestore.firestore.collection("watch_history").document(it.uniqueId)
+                            .set(it)
                     }
 
                 }
@@ -73,7 +75,8 @@ class HomeViewModel : ViewModel() {
                             }
                         }
                     }
-                    episodeWatchHistory.postValue(
+
+                    contentWatchHistory.postValue(
                         Item(
                             currentEpisode,
                             watchHistory,
@@ -91,7 +94,7 @@ class HomeViewModel : ViewModel() {
         IptvNetwork.getMovieInfo(watchHistory.contentId, object : MovieInfoCallback() {
             override fun onSuccess(backendResponse: MovieInfo) {
 
-                episodeWatchHistory.postValue(
+                contentWatchHistory.postValue(
                     Item(
                         backendResponse.movie,
                         watchHistory,
@@ -108,7 +111,7 @@ class HomeViewModel : ViewModel() {
 }
 
 data class Item(
-    val content: Posterable? = null,
+    var content: Posterable? = null,
     val watchHistory: WatchHistory,
     val episodeList: List<Episode>
 )

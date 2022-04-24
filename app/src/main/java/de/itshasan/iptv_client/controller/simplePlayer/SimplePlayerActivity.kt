@@ -207,7 +207,7 @@ class SimplePlayerActivity : AppCompatActivity(), Player.Listener {
         GlobalScope.launch(Dispatchers.IO) {
             val watchHistory = WatchHistory(
                 0,
-                content.getId().toString(),
+                contentId = content.getId().toString(),
                 parentId = seriesId,
                 name = content.getTitle(),
                 type,

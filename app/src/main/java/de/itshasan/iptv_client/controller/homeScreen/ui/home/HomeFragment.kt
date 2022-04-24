@@ -3,6 +3,7 @@ package de.itshasan.iptv_client.controller.homeScreen.ui.home
 import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,12 +13,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import de.itshasan.iptv_client.R
-import de.itshasan.iptv_client.controller.continueWatching.adapter.ContinueWatchingAdapter
-import de.itshasan.iptv_client.databinding.FragmentHomeBinding
-import de.itshasan.iptv_client.controller.login.LoginActivity
 import de.itshasan.iptv_client.controller.contentInfo.ui.buttomSheet.ModalBottomSheet
+import de.itshasan.iptv_client.controller.continueWatching.adapter.ContinueWatchingAdapter
 import de.itshasan.iptv_client.controller.gallery.ui.main.GalleryViewModel
 import de.itshasan.iptv_client.controller.gallery.ui.main.GalleryViewModelFactory
+import de.itshasan.iptv_client.controller.login.LoginActivity
+import de.itshasan.iptv_client.databinding.FragmentHomeBinding
 import de.itshasan.iptv_client.utils.navigator.Navigator
 import de.itshasan.iptv_core.CoreFragment
 import de.itshasan.iptv_core.model.Constant
@@ -44,7 +45,7 @@ class HomeFragment : CoreFragment<FragmentHomeBinding, HomeViewModel>() {
             val bundle = bundleOf(
                 Constant.TARGET to Constant.TYPE_MOVIES,
                 Constant.CATEGORY_ID to Constant.ALL_MOVIES,
-                )
+            )
             findNavController().navigate(
                 R.id.action_navigation_home_to_navigation_gallery,
                 bundle
@@ -81,6 +82,7 @@ class HomeFragment : CoreFragment<FragmentHomeBinding, HomeViewModel>() {
 
         }
 
+        Log.d(TAG, "onViewCreated: ")
         observers()
     }
 
@@ -120,18 +122,20 @@ class HomeFragment : CoreFragment<FragmentHomeBinding, HomeViewModel>() {
             }
         }
 
-        viewModel.episodeWatchHistory.observe(requireActivity()) {
+        viewModel.contentWatchHistory.observe(requireActivity()) {
             if (it.content != null) {
                 dialog.dismiss()
+                Log.d(TAG, "observers: episodeWatchHistory")
 
                 Navigator.goToSimplePlayer(
                     requireActivity(),
                     target = it.watchHistory.contentType,
-                    content = it.content,
+                    content = it.content!!,
                     seriesId = it.watchHistory.parentId,
                     coverUrl = it.watchHistory.coverUrl,
                     it.episodeList.toMutableList()
                 )
+                it.content = null
             }
         }
 
@@ -140,8 +144,6 @@ class HomeFragment : CoreFragment<FragmentHomeBinding, HomeViewModel>() {
     private fun showBottomSheetDialog(watchHistory: WatchHistory) {
         val bottomSheetDialog = ModalBottomSheet(viewModel, watchHistory)
         bottomSheetDialog.onItemRemovedCallback = {
-
-            /// TODO
             viewModel.getContinueWatch()
         }
         bottomSheetDialog.show(parentFragmentManager, bottomSheetDialog.tag)
