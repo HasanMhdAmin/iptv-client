@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="de.itshasan.iptv_client.homeScreen.ui.home.HomeFragment"
+        android:name="de.itshasan.iptv_client.controller.homeScreen.ui.home.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home">
         <action
@@ -28,7 +28,7 @@
 
     <fragment
         android:id="@+id/navigation_gallery"
-        android:name="de.itshasan.iptv_client.seriesList.ui.main.GalleryFragment"
+        android:name="de.itshasan.iptv_client.controller.gallery.ui.main.GalleryFragment"
         android:label="@string/gallery"
         tools:layout="@layout/gallery_fragment">
         <action
@@ -42,7 +42,7 @@
 
     <fragment
         android:id="@+id/navigation_details"
-        android:name="de.itshasan.iptv_client.overview.ui.OverviewFragment"
+        android:name="de.itshasan.iptv_client.controller.contentInfo.ui.OverviewFragment"
         android:label="@string/gallery"
         tools:layout="@layout/gallery_fragment" />
 

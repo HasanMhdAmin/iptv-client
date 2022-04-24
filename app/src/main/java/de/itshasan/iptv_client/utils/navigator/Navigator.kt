@@ -4,11 +4,10 @@ import android.app.Activity
 import android.content.Intent
 import androidx.fragment.app.FragmentManager
 import com.google.gson.Gson
-import com.google.type.PostalAddress
-import de.itshasan.iptv_client.SimplePlayerActivity
-import de.itshasan.iptv_client.episodesDialog.EpisodesDialog
-import de.itshasan.iptv_client.homeScreen.MainNavActivity
-import de.itshasan.iptv_client.seriesList.GalleryActivity
+import de.itshasan.iptv_client.dialog.episodesDialog.EpisodesDialog
+import de.itshasan.iptv_client.controller.homeScreen.MainNavActivity
+import de.itshasan.iptv_client.controller.gallery.GalleryActivity
+import de.itshasan.iptv_client.controller.simplePlayer.SimplePlayerActivity
 import de.itshasan.iptv_core.model.Constant
 import de.itshasan.iptv_core.model.Posterable
 import de.itshasan.iptv_core.model.series.info.Episode

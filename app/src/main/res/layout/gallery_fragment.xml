@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="@dimen/safe_area"
-    tools:context=".category.CategoryActivity">
+    tools:context=".legacy.category.CategoryActivity">
 
     <TextView
         android:id="@+id/categoryTextView"

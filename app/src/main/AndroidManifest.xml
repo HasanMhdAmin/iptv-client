@@ -14,11 +14,11 @@
         android:theme="@style/Theme.IPTVClient"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".homeScreen.MainNavActivity"
+            android:name=".controller.homeScreen.MainNavActivity"
             android:exported="false"
             android:label="@string/title_activity_buttom_nav" />
         <activity
-            android:name=".login.LoginActivity"
+            android:name=".controller.login.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,25 +27,25 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".legacy.MainActivityOld"
             android:exported="false" />
         <activity
-            android:name=".overview.OverviewActivity"
+            android:name=".controller.contentInfo.OverviewActivity"
             android:exported="false" />
         <activity
-            android:name=".seriesList.GalleryActivity"
+            android:name=".controller.gallery.GalleryActivity"
             android:exported="false" />
         <activity
-            android:name=".category.CategoryActivity"
+            android:name=".legacy.category.CategoryActivity"
             android:exported="false" />
         <activity
-            android:name=".SimplePlayerActivity"
+            android:name=".controller.simplePlayer.SimplePlayerActivity"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
             android:exported="false"
             android:screenOrientation="sensorLandscape"
             android:supportsPictureInPicture="true" />
         <activity
-            android:name=".player.PlayerActivity"
+            android:name=".controller.player.PlayerActivity"
             android:exported="false" />
 
         <meta-data
