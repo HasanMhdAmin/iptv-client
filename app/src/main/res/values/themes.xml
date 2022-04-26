@@ -14,6 +14,7 @@
         <!-- Customize your theme here. -->
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowLightStatusBar">true</item>
+        <item name="android:navigationBarColor">@color/lighter_gray</item>
 
     </style>
 
@@ -33,6 +34,10 @@
 
     <style name="MainColorTint">
         <item name="android:tint">@color/black</item>
+    </style>
+
+    <style name="NavBarStyle">
+        <item name="android:background">@color/lighter_gray</item>
     </style>
 
 </resources>

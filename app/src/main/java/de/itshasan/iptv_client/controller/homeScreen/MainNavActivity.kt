@@ -26,7 +26,6 @@ class MainNavActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportActionBar?.hide()
-        window.navigationBarColor = getColor(R.color.dark_gray)
 
         binding = ActivityButtomNavBinding.inflate(layoutInflater)
         setContentView(binding.root)
