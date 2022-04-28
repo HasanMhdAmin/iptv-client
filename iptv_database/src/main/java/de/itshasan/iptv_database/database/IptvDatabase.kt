@@ -8,10 +8,7 @@ import de.itshasan.iptv_core.model.WatchHistory
 import de.itshasan.iptv_core.model.movie.Movie
 import de.itshasan.iptv_core.model.series.SeriesItem
 import de.itshasan.iptv_core.model.category.Category
-import de.itshasan.iptv_database.database.dao.MoviesDao
-import de.itshasan.iptv_database.database.dao.CategoryDao
-import de.itshasan.iptv_database.database.dao.SeriesItemDao
-import de.itshasan.iptv_database.database.dao.WatchHistoryDao
+import de.itshasan.iptv_database.database.dao.*
 import de.itshasan.iptv_database.database.di.DaggerDatabaseComponent
 import de.itshasan.iptv_database.database.di.DatabaseComponent
 import de.itshasan.iptv_database.database.di.module.DatabaseModule
@@ -30,7 +27,7 @@ fun initDatabase(context: Context) {
 }
 
 @Database(entities = [Category::class, SeriesItem::class, WatchHistory::class, Movie::class],
-    version = 6,
+    version = 7,
     exportSchema = false)
 abstract class IptvDatabase : RoomDatabase() {
     companion object {
@@ -56,4 +53,5 @@ abstract class IptvDatabase : RoomDatabase() {
     abstract fun moviesDao(): MoviesDao
     abstract fun seriesItemDao(): SeriesItemDao
     abstract fun watchHistoryDao(): WatchHistoryDao
+    abstract fun favouriteDao(): FavouriteDao
 }
