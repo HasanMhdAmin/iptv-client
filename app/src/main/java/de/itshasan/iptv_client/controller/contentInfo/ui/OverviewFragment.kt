@@ -5,10 +5,8 @@ import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.TextView
+import android.widget.*
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
@@ -20,8 +18,10 @@ import de.itshasan.iptv_client.controller.contentInfo.adapter.episodes.EpisodeAd
 import de.itshasan.iptv_client.controller.contentInfo.dialog.SeasonsDialog
 import de.itshasan.iptv_client.utils.navigator.Navigator
 import de.itshasan.iptv_core.model.Constant
+import de.itshasan.iptv_core.model.Favourite
 import de.itshasan.iptv_core.model.Posterable
 import de.itshasan.iptv_core.model.series.info.SeriesInfo
+import de.itshasan.iptv_core.storage.LocalStorage
 
 private val TAG = OverviewFragment::class.java.simpleName
 
@@ -56,6 +56,8 @@ class OverviewFragment : Fragment() {
         val seasonCount = view.findViewById<TextView>(R.id.seasonCount)
         val titleTextView = view.findViewById<TextView>(R.id.title)
         val play = view.findViewById<Button>(R.id.play)
+        val fav = view.findViewById<LinearLayout>(R.id.fav)
+        val favIcon = view.findViewById<ImageView>(R.id.favIcon)
         val progress = view.findViewById<ProgressBar>(R.id.progress)
         val plotTextView = view.findViewById<TextView>(R.id.plotTextView)
         val castTextView = view.findViewById<TextView>(R.id.castTextView)
@@ -183,6 +185,20 @@ class OverviewFragment : Fragment() {
             }
         }
 
+        this.viewModel.isFav.observe(requireActivity()) {
+            var drawable = AppCompatResources.getDrawable(
+                requireContext(),
+                R.drawable.ic_favorite_off
+            )
+            if (it) {
+                drawable = AppCompatResources.getDrawable(
+                    requireContext(),
+                    R.drawable.ic_favorite
+                )
+            }
+            favIcon.setImageDrawable(drawable)
+        }
+
         nameTextView.apply {
             transitionName = title
             text = title
@@ -196,6 +212,22 @@ class OverviewFragment : Fragment() {
                 .centerCrop()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(coverImageView)
+        }
+
+        fav.setOnClickListener {
+            viewModel.changeFav(
+                Favourite(
+                    id = 0,
+                    parentId = contentId.toString(),
+                    name = title,
+                    contentType = target,
+                    timestamp = System.currentTimeMillis(),
+                    coverUrl = imageUrl,
+                    uniqueId = LocalStorage.getUniqueContentId(id = contentId.toString(), target),
+                    userId = LocalStorage.getUniqueUserId()
+                )
+            )
+
         }
 
     }

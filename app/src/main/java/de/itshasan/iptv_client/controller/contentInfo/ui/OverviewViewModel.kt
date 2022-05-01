@@ -4,14 +4,12 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import de.itshasan.iptv_core.model.Constant
-import de.itshasan.iptv_core.model.ContentInfo
-import de.itshasan.iptv_core.model.Posterable
-import de.itshasan.iptv_core.model.WatchHistory
+import de.itshasan.iptv_core.model.*
 import de.itshasan.iptv_core.model.movie.MovieInfo
 import de.itshasan.iptv_core.model.series.info.Episode
 import de.itshasan.iptv_core.model.series.info.SeriesInfo
 import de.itshasan.iptv_core.model.series.info.season.Season
+import de.itshasan.iptv_core.storage.LocalStorage
 import de.itshasan.iptv_database.database.iptvDatabase
 import de.itshasan.iptv_network.network.IptvNetwork
 import de.itshasan.iptv_network.network.callback.MovieInfoCallback
@@ -36,8 +34,14 @@ class OverviewViewModel(private val target: String, contentId: Int) : ViewModel(
     var selectedSeason = MutableLiveData<Season>()
     var currentContentProgress = MutableLiveData<Pair<Posterable, WatchHistory?>>()
     var movieInfo = MutableLiveData<MovieInfo?>()
+    var isFav = MutableLiveData<Boolean>()
 
     init {
+
+        isInFav(
+            LocalStorage.getUniqueContentId(contentId.toString(), target)
+        )
+
         if (target == Constant.TYPE_SERIES)
             makeAPICall(contentId)
         else if (target == Constant.TYPE_MOVIES)
@@ -132,5 +136,27 @@ class OverviewViewModel(private val target: String, contentId: Int) : ViewModel(
                 contentName.postValue("Hasan")
             }
         })
+    }
+
+    private fun isInFav(uniqueContentId: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val fav = iptvDatabase.favouriteDao().getFavouriteItem(uniqueContentId)
+            isFav.postValue(fav != null)
+        }
+    }
+
+    fun changeFav(favourite: Favourite) {
+
+        viewModelScope.launch(Dispatchers.IO) {
+            val fav = iptvDatabase.favouriteDao().getFavouriteItem(favourite.uniqueId)
+            if (fav != null) {
+                // existed
+                iptvDatabase.favouriteDao().delete(fav)
+                isFav.postValue(false)
+            } else {
+                iptvDatabase.favouriteDao().insert(favourite)
+                isFav.postValue(true)
+            }
+        }
     }
 }

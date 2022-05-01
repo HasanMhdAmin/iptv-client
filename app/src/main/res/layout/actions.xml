@@ -6,33 +6,60 @@
     android:layout_height="wrap_content"
     android:padding="@dimen/safe_area">
 
-    <LinearLayout
-        android:id="@+id/share"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="?selectableItemBackgroundBorderless"
-        android:clickable="true"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/rate"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+<!--    <LinearLayout-->
+<!--        android:id="@+id/share"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="?selectableItemBackgroundBorderless"-->
+<!--        android:clickable="true"-->
+<!--        android:orientation="vertical"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toStartOf="@+id/rate"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent">-->
 
-        <ImageView
-            style="@style/ImageTintColor"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_gravity="center"
-            android:src="@drawable/ic_download" />
+<!--        <ImageView-->
+<!--            style="@style/ImageTintColor"-->
+<!--            android:layout_width="40dp"-->
+<!--            android:layout_height="40dp"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:src="@drawable/ic_download" />-->
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/download" />
+<!--        <TextView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:gravity="center"-->
+<!--            android:text="@string/download" />-->
 
-    </LinearLayout>
+<!--    </LinearLayout>-->
 
+
+<!--    <LinearLayout-->
+<!--        android:id="@+id/share"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="?selectableItemBackgroundBorderless"-->
+<!--        android:clickable="true"-->
+<!--        android:orientation="vertical"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toStartOf="@+id/rate"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent">-->
+
+<!--        <ImageView-->
+<!--            style="@style/ImageTintColor"-->
+<!--            android:layout_width="40dp"-->
+<!--            android:layout_height="40dp"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:src="@drawable/ic_share" />-->
+
+<!--        <TextView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:gravity="center"-->
+<!--            android:text="@string/share" />-->
+
+<!--    </LinearLayout>-->
 
     <LinearLayout
         android:id="@+id/rate"
@@ -43,34 +70,7 @@
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/fav"
-        app:layout_constraintStart_toEndOf="@+id/share"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <ImageView
-            style="@style/ImageTintColor"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_gravity="center"
-            android:src="@drawable/ic_share" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/share" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/fav"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="?selectableItemBackgroundBorderless"
-        android:clickable="true"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/download"
-        app:layout_constraintStart_toEndOf="@+id/rate"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
@@ -89,7 +89,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/download"
+        android:id="@+id/fav"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="?selectableItemBackgroundBorderless"
@@ -97,15 +97,16 @@
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/fav"
+        app:layout_constraintStart_toEndOf="@+id/rate"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
+            android:id="@+id/favIcon"
             style="@style/ImageTintColor"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_gravity="center"
-            android:src="@drawable/ic_favorite" />
+            android:src="@drawable/ic_favorite_off" />
 
         <TextView
             android:layout_width="match_parent"

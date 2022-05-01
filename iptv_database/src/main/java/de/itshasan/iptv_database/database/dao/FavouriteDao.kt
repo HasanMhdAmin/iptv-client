@@ -7,7 +7,7 @@ import de.itshasan.iptv_core.model.movie.Movie
 @Dao
 interface FavouriteDao {
     @Query("SELECT * FROM Favourite WHERE uniqueId == :uniqueId")
-    fun getFavouriteItem(uniqueId: String): Favourite
+    fun getFavouriteItem(uniqueId: String): Favourite?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(favourite: Favourite)
