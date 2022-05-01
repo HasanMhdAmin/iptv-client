@@ -22,7 +22,7 @@ private val TAG = CategoryActivity::class.java.simpleName
 
 class CategoryActivity : AppCompatActivity() {
 
-    private val categoriesRecyclerView by lazy { findViewById<RecyclerView>(R.id.categoriesRecyclerView) }
+    private val categoriesRecyclerView by lazy { findViewById<RecyclerView>(R.id.posterRecyclerView) }
 
     fun <K> increment(map: MutableMap<K, Int>, key: K) {
         map.putIfAbsent(key, 0)

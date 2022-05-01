@@ -29,7 +29,7 @@ fun initDatabase(context: Context) {
 
 @Database(
     entities = [Category::class, SeriesItem::class, WatchHistory::class, Movie::class, Favourite::class],
-    version = 7,
+    version = 8,
     exportSchema = false
 )
 abstract class IptvDatabase : RoomDatabase() {

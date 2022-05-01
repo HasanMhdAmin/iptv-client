@@ -217,7 +217,7 @@ class OverviewFragment : Fragment() {
         fav.setOnClickListener {
             viewModel.changeFav(
                 Favourite(
-                    id = 0,
+                    favId = 0,
                     parentId = contentId.toString(),
                     name = title,
                     contentType = target,

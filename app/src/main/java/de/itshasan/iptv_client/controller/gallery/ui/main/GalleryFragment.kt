@@ -53,7 +53,7 @@ class GalleryFragment : CoreFragment<GalleryFragmentBinding, GalleryViewModel>()
 
         viewModel.setCategory(target, categoryId)
 
-        binding.categoriesRecyclerView.apply {
+        binding.posterRecyclerView.apply {
             layoutManager = androidx.recyclerview.widget.GridLayoutManager(context, 3)
             adapter = viewModel.getAdapter().apply {
 

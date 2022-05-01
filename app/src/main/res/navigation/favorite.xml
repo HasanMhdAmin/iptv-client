@@ -9,5 +9,19 @@
         android:id="@+id/navigation_favorite"
         android:name="de.itshasan.iptv_client.controller.homeScreen.ui.favorite.FavoriteFragment"
         android:label="@string/favorite"
-        tools:layout="@layout/fragment_favorite" />
+        tools:layout="@layout/fragment_favorite" >
+        <action
+            android:id="@+id/action_navigation_favorite_to_navigation_details"
+            app:destination="@id/navigation_details"
+            app:enterAnim="@anim/right_in_app"
+            app:exitAnim="@anim/zoom_out_app"
+            app:popEnterAnim="@anim/zoom_in_app"
+            app:popExitAnim="@anim/right_out_app"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_details"
+        android:name="de.itshasan.iptv_client.controller.contentInfo.ui.OverviewFragment"
+        android:label="@string/gallery"
+        tools:layout="@layout/gallery_fragment" />
 </navigation>
