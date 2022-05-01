@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import de.itshasan.iptv_client.utils.firebase.Firestore
 import de.itshasan.iptv_core.model.*
 import de.itshasan.iptv_core.model.movie.MovieInfo
 import de.itshasan.iptv_core.model.series.info.Episode
@@ -153,10 +154,14 @@ class OverviewViewModel(private val target: String, contentId: Int) : ViewModel(
                 // existed
                 iptvDatabase.favouriteDao().delete(fav)
                 isFav.postValue(false)
+                Firestore.favoriteDao().removeFavoriteToFirestore(favourite)
             } else {
                 iptvDatabase.favouriteDao().insert(favourite)
                 isFav.postValue(true)
+                Firestore.favoriteDao().addFavoriteToFirestore(favourite)
             }
         }
+
+
     }
 }

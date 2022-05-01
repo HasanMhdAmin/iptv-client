@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import de.itshasan.iptv_client.utils.firebase.Firestore
+import de.itshasan.iptv_core.model.Favourite
 import de.itshasan.iptv_core.model.Posterable
 import de.itshasan.iptv_core.model.WatchHistory
 import de.itshasan.iptv_core.model.movie.MovieInfo
@@ -57,6 +58,28 @@ class HomeViewModel : ViewModel() {
 
     }
 
+    fun getFavorite() {
+        viewModelScope.launch(Dispatchers.IO) {
+            // Pull db updates
+            Firestore.favoriteDao().getUserFavorite().get().addOnSuccessListener {
+                viewModelScope.launch(Dispatchers.IO) {
+                    for (document in it) {
+                        val jsonString = Serializer.appGson.toJson(document.data)
+                        val favorite =
+                            Serializer.appGson.fromJson(jsonString, Favourite::class.java)
+                        iptvDatabase.favouriteDao().insert(favorite)
+                    }
+
+                    // Push DB updates
+                    val favorites = iptvDatabase.favouriteDao().getAll()
+                    favorites.forEach { favorite ->
+                        Firestore.favoriteDao().addFavoriteToFirestore(favorite)
+                    }
+                }
+            }
+        }
+    }
+
     fun getSeriesInfoBySeriesId(watchHistory: WatchHistory) {
         IptvNetwork.getSeriesInfoBySeriesId(
             watchHistory.parentId,
@@ -104,6 +127,7 @@ class HomeViewModel : ViewModel() {
             }
         })
     }
+
 
 }
 

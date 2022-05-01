@@ -73,6 +73,7 @@ class HomeFragment : CoreFragment<FragmentHomeBinding, HomeViewModel>() {
 
             // Update continue watching
             viewModel.getContinueWatch()
+            viewModel.getFavorite()
 
             // Update series list
             val galleryViewModel = ViewModelProvider(this)[GalleryViewModel::class.java]
@@ -80,7 +81,7 @@ class HomeFragment : CoreFragment<FragmentHomeBinding, HomeViewModel>() {
 
         }
 
-        Log.d(TAG, "onViewCreated: ")
+        viewModel.getFavorite()
         observers()
     }
 
